@@ -1,5 +1,11 @@
 Debug/
 Release/
+.vscode/
+*.vcxproj*
+*.user
+*.suo
+*.ncb
+.vs/
 *.obj
 *.exe
 *.pdb
