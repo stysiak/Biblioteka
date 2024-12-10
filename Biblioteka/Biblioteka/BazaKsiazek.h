@@ -4,10 +4,11 @@
 
 class BazaKsiazek {
 private:
-	float stawkaOplatyZaOpoznienie;
+	float stawkaOplatyZaOpoznienie; //to chyba mozna usunac
 	vector<Ksiazka> listaKsiazek;
 public:
 	BazaKsiazek();
-	void aktualizujStan();
-	void aktualizujStanPoWypozyczeniu(Egzemplarz e);
+	void aktualizujStanDodaj(Ksiazka k);
+	bool aktualizujStanUsun(Ksiazka k);
+	bool aktualizujStanPoWypozyczeniu(Egzemplarz e);
 };

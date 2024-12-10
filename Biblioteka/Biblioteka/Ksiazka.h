@@ -7,6 +7,6 @@ private:
 	int iloscEgzemplarzy;
 	int rokWydania;
 public:
-	void wypiszDate();
-	Ksiazka();
+	void wypiszDane();
+	Ksiazka(string t, string n, int i, int r):tytul(t), nazwiskoAutora(n), iloscEgzemplarzy(i), rokWydania(r){}
 };

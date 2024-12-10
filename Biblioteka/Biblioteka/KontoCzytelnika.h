@@ -12,5 +12,5 @@ private:
 	bool przekroczonoLimit;
 public:
 	float zwrotKaucji();
-	KontoCzytelnika();
+	KontoCzytelnika(string i, string n, int p): imie(i), nazwisko(n), pesel(p){}
 };

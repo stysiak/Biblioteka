@@ -1,7 +1,7 @@
 #include "header.h"
 #include "Data.h"
 
-class Egzemplarz {
+class Egzemplarz{
 private:
 	int ID;
 	enum class Status{dostepna, niedostepna, wypozyczona, zniszczona};
