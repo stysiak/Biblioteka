@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <unordered_map>
+#include <memory>
 using namespace std;
 //wszystkie nazwy klas
 class Data;

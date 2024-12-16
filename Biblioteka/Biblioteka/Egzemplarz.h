@@ -8,7 +8,11 @@ private:
 	Data dataZwrotu;
 	Data dataWypozyczenia;
 public:
-	Egzemplarz();
+	Egzemplarz(int id): ID(id){}
+	int zwrocID()
+	{
+		return ID;
+	}
 	void ustawStatus(Status s);
 	Status zwrocStatus();
 	Data zwrocDateZwrotu();
