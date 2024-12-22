@@ -1,3 +1,4 @@
+#pragma once
 #include "header.h"
 #include "Ksiazka.h"
 
@@ -13,4 +14,7 @@ private:
 public:
 	float zwrotKaucji();
 	KontoCzytelnika(string i, string n, int p): imie(i), nazwisko(n), pesel(p){}
+	friend class BazaCzytelnikow;
+
+
 };

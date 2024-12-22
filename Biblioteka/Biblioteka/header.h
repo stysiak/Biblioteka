@@ -1,4 +1,5 @@
 #pragma once
+
 // wszystkie #include
 #include <iostream>
 #include <string>
