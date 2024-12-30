@@ -2,8 +2,6 @@
 #include "KontoCzytelnika.h"
 #include "header.h"
 
-using namespace std; 
-
 class BazaCzytelnikow {
 private:
     vector<KontoCzytelnika> listaCzytelnikow;

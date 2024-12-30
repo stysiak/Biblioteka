@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Administrator.cpp" />
     <ClCompile Include="BazaCzytelnikow.cpp" />
     <ClCompile Include="BazaKsiazek.cpp" />
     <ClCompile Include="BazaPracownikow.cpp" />
@@ -140,6 +141,7 @@
     <ClCompile Include="Zwrot.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Administrator.h" />
     <ClInclude Include="BazaCzytelnikow.h" />
     <ClInclude Include="BazaKsiazek.h" />
     <ClInclude Include="BazaPracownikow.h" />

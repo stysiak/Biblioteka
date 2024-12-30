@@ -2,10 +2,6 @@
 #include "header.h"
 #include "Egzemplarz.h"
 #include "Ksiazka.h"
-#include <unordered_map>
-#include <memory>
-#include <string>
-using namespace std;
 
 class BazaKsiazek {
 private:
