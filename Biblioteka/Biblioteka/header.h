@@ -6,6 +6,9 @@
 #include <vector>
 #include <unordered_map>
 #include <memory>
+#include <fstream>
+#include <sstream>
+
 using namespace std;
 //wszystkie nazwy klas
 class Data;

@@ -4,8 +4,8 @@ using namespace std;
 
 Administrator::Administrator() : Pracownik() {}
 
-Administrator::Administrator(const string& imie, const string& nazwisko, const string& login, const string& haslo, float pensja)
-    : Pracownik(imie, nazwisko, login, haslo, pensja) {
+Administrator::Administrator(const string& imie, const string& nazwisko, const string& login, const string& haslo, float pensja, const string& funkcja)
+    : Pracownik(imie, nazwisko, login, haslo, pensja, funkcja) {
 }
 
 void Administrator::dodajKsiazke(BazaKsiazek& baza, const string& tytul, const string& autor, int rok) {

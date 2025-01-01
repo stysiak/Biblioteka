@@ -1,6 +1,7 @@
 #pragma once
 #include "header.h"
 #include "Pracownik.h"
+#include "Administrator.h"
 
 class BazaPracownikow {
 private:
@@ -8,6 +9,6 @@ private:
 
 public:
     BazaPracownikow();
-    bool logowanie();
+    void logowanie();
     void dodajPracownika(const Pracownik& pracownik);
 };

@@ -8,6 +8,7 @@ private:
     int ID = 0;
     int egzID = 100;
     unordered_map<int, shared_ptr<Ksiazka>> ksiazki;
+    static BazaKsiazek* instance; 
 
 public:
     BazaKsiazek();
@@ -16,4 +17,6 @@ public:
     void aktualizujStanUsun(int kID);
     void usunEgzemplarzKsiazki(int eID);
     bool aktualizujStanPoWypozyczeniu(Egzemplarz e);
+
+    static BazaKsiazek* getInstance();
 };

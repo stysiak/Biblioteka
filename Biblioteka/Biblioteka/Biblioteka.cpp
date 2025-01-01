@@ -32,12 +32,7 @@ int main() {
 
     switch (wybor) {
         case 1:
-            if (bazaPracownikow.logowanie()) {
-            }
-            else {
-                cout << "Błędne dane logowania. Sprobuj ponownie." << endl;
-            }
-            system("pause");
+            bazaPracownikow.logowanie();
             break;
         case 2:
             cout << "Wyjscie z programu" << endl;
