@@ -1,4 +1,5 @@
 #include "Pracownik.h"
+#include "BazaKsiazek.h"
 
 Pracownik::Pracownik() : imie(""), nazwisko(""), login(""), haslo(""), pensja(0.0), funkcja("") {}
 
@@ -38,3 +39,10 @@ float Pracownik::getPensja() const {
 string Pracownik::getFunkcja() const {
     return funkcja;
 }
+
+void Pracownik::wyswietlListeKsiazek() const {
+    BazaKsiazek::getInstance()->wyswietlListeKsiazek();
+}
+
+
+

@@ -56,3 +56,33 @@ BazaKsiazek* BazaKsiazek::getInstance() {
     }
     return instance;
 }
+
+void BazaKsiazek::wyswietlListeKsiazek() const {
+    ifstream plik("baza_ksiazek.txt");
+
+    if (!plik.is_open()) {
+        cerr << "Nie mozna otworzyc pliku baza_ksiazek.txt" << endl;
+        return;
+    }
+
+    string linia;
+    cout << "\n--- Lista ksiazek ---" << endl;
+
+    while (getline(plik, linia)) {
+        stringstream ss(linia);
+        string id, tytul, autor, rok;
+
+        getline(ss, id, ',');
+        getline(ss, tytul, ',');
+        getline(ss, autor, ',');
+        getline(ss, rok, ',');
+
+        cout << "ID: " << id
+            << ", Tytul: " << tytul
+            << ", Autor: " << autor
+            << ", Rok: " << rok << endl;
+    }
+
+    plik.close();
+}
+

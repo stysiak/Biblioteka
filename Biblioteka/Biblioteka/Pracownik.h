@@ -25,4 +25,5 @@ public:
     string getFunkcja() const;
     void sprawdzenieKonta(KontoCzytelnika);
     void przyjmijKaucje(KontoCzytelnika, Egzemplarz);
+    void wyswietlListeKsiazek() const;
 };

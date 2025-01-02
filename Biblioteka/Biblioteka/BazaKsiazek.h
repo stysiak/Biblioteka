@@ -19,4 +19,5 @@ public:
     bool aktualizujStanPoWypozyczeniu(Egzemplarz e);
 
     static BazaKsiazek* getInstance();
+    void wyswietlListeKsiazek() const;
 };

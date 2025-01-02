@@ -57,6 +57,7 @@ void BazaPracownikow::logowanie() {
                     cout << "\n--- Menu Administratora ---\n";
                     cout << "1. Dodaj ksiazke\n";
                     cout << "2. Usun ksiazke\n";
+                    cout << "3. Wyswietl ksiazki\n";
                     cout << "Wybor: ";
                     cin >> wybor;
 
@@ -80,6 +81,9 @@ void BazaPracownikow::logowanie() {
                         cin >> kID;
                         admin.usunKsiazke(*BazaKsiazek::getInstance(), kID);*/
                         break;
+                    case 3:
+                        admin.wyswietlListeKsiazek();
+                        break;
                     default:
                         cout << "Niepoprawny wybor!\n";
                     }
@@ -92,17 +96,19 @@ void BazaPracownikow::logowanie() {
                     cout << "\n--- Menu Pracownika ---\n";
                     cout << "1. Sprawdz konto czytelnika\n";
                     cout << "2. Przyjmij kaucje\n";
+                    cout << "3. Wyswietl ksiazki\n";
                     cout << "Wybor: ";
                     cin >> wybor;
 
                     switch (wybor) {
                     case 1:
-                        cout << "Sprawdzanie konta czytelnika...\n";
                         //pracownik.sprawdzenieKonta();  
                         break;
                     case 2:
-                        cout << "Przyjmowanie kaucji...\n";
                         //pracownik.przyjmijKaucje(); 
+                        break;
+                    case 3:
+                        pracownik.wyswietlListeKsiazek();
                         break;
                     default:
                         cout << "Niepoprawny wybor!\n";
