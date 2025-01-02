@@ -35,7 +35,12 @@ void BazaKsiazek::dodajEgzemplarzDoKsiazki(int kID) {
 }
 
 void BazaKsiazek::aktualizujStanUsun(int kID) {
+    if (ksiazki.count(kID) > 0) {
+        ksiazki.erase(kID);
+        cout << "Usunieto ksiazke" << endl;
+    }
 }
+
 
 void BazaKsiazek::usunEgzemplarzKsiazki(int eID) {
 
