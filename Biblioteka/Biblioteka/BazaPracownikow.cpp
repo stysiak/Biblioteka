@@ -1,7 +1,6 @@
 #include "BazaPracownikow.h"
 #include "BazaKsiazek.h"
 
-
 BazaPracownikow::BazaPracownikow() {
     ifstream plik("baza_pracownikow.txt");
     if (!plik.is_open()) {
@@ -27,7 +26,7 @@ BazaPracownikow::BazaPracownikow() {
     plik.close();
 }
 
-void BazaPracownikow::logowanie() {
+pair<string, string> BazaPracownikow::logowanie() {
     string wpisanyLogin, wpisaneHaslo;
     cout << "Podaj login: ";
     cin >> wpisanyLogin;
@@ -37,7 +36,7 @@ void BazaPracownikow::logowanie() {
     ifstream plik("baza_pracownikow.txt");
     if (!plik.is_open()) {
         cerr << "Nie mozna otworzyc pliku baza_pracownikow.txt" << endl;
-        return;
+        return { "", "" }; // Zwracamy pust¹ parê w przypadku b³êdu
     }
 
     string linia;
@@ -50,76 +49,12 @@ void BazaPracownikow::logowanie() {
 
         if (login == wpisanyLogin && haslo == wpisaneHaslo) {
             cout << "Logowanie pomyslne. Witaj " << login << " (" << funkcja << ")!" << endl;
-            if (funkcja == "admin") {
-                Administrator admin(imie, nazwisko, login, haslo, pensja, funkcja);
-                int wybor;
-                do {
-                    cout << "\n--- Menu Administratora ---\n";
-                    cout << "1. Dodaj ksiazke\n";
-                    cout << "2. Usun ksiazke\n";
-                    cout << "3. Wyswietl ksiazki\n";
-                    cout << "Wybor: ";
-                    cin >> wybor;
-
-                    switch (wybor) {
-                    case 1: {
-                        string tytul, autor;
-                        int rok;
-                        cout << "Podaj tytul ksiazki: ";
-                        cin.ignore();
-                        getline(cin, tytul);
-                        cout << "Podaj autora ksiazki: ";
-                        getline(cin, autor);
-                        cout << "Podaj rok wydania: ";
-                        cin >> rok;
-                        admin.dodajKsiazke(*BazaKsiazek::getInstance(), tytul, autor, rok);
-                        break;
-                    }
-                    case 2:
-                        /*int kID;
-                        cout << "Podaj ID ksiazki do usuniecia: ";
-                        cin >> kID;
-                        admin.usunKsiazke(*BazaKsiazek::getInstance(), kID);*/
-                        break;
-                    case 3:
-                        admin.wyswietlListeKsiazek();
-                        break;
-                    default:
-                        cout << "Niepoprawny wybor!\n";
-                    }
-                } while (true);
-            }
-            else if (funkcja == "pracownik") {
-                Pracownik pracownik(imie, nazwisko, login, haslo, pensja, funkcja);
-                int wybor;
-                do {
-                    cout << "\n--- Menu Pracownika ---\n";
-                    cout << "1. Sprawdz konto czytelnika\n";
-                    cout << "2. Przyjmij kaucje\n";
-                    cout << "3. Wyswietl ksiazki\n";
-                    cout << "Wybor: ";
-                    cin >> wybor;
-
-                    switch (wybor) {
-                    case 1:
-                        //pracownik.sprawdzenieKonta();  
-                        break;
-                    case 2:
-                        //pracownik.przyjmijKaucje(); 
-                        break;
-                    case 3:
-                        pracownik.wyswietlListeKsiazek();
-                        break;
-                    default:
-                        cout << "Niepoprawny wybor!\n";
-                    }
-                } while (true);
-            }
-            return;
+            return { login, funkcja };  // Zwracamy login i funkcjê u¿ytkownika
         }
     }
 
     cout << "Blad logowania! Zle dane logowania" << endl;
+    return { "", "" }; // Zwracamy pust¹ parê w przypadku b³êdu logowania
 }
 
 void BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
@@ -128,12 +63,14 @@ void BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
         return;
     }
 
-    listaPracownikow.push_back(pracownik);
-    ofstream plik("baza_pracownikow.txt", ios::app);
+    listaPracownikow.push_back(pracownik);  // Dodanie pracownika do wektora
+
+    // Zapis do pliku
+    ofstream plik("baza_pracownikow.txt", ios::app);  // Otwieranie pliku w trybie do dopisywania
     if (plik.is_open()) {
         plik << pracownik.getImie() << " " << pracownik.getNazwisko() << " "
             << pracownik.getLogin() << " " << pracownik.getHaslo() << " "
-            << pracownik.getPensja() << " " << pracownik.getFunkcja() << endl;
+            << pracownik.getPensja() << " " << pracownik.getFunkcja() << "\n";  // Dodanie \n na koñcu
         plik.close();
         cout << "Pracownik " << pracownik.getLogin() << " zostal dodany do bazy." << endl;
     }
@@ -141,3 +78,4 @@ void BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
         cerr << "Nie mozna otworzyc pliku do zapisu!\n";
     }
 }
+

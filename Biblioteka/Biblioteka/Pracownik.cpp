@@ -7,15 +7,6 @@ Pracownik::Pracownik(const string& imie, const string& nazwisko, const string& l
     : imie(imie), nazwisko(nazwisko), login(login), haslo(haslo), pensja(pensja), funkcja(funkcja) {
 }
 
-void Pracownik::ustawDane(const string& imie, const string& nazwisko, const string& login, const string& haslo, float pensja, const string& funkcja) {
-    this->imie = imie;
-    this->nazwisko = nazwisko;
-    this->login = login;
-    this->haslo = haslo;
-    this->pensja = pensja;
-    this->funkcja = funkcja;
-}
-
 string Pracownik::getLogin() const {
     return login;
 }
@@ -41,8 +32,17 @@ string Pracownik::getFunkcja() const {
 }
 
 void Pracownik::wyswietlListeKsiazek() const {
-    BazaKsiazek::getInstance()->wyswietlListeKsiazek();
+    BazaKsiazek bazaKsiazek;
+    bazaKsiazek.wyswietlListeKsiazek();
 }
+
+void sprawdzenieKonta(KontoCzytelnika) {
+
+}
+
+//void przyjmijKaucje(KontoCzytelnika, Egzemplarz) {
+//
+//}
 
 
 

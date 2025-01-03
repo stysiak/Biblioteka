@@ -1,1 +1,2 @@
 admin admin admin admin 0 admin
+pracownik pracownik pracownik pracownik 0 pracownik

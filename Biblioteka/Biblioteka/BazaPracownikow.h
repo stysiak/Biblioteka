@@ -9,6 +9,7 @@ private:
 
 public:
     BazaPracownikow();
-    void logowanie();
+    pair<string, string> logowanie();
     void dodajPracownika(const Pracownik& pracownik);
+
 };

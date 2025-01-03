@@ -1,8 +1,5 @@
 #include "BazaCzytelnikow.h"
-#include <algorithm>
-#include <iostream>
-#include <fstream>
-#include <sstream>
+#include "header.h"
 
 using namespace std;
 

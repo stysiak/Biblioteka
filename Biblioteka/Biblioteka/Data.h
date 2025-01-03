@@ -3,9 +3,9 @@
 
 class Data {
 private:
-    int dzien{ 1 };
-    int miesiac{ 1 };
-    int rok{ 2000 };
+    int dzien;
+    int miesiac;
+    int rok;
 
 public:
     Data(int d, int m, int r);

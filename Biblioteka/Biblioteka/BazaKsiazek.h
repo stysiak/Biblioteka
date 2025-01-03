@@ -5,19 +5,17 @@
 
 class BazaKsiazek {
 private:
-    int ID = 0;
-    int egzID = 100;
+    int ID;
+    int egzID;
     unordered_map<int, shared_ptr<Ksiazka>> ksiazki;
-    static BazaKsiazek* instance; 
 
 public:
     BazaKsiazek();
-    int aktualizujStanDodaj(const string& tytul, const string& autor, int rok);
+    int aktualizujStanDodaj(const Ksiazka& ksiazka);
+    int aktualizujStanUsun(const Ksiazka& ksiazka);
+
     void dodajEgzemplarzDoKsiazki(int kID);
-    void aktualizujStanUsun(int kID);
     void usunEgzemplarzKsiazki(int eID);
     bool aktualizujStanPoWypozyczeniu(Egzemplarz e);
-
-    static BazaKsiazek* getInstance();
     void wyswietlListeKsiazek() const;
 };

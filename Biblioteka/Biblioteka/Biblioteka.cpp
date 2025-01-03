@@ -13,13 +13,11 @@
 using namespace std;
 
 int main() {
-
     BazaPracownikow bazaPracownikow;
-    Pracownik pracownik;  
-    string login, haslo;
+    BazaKsiazek bazaKsiazek;
+    string login, funkcja;
     int wybor;
 
-    
     system("cls"); //czyszczenie ekranu
     cout << "=====================================" << endl;
     cout << "  WITAMY W SYSTEMIE BIBLIOTECZNYM    " << endl;
@@ -31,16 +29,162 @@ int main() {
     cin >> wybor;
 
     switch (wybor) {
-        case 1:
-            bazaPracownikow.logowanie();
-            break;
-        case 2:
-            cout << "Wyjscie z programu" << endl;
-            break;
-        default:
-            cout << "Nieprawidlowa opcja. Sprobuj ponownie." << endl;
-            system("pause");
-            break;
+    case 1:
+        tie(login, funkcja) = bazaPracownikow.logowanie();
+        if (!login.empty() && !funkcja.empty()) {
+            if (funkcja == "admin") {
+                Administrator admin;
+                cout << "Witaj " << login << " (admin)" << endl;
+                do {
+                    cout << "\n--- Menu Administratora ---\n";
+                    cout << "1. Dodaj ksiazke\n";
+                    cout << "2. Usun ksiazke\n";
+                    cout << "3. Dodaj pracownika\n";
+                    cout << "4. Usun pracownika\n";
+                    cout << "5. Wyswietl ksiazki z bazy\n";
+                    cout << "6. Zamknij program\n";
+                    cout << "Wybor: ";
+                    cin >> wybor;
+
+                    switch (wybor) {
+                    case 1: {
+                        //dodaj ksiazke
+                        string tytul, autor;
+                        int rok, ID;
+                        cout << "Podaj tytul ksiazki: ";
+                        cin.ignore();
+                        getline(cin, tytul);
+                        cout << "Podaj autora ksiazki: ";
+                        getline(cin, autor);
+                        cout << "Podaj rok wydania: ";
+                        cin >> rok;
+                        cout << "Nadaj ID ksiazki: ";
+                        cin >> ID;
+                        Ksiazka nowaKsiazka(ID, tytul, autor, rok);
+                        admin.dodajKsiazke(bazaKsiazek, nowaKsiazka);
+                        break;
+                    }
+                    case 2: {
+                        //usun ksiazke
+                        int kID;
+                        cout << "Podaj ID ksiazki do usuniecia: ";
+                        cin >> kID;
+                        Ksiazka ksiazkaDoUsuniecia(kID);
+                        admin.usunKsiazke(bazaKsiazek, ksiazkaDoUsuniecia);
+                        break;
+                    }
+                    case 3: {
+                        //dodaj pracownika
+                        string imie, nazwisko, login, haslo, funkcja;
+                        float pensja;
+                        cout << "Podaj imie: ";
+                        cin >> imie;
+                        cout << "Podaj nazwisko: ";
+                        cin >> nazwisko;
+                        cout << "Podaj login: ";
+                        cin >> login;
+                        cout << "Podaj haslo: ";
+                        cin >> haslo;
+                        cout << "Podaj pensje: ";
+                        cin >> pensja;
+                        cout << "Podaj funkcje (admin/pracownik): ";
+                        cin >> funkcja;
+                        Pracownik nowyPracownik(imie, nazwisko, login, haslo, pensja, funkcja);
+                        bazaPracownikow.dodajPracownika(nowyPracownik);
+                        break;
+                    }
+                    case 4: {
+                        // Usuwanie pracownika
+                        string loginDoUsuniecia;
+                        cout << "Podaj login pracownika do usuniecia: ";
+                        cin >> loginDoUsuniecia;
+                        // Metoda usunięcia pracownika
+                        // bazaPracownikow.usunPracownika(loginDoUsuniecia);
+                        break;
+                    }
+                    case 5: {
+                        // Wyświetlanie książek
+                        admin.wyswietlListeKsiazek();
+                        break;
+                    }
+                    case 6:
+                        cout << "Zamykanie programu..." << endl;
+                        exit(0);
+                        break;
+                    default:
+                        cout << "Niepoprawny wybor!" << endl;
+                    }
+                } while (true);
+            }
+            else if (funkcja == "pracownik") {
+                // Tworzymy obiekt Pracownika
+                Pracownik pracownik;
+                cout << "Witaj " << login << " (pracownik)" << endl;
+                do {
+                    cout << "\n--- Menu Pracownika ---\n";
+                    cout << "1. Sprawdz konto czytelnika\n";
+                    cout << "2. Utworz konto czytelnika\n";
+                    cout << "3. Zwrot ksiazki\n";
+                    cout << "4. Wypozyczenie ksiazki\n";
+                    cout << "5. Przyjmij kaucje\n";
+                    cout << "6. Wyswietl ksiazki z bazy\n";
+                    cout << "7. Zamknij program\n";
+                    cout << "Wybor: ";
+                    cin >> wybor;
+
+                    switch (wybor) {
+                    case 1: {
+                        // Sprawdzenie konta czytelnika
+                        // pracownik.sprawdzenieKonta();
+                        break;
+                    }
+                    case 2: {
+                        // Utwórz konto czytelnika
+                        // pracownik.utworzKontoCzytelnika();
+                        break;
+                    }
+                    case 3: {
+                        // Zwrot książki
+                        // pracownik.zwrotKsiazki();
+                        break;
+                    }
+                    case 4: {
+                        // Wypożyczenie książki
+                        // pracownik.wypozyczKsiazke();
+                        break;
+                    }
+                    case 5: {
+                        // Przyjęcie kaucji
+                        // pracownik.przyjmijKaucje();
+                        break;
+                    }
+                    case 6: {
+                        // Wyświetlanie książek
+                        pracownik.wyswietlListeKsiazek();
+                        break;
+                    }
+                    case 7:
+                        cout << "Zamykanie programu..." << endl;
+                        exit(0);
+                        break;
+                    default:
+                        cout << "Niepoprawny wybor!" << endl;
+                    }
+                } while (true);
+            }
+        }
+        else {
+            cout << "Bledne dane logowania!" << endl;
+        }
+        break;
+    case 2:
+        cout << "Wyjscie z programu" << endl;
+        break;
+    default:
+        cout << "Nieprawidlowa opcja. Sprobuj ponownie." << endl;
+        system("pause");
+        break;
     }
+
     return 0;
 }

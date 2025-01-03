@@ -2,44 +2,103 @@
 
 using namespace std;
 
-BazaKsiazek* BazaKsiazek::instance = nullptr;
+BazaKsiazek::BazaKsiazek() {}
 
-BazaKsiazek::BazaKsiazek() {
-    
-}
+int BazaKsiazek::aktualizujStanDodaj(const Ksiazka& ksiazka) {
+    ifstream plik("baza_ksiazek.txt");
+    string linia;
 
-int BazaKsiazek::aktualizujStanDodaj(const string& tytul, const string& autor, int rok) {
-    int id = ++ID;
-    ksiazki[id] = make_shared<Ksiazka>(id, tytul, autor, rok);
-
-    ofstream plik("baza_ksiazek.txt", ios::app); 
     if (plik.is_open()) {
-        plik << id << ", " << tytul << ", " << autor << ", " << rok << endl;
+        while (getline(plik, linia)) {
+            int fileID;
+            stringstream ss(linia);
+            ss >> fileID;
+
+            if (fileID == ksiazka.getID()) {
+                cerr << "Ksiazka o ID " << ksiazka.getID() << " juz istnieje." << endl;
+                plik.close();
+                return -1; 
+            }
+        }
         plik.close();
     }
     else {
         cerr << "Nie mozna otworzyc pliku!" << endl;
+        return -1;
+    }
+    int id;
+    ksiazki[id] = make_shared<Ksiazka>(ksiazka);
+
+    ofstream outPlik("baza_ksiazek.txt", ios::app);
+    if (outPlik.is_open()) {
+        outPlik << ksiazka.getID() << ", " << ksiazka.getTytul() << ", " << ksiazka.getNazwiskoAutora() << ", " << ksiazka.getRokWydania() << endl;
+        outPlik.close();
+    }
+    else {
+        cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
+        return -1;
     }
     return id;
 }
 
+//void BazaKsiazek::dodajEgzemplarzDoKsiazki(int kID) {
+//    if (ksiazki.count(kID) > 0) {
+//        int eID = ++egzID;
+//        ksiazki.at(kID)->dodajEgzemplarz(eID);
+//    }
+//    else {
+//        cout << "Podano bledne ID ksiazki" << endl;
+//    }
+//}
 
-void BazaKsiazek::dodajEgzemplarzDoKsiazki(int kID) {
-    if (ksiazki.count(kID) > 0) {
-        int eID = ++egzID;
-        ksiazki.at(kID)->dodajEgzemplarz(eID);
+int BazaKsiazek::aktualizujStanUsun(const Ksiazka& ksiazka) {
+    int kID = ksiazka.getID();
+    ifstream input_file("baza_ksiazek.txt");
+
+    if (!input_file.is_open()) {
+        cerr << "Blad otwarcia pliku do odczytu!" << endl;
+        return -1;
     }
-    else {
-        cout << "Podano bledne ID ksiazki" << endl;
+
+    vector<string> lines;
+    string line;
+    bool found = false;
+
+    while (getline(input_file, line)) {
+        stringstream ss(line);
+        int id;
+        ss >> id;
+
+        if (id != kID) {
+            lines.push_back(line);
+        }
+        else {
+            found = true;
+        }
     }
+
+    input_file.close();
+
+    if (!found) {
+        cout << "Nie znaleziono ksiazki o ID " << kID << endl;
+        return -1;
+    }
+
+    ofstream output_file("baza_ksiazek.txt");
+    if (!output_file.is_open()) {
+        cerr << "Blad otwarcia pliku do zapisu!" << endl;
+        return -1;
+    }
+
+    for (const auto& l : lines) {
+        output_file << l << endl;
+    }
+    output_file.close();
+
+    return kID;
 }
 
-void BazaKsiazek::aktualizujStanUsun(int kID) {
-    if (ksiazki.count(kID) > 0) {
-        ksiazki.erase(kID);
-        cout << "Usunieto ksiazke" << endl;
-    }
-}
+
 
 
 void BazaKsiazek::usunEgzemplarzKsiazki(int eID) {
@@ -48,13 +107,6 @@ void BazaKsiazek::usunEgzemplarzKsiazki(int eID) {
 
 bool BazaKsiazek::aktualizujStanPoWypozyczeniu(Egzemplarz e) {
     return true;
-}
-
-BazaKsiazek* BazaKsiazek::getInstance() {
-    if (!instance) {
-        instance = new BazaKsiazek();  
-    }
-    return instance;
 }
 
 void BazaKsiazek::wyswietlListeKsiazek() const {

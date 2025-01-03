@@ -8,12 +8,17 @@ Administrator::Administrator(const string& imie, const string& nazwisko, const s
     : Pracownik(imie, nazwisko, login, haslo, pensja, funkcja) {
 }
 
-void Administrator::dodajKsiazke(BazaKsiazek& baza, const string& tytul, const string& autor, int rok) {
-    int id = baza.aktualizujStanDodaj(tytul, autor, rok);
-    cout << "Ksiazka '" << tytul << "' zostala dodana z ID: " << id << endl;
+void Administrator::dodajKsiazke(BazaKsiazek& baza, const Ksiazka& ksiazka) {
+    int id = baza.aktualizujStanDodaj(ksiazka); 
+    if (id != -1) {
+        cout << "Ksiazka '" << ksiazka.getTytul() << "' zostala dodana z ID: " << ksiazka.getID() << endl;
+    }
 }
 
-void Administrator::usunKsiazke(BazaKsiazek& baza, int kID) {
-    baza.aktualizujStanUsun(kID);
-    cout << "Ksiazka o ID " << kID << " zostala usunieta." << endl;
+void Administrator::usunKsiazke(BazaKsiazek& baza, const Ksiazka& ksiazka) {
+    int id = baza.aktualizujStanUsun(ksiazka);
+    if (id != -1) {
+        cout << "Ksiazka o ID " << ksiazka.getID() << " zostala usunieta." << endl;
+    }
+    
 }

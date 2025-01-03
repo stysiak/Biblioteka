@@ -4,19 +4,23 @@
 
 class Ksiazka {
 private:
+    int ID;
     string tytul;
     string nazwiskoAutora;
-    int iloscEgzemplarzy;
+    //int iloscEgzemplarzy;
     int rokWydania;
-    int ID;
     vector<shared_ptr<Egzemplarz>> egzemplarze;
+
 public:
+    Ksiazka();
+    Ksiazka(int ID, const string& tytul, const string& nazwiskoAutora, int rokWydania);
+    Ksiazka(int ID);
     void wypiszDane();
+    //void dodajEgzemplarz(int egzID); 
 
-    Ksiazka(int id, string t, string n, int i, int r = 2000) : ID(id), tytul(t), nazwiskoAutora(n), iloscEgzemplarzy(i), rokWydania(r) {} //?
-
-    void dodajEgzemplarz(int egzID) {
-        egzemplarze.push_back(make_shared<Egzemplarz>(egzID));
-    }
+    int getID() const;
+    string getTytul() const;
+    string getNazwiskoAutora() const;
+    int getRokWydania() const;
 };
 
