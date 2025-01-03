@@ -96,23 +96,50 @@ double BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
     return 1;  // Zwracamy sukces (1)
 }
 
-bool BazaCzytelnikow::sprawdzenieKonta(const KontoCzytelnika& czytelnik) {
+void BazaCzytelnikow::wyswietlListeCzytelnikow() const {
     ifstream plik("baza_czytelnikow.txt");
+
+    if (!plik.is_open()) {
+        cerr << "Nie mozna otworzyc pliku baza_czytelnikow.txt" << endl;
+        return;
+    }
+
     string linia;
+    cout << "\n--- Lista czytelnikow ---" << endl;
 
     while (getline(plik, linia)) {
         stringstream ss(linia);
-        string imie, nazwisko, pesel;
+        string pesel, imie, nazwisko;
 
         getline(ss, pesel, ',');
         getline(ss, imie, ',');
         getline(ss, nazwisko, ',');
 
-        if (pesel == czytelnik.getPesel()) {
-            return true;
-        }
+        cout << "Pesel: " << pesel
+            << ", Imie: " << imie
+            << ", Nazwiwsko: " << nazwisko << endl;
     }
 
-    return false;
+    plik.close();
 }
+
+//bool BazaCzytelnikow::sprawdzenieKonta(const KontoCzytelnika& czytelnik) {
+//    ifstream plik("baza_czytelnikow.txt");
+//    string linia;
+//
+//    while (getline(plik, linia)) {
+//        stringstream ss(linia);
+//        string imie, nazwisko, pesel;
+//
+//        getline(ss, pesel, ',');
+//        getline(ss, imie, ',');
+//        getline(ss, nazwisko, ',');
+//
+//        if (pesel == czytelnik.getPesel()) {
+//            return true;
+//        }
+//    }
+//
+//    return false;
+//}
 

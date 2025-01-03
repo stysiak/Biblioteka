@@ -26,5 +26,6 @@ public:
     void usunCzytelnika(BazaCzytelnikow& baza, const KontoCzytelnika& czytelnik);
     //void sprawdzenieKonta(KontoCzytelnika);
     void przyjmijKaucje(KontoCzytelnika, Egzemplarz);
-    void wyswietlListeKsiazek() const;
+    void wyswietlListeKsiazek(BazaKsiazek& baza);
+    void wyswietlListeCzytelnikow(BazaCzytelnikow& baza);
 };

@@ -43,7 +43,8 @@ int main() {
                     cout << "3. Dodaj pracownika\n";
                     cout << "4. Usun pracownika\n";
                     cout << "5. Wyswietl ksiazki z bazy\n";
-                    cout << "6. Zamknij program\n";
+                    cout << "6. Wyswietl czytelnikow z bazy\n";
+                    cout << "7. Zamknij program\n";
                     cout << "Wybor: ";
                     cin >> wybor;
 
@@ -105,13 +106,20 @@ int main() {
                     }
                     case 5: {
                         // Wyświetlanie książek
-                        admin.wyswietlListeKsiazek();
+                        admin.wyswietlListeKsiazek(bazaKsiazek);
                         break;
                     }
-                    case 6:
+                    case 6: {
+                        // Wyswietlanie czytelnikow
+                        admin.wyswietlListeCzytelnikow(bazaCzytelnikow);
+                        break;
+                    }
+
+                    case 7: {
                         cout << "Zamykanie programu..." << endl;
                         exit(0);
                         break;
+                    }
                     default:
                         cout << "Niepoprawny wybor!" << endl;
                     }
@@ -130,7 +138,8 @@ int main() {
                     cout << "5. Wypozyczenie ksiazki\n";
                     cout << "6. Przyjmij kaucje\n";
                     cout << "7. Wyswietl ksiazki z bazy\n";
-                    cout << "8. Zamknij program\n";
+                    cout << "8. Wyswietl liste czytelnikow\n";
+                    cout << "9. Zamknij program\n";
                     cout << "Wybor: ";
                     cin >> wybor;
 
@@ -182,13 +191,18 @@ int main() {
                     }
                     case 7: {
                         // Wyświetlanie książek
-                        pracownik.wyswietlListeKsiazek();
+                        pracownik.wyswietlListeKsiazek(bazaKsiazek);
                         break;
                     }
-                    case 8:
+                    case 8: {
+                        pracownik.wyswietlListeCzytelnikow(bazaCzytelnikow);
+                        break;
+                    }
+                    case 9: {
                         cout << "Zamykanie programu..." << endl;
                         exit(0);
                         break;
+                    }
                     default:
                         cout << "Niepoprawny wybor!" << endl;
                     }

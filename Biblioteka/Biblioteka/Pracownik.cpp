@@ -32,11 +32,6 @@ string Pracownik::getFunkcja() const {
     return funkcja;
 }
 
-void Pracownik::wyswietlListeKsiazek() const {
-    BazaKsiazek bazaKsiazek;
-    bazaKsiazek.wyswietlListeKsiazek();
-}
-
 void Pracownik::dodajCzytelnika(BazaCzytelnikow& baza, const KontoCzytelnika& czytelnik) {
     double id = baza.tworzenieKonta(czytelnik);
     if (id != -1) {
@@ -49,7 +44,14 @@ void Pracownik::usunCzytelnika(BazaCzytelnikow& baza, const KontoCzytelnika& czy
     if (id != -1) {
         cout << "Czytelnik o Peselu " << czytelnik.getPesel() << " zostal usuniety z bazy." << endl;
     }
+}
 
+void Pracownik::wyswietlListeKsiazek(BazaKsiazek& baza) {
+    baza.wyswietlListeKsiazek();
+}
+
+void Pracownik::wyswietlListeCzytelnikow(BazaCzytelnikow& baza) {
+    baza.wyswietlListeCzytelnikow();
 }
 
 void sprawdzenieKonta(KontoCzytelnika) {

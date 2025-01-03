@@ -10,5 +10,6 @@ public:
 
     double tworzenieKonta(const KontoCzytelnika& kontoCzytelnika);
     double usuniecieKonta(const KontoCzytelnika& kontoCzytelnika);
+    void wyswietlListeCzytelnikow() const;
     bool sprawdzenieKonta(const KontoCzytelnika& czytelnik);
 };
