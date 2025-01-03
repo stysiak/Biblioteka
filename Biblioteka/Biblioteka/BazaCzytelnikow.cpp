@@ -3,71 +3,116 @@
 
 using namespace std;
 
-void BazaCzytelnikow::tworzenieKonta(KontoCzytelnika czytelnik) {
-    if (!sprawdzenieKonta(czytelnik)) {
-        ofstream plik("BazaCzytelnikow.txt", ios::app);
-        plik << czytelnik.imie << " " << czytelnik.nazwisko << " " << czytelnik.pesel << " " << czytelnik.kaucja << " " << czytelnik.iloscKsiazek << " " << czytelnik.przekroczonoLimit << endl;
+BazaCzytelnikow::BazaCzytelnikow() {}
+
+double BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
+    string peselStr = czytelnik.getPesel();
+    if (peselStr.length() != 11) {
+        cerr << "Nieprawidlowy PESEL: " << peselStr << ". PESEL powinien miec 11 cyfr." << endl;
+        return -1;
+    }
+
+    ifstream plik("baza_czytelnikow.txt");
+    string linia;
+
+    if (plik.is_open()) {
+        while (getline(plik, linia)) {
+            string fileID;
+            stringstream ss(linia);
+            getline(ss, fileID, ',');  // Wczytaj PESEL do fileID
+
+            if (fileID == peselStr) {
+                cerr << "Czytelnik o Peselu " << peselStr << " juz istnieje." << endl;
+                plik.close();
+                return -1;
+            }
+        }
         plik.close();
-        cout << "Utworzono konto czytelnika\n";
     }
     else {
-        cout << "Konto czytelnika juz istnieje\n";
+        cerr << "Nie mozna otworzyc pliku!" << endl;
+        return -1;
     }
+
+    int id = czytelnicy.size() + 1;  // Generowanie ID na podstawie wielkoœci mapy
+    czytelnicy[id] = make_shared<KontoCzytelnika>(czytelnik);
+
+    ofstream outPlik("baza_czytelnikow.txt", ios::app);
+    if (outPlik.is_open()) {
+        outPlik << peselStr << ", " << czytelnik.getImie() << ", " << czytelnik.getNazwisko() << endl;
+        outPlik.close();
+    }
+    else {
+        cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
+        return -1;
+    }
+    return id;
 }
 
-void BazaCzytelnikow::usuniecieKonta(KontoCzytelnika czytelnik) {
-    ifstream plikIn("BazaCzytelnikow.txt");
-    ofstream plikOut("temp.txt");
-    string linia;
-    bool usunieto = false;
+double BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
+    string kID = czytelnik.getPesel();
+    ifstream input_file("baza_czytelnikow.txt");
 
-    while (getline(plikIn, linia)) {
-        stringstream ss(linia);
-        string imie, nazwisko;
-        int pesel, iloscKsiazek;
-        float kaucja;
-        bool przekroczonoLimit;
+    if (!input_file.is_open()) {
+        cerr << "Blad otwarcia pliku do odczytu!" << endl;
+        return -1;
+    }
 
-        ss >> imie >> nazwisko >> pesel >> kaucja >> iloscKsiazek >> przekroczonoLimit;
+    vector<string> lines;
+    string line;
+    bool found = false;
 
-        if (pesel != czytelnik.pesel) {
-            plikOut << linia << endl;
+    while (getline(input_file, line)) {
+        stringstream ss(line);
+        string id;
+        getline(ss, id, ',');  // Odczytaj PESEL z pliku
+
+        if (id != kID) {
+            lines.push_back(line);  // Zapisz wszystkie linie z wyj¹tkiem tej z usuwanym PESEL
         }
         else {
-            usunieto = true;
+            found = true;
         }
     }
 
-    plikIn.close();
-    plikOut.close();
-    remove("BazaCzytelnikow.txt");
-    rename("temp.txt", "BazaCzytelnikow.txt");
+    input_file.close();
 
-    if (usunieto) {
-        cout << "Usunieto konto czytelnika\n";
+    if (!found) {
+        cout << "Nie znaleziono czytelnika o Peselu " << kID << endl;
+        return -1;
     }
-    else {
-        cout << "Nie ma takiego konta\n";
+
+    ofstream output_file("baza_czytelnikow.txt");
+    if (!output_file.is_open()) {
+        cerr << "Blad otwarcia pliku do zapisu!" << endl;
+        return -1;
     }
+
+    for (const auto& l : lines) {
+        output_file << l << endl;
+    }
+    output_file.close();
+
+    return 1;  // Zwracamy sukces (1)
 }
 
-bool BazaCzytelnikow::sprawdzenieKonta(KontoCzytelnika czytelnik) {
-    ifstream plik("BazaCzytelnikow.txt");
+bool BazaCzytelnikow::sprawdzenieKonta(const KontoCzytelnika& czytelnik) {
+    ifstream plik("baza_czytelnikow.txt");
     string linia;
 
     while (getline(plik, linia)) {
         stringstream ss(linia);
-        string imie, nazwisko;
-        int pesel, iloscKsiazek;
-        float kaucja;
-        bool przekroczonoLimit;
+        string imie, nazwisko, pesel;
 
-        ss >> imie >> nazwisko >> pesel >> kaucja >> iloscKsiazek >> przekroczonoLimit;
+        getline(ss, pesel, ',');
+        getline(ss, imie, ',');
+        getline(ss, nazwisko, ',');
 
-        if (pesel == czytelnik.pesel) {
+        if (pesel == czytelnik.getPesel()) {
             return true;
         }
     }
 
     return false;
 }
+

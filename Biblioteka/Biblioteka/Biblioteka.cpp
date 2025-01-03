@@ -14,6 +14,7 @@ using namespace std;
 
 int main() {
     BazaPracownikow bazaPracownikow;
+    BazaCzytelnikow bazaCzytelnikow;
     BazaKsiazek bazaKsiazek;
     string login, funkcja;
     int wybor;
@@ -124,11 +125,12 @@ int main() {
                     cout << "\n--- Menu Pracownika ---\n";
                     cout << "1. Sprawdz konto czytelnika\n";
                     cout << "2. Utworz konto czytelnika\n";
-                    cout << "3. Zwrot ksiazki\n";
-                    cout << "4. Wypozyczenie ksiazki\n";
-                    cout << "5. Przyjmij kaucje\n";
-                    cout << "6. Wyswietl ksiazki z bazy\n";
-                    cout << "7. Zamknij program\n";
+                    cout << "3. Usun konto czytelnika\n";
+                    cout << "4. Zwrot ksiazki\n";
+                    cout << "5. Wypozyczenie ksiazki\n";
+                    cout << "6. Przyjmij kaucje\n";
+                    cout << "7. Wyswietl ksiazki z bazy\n";
+                    cout << "8. Zamknij program\n";
                     cout << "Wybor: ";
                     cin >> wybor;
 
@@ -140,30 +142,50 @@ int main() {
                     }
                     case 2: {
                         // Utwórz konto czytelnika
-                        // pracownik.utworzKontoCzytelnika();
+                        string pesel, imie, nazwisko;
+                        
+                        cout << "Podaj imie: ";
+                        cin >> imie;
+                        cout << "Podaj nazwisko: ";
+                        cin >> nazwisko;
+                        cout << "Podaj Pesel: ";
+                        cin >> pesel;
+
+                        KontoCzytelnika nowyCzytelnik(pesel, imie, nazwisko);
+                        pracownik.dodajCzytelnika(bazaCzytelnikow, nowyCzytelnik);
                         break;
                     }
                     case 3: {
+                        //usuniecie konta czytelnika
+                        string pesel;
+                        cout << "Podaj Pesel czytelnika do usuniecia: ";
+                        cin >> pesel;
+                        KontoCzytelnika czytelnikDoUsuniecia(pesel);
+                        pracownik.usunCzytelnika(bazaCzytelnikow, czytelnikDoUsuniecia);
+                        break;
+
+                    }
+                    case 4: {
                         // Zwrot książki
                         // pracownik.zwrotKsiazki();
                         break;
                     }
-                    case 4: {
+                    case 5: {
                         // Wypożyczenie książki
                         // pracownik.wypozyczKsiazke();
                         break;
                     }
-                    case 5: {
+                    case 6: {
                         // Przyjęcie kaucji
                         // pracownik.przyjmijKaucje();
                         break;
                     }
-                    case 6: {
+                    case 7: {
                         // Wyświetlanie książek
                         pracownik.wyswietlListeKsiazek();
                         break;
                     }
-                    case 7:
+                    case 8:
                         cout << "Zamykanie programu..." << endl;
                         exit(0);
                         break;

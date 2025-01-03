@@ -4,15 +4,19 @@
 
 class KontoCzytelnika {
 private:
+	string pesel;
 	string imie;
 	string nazwisko;
-	int pesel;
-	vector<Ksiazka> listaWypozyczonych;
-	float kaucja;
-	int iloscKsiazek;
-	bool przekroczonoLimit;
+	//vector<Ksiazka> listaWypozyczonych;
+	//float kaucja;
+	//int iloscKsiazek;
+	//bool przekroczonoLimit;
 public:
-	float zwrotKaucji();
-	KontoCzytelnika(string i, string n, int p): imie(i), nazwisko(n), pesel(p){}
+	KontoCzytelnika();
+	KontoCzytelnika(const string& pesel, const string& imie, const string& nazwisko);
+	KontoCzytelnika(const string& pesel);
+	string getPesel() const;
+	string getImie() const;
+	string getNazwisko() const;
 	friend class BazaCzytelnikow;
 };

@@ -4,10 +4,11 @@
 
 class BazaCzytelnikow {
 private:
-    vector<KontoCzytelnika> listaCzytelnikow;
+    unordered_map<int, shared_ptr<KontoCzytelnika>> czytelnicy;
 public:
     BazaCzytelnikow();
-    void tworzenieKonta(KontoCzytelnika czytelnik);
-    void usuniecieKonta(KontoCzytelnika czytelnik);
-    bool sprawdzenieKonta(KontoCzytelnika czytelnik);
+
+    double tworzenieKonta(const KontoCzytelnika& kontoCzytelnika);
+    double usuniecieKonta(const KontoCzytelnika& kontoCzytelnika);
+    bool sprawdzenieKonta(const KontoCzytelnika& czytelnik);
 };

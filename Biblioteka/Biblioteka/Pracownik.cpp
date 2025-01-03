@@ -1,5 +1,6 @@
 #include "Pracownik.h"
 #include "BazaKsiazek.h"
+#include "BazaCzytelnikow.h"
 
 Pracownik::Pracownik() : imie(""), nazwisko(""), login(""), haslo(""), pensja(0.0), funkcja("") {}
 
@@ -34,6 +35,21 @@ string Pracownik::getFunkcja() const {
 void Pracownik::wyswietlListeKsiazek() const {
     BazaKsiazek bazaKsiazek;
     bazaKsiazek.wyswietlListeKsiazek();
+}
+
+void Pracownik::dodajCzytelnika(BazaCzytelnikow& baza, const KontoCzytelnika& czytelnik) {
+    double id = baza.tworzenieKonta(czytelnik);
+    if (id != -1) {
+        cout << "Czytelnik o Peselu " << czytelnik.getPesel() << " zostal dodany do bazy." << endl;
+    }
+}
+
+void Pracownik::usunCzytelnika(BazaCzytelnikow& baza, const KontoCzytelnika& czytelnik) {
+    double id = baza.usuniecieKonta(czytelnik);
+    if (id != -1) {
+        cout << "Czytelnik o Peselu " << czytelnik.getPesel() << " zostal usuniety z bazy." << endl;
+    }
+
 }
 
 void sprawdzenieKonta(KontoCzytelnika) {

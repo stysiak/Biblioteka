@@ -22,6 +22,8 @@ public:
     string getNazwisko() const;
     float getPensja() const;
     string getFunkcja() const;
+    void dodajCzytelnika(BazaCzytelnikow& baza, const KontoCzytelnika& czytelnik);
+    void usunCzytelnika(BazaCzytelnikow& baza, const KontoCzytelnika& czytelnik);
     //void sprawdzenieKonta(KontoCzytelnika);
     void przyjmijKaucje(KontoCzytelnika, Egzemplarz);
     void wyswietlListeKsiazek() const;
