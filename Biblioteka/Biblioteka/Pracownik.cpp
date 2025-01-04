@@ -2,10 +2,18 @@
 #include "BazaKsiazek.h"
 #include "BazaCzytelnikow.h"
 
-Pracownik::Pracownik() : imie(""), nazwisko(""), login(""), haslo(""), pensja(0.0), funkcja("") {}
+Pracownik::Pracownik() : pesel(""), imie(""), nazwisko(""), login(""), haslo(""), pensja(0.0), funkcja("") {}
 
-Pracownik::Pracownik(const string& imie, const string& nazwisko, const string& login, const string& haslo, float pensja, const string& funkcja)
-    : imie(imie), nazwisko(nazwisko), login(login), haslo(haslo), pensja(pensja), funkcja(funkcja) {
+Pracownik::Pracownik(const string& pesel, const string& imie, const string& nazwisko, const string& login, const string& haslo, float pensja, const string& funkcja)
+    : pesel(pesel), imie(imie), nazwisko(nazwisko), login(login), haslo(haslo), pensja(pensja), funkcja(funkcja) {
+}
+
+Pracownik::Pracownik(const string& pesel)
+    : pesel(pesel) {
+}
+
+string Pracownik::getPesel() const {
+    return pesel;
 }
 
 string Pracownik::getLogin() const {

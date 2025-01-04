@@ -5,7 +5,7 @@
 
 class Pracownik {
 private:
-    //int pesel; - jako identyfikator?
+    string pesel;
     string imie;
     string nazwisko;
     string login;
@@ -15,7 +15,9 @@ private:
 
 public:
     Pracownik();
-    Pracownik(const string& imie, const string& nazwisko, const string& login, const string& haslo, float pensja, const string& funkcja);
+    Pracownik(const string& pesel, const string& imie, const string& nazwisko, const string& login, const string& haslo, float pensja, const string& funkcja);
+    Pracownik(const string& pesel);
+    string getPesel() const;
     string getLogin() const;
     string getHaslo() const;
     string getImie() const;
@@ -25,7 +27,7 @@ public:
     void dodajCzytelnika(BazaCzytelnikow& baza, const KontoCzytelnika& czytelnik);
     void usunCzytelnika(BazaCzytelnikow& baza, const KontoCzytelnika& czytelnik);
     //void sprawdzenieKonta(KontoCzytelnika);
-    void przyjmijKaucje(KontoCzytelnika, Egzemplarz);
+    //void przyjmijKaucje(KontoCzytelnika, Egzemplarz);
     void wyswietlListeKsiazek(BazaKsiazek& baza);
     void wyswietlListeCzytelnikow(BazaCzytelnikow& baza);
 };

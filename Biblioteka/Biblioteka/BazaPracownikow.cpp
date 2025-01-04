@@ -11,16 +11,24 @@ BazaPracownikow::BazaPracownikow() {
     string linia;
     while (getline(plik, linia)) {
         stringstream ss(linia);
-        string imie, nazwisko, login, haslo, funkcja;
+        string imie, nazwisko, login, haslo, funkcja, pesel;
         float pensja;
 
-        ss >> imie >> nazwisko >> login >> haslo >> pensja >> funkcja;
+        getline(ss, pesel, ',');
+        getline(ss, imie, ',');
+        getline(ss, nazwisko, ',');
+        getline(ss, login, ',');
+        getline(ss, haslo, ',');
+        ss >> pensja;
+        ss.ignore(1, ',');
+        getline(ss, funkcja, ',');
+
         if (funkcja != "admin" && funkcja != "pracownik") {
             cerr << "Niepoprawna funkcja: " << funkcja << ". Pomijanie wpisu." << endl;
             continue;
         }
 
-        Pracownik p(imie, nazwisko, login, haslo, pensja, funkcja);
+        Pracownik p(imie, nazwisko, login, haslo, pesel, pensja, funkcja);
         listaPracownikow.push_back(p);
     }
     plik.close();
@@ -36,25 +44,32 @@ pair<string, string> BazaPracownikow::logowanie() {
     ifstream plik("baza_pracownikow.txt");
     if (!plik.is_open()) {
         cerr << "Nie mozna otworzyc pliku baza_pracownikow.txt" << endl;
-        return { "", "" }; // Zwracamy pust¹ parê w przypadku b³êdu
+        return { "", "" };
     }
 
     string linia;
     while (getline(plik, linia)) {
         stringstream ss(linia);
-        string imie, nazwisko, login, haslo, funkcja;
+        string imie, nazwisko, login, haslo, funkcja, pesel;
         float pensja;
 
-        ss >> imie >> nazwisko >> login >> haslo >> pensja >> funkcja;
+        getline(ss, pesel, ',');
+        getline(ss, imie, ',');
+        getline(ss, nazwisko, ',');
+        getline(ss, login, ',');
+        getline(ss, haslo, ',');
+        ss >> pensja;
+        ss.ignore(1, ',');
+        getline(ss, funkcja, ',');
 
         if (login == wpisanyLogin && haslo == wpisaneHaslo) {
             cout << "Logowanie pomyslne. Witaj " << login << " (" << funkcja << ")!" << endl;
-            return { login, funkcja };  // Zwracamy login i funkcjê u¿ytkownika
+            return { login, funkcja };
         }
     }
 
     cout << "Blad logowania! Zle dane logowania" << endl;
-    return { "", "" }; // Zwracamy pust¹ parê w przypadku b³êdu logowania
+    return { "", "" };
 }
 
 void BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
@@ -63,14 +78,13 @@ void BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
         return;
     }
 
-    listaPracownikow.push_back(pracownik);  // Dodanie pracownika do wektora
+    listaPracownikow.push_back(pracownik);
 
-    // Zapis do pliku
-    ofstream plik("baza_pracownikow.txt", ios::app);  // Otwieranie pliku w trybie do dopisywania
+    ofstream plik("baza_pracownikow.txt", ios::app);
     if (plik.is_open()) {
-        plik << pracownik.getImie() << " " << pracownik.getNazwisko() << " "
-            << pracownik.getLogin() << " " << pracownik.getHaslo() << " "
-            << pracownik.getPensja() << " " << pracownik.getFunkcja() << "\n";  // Dodanie \n na koñcu
+        plik << pracownik.getPesel() << "," << pracownik.getImie() << "," << pracownik.getNazwisko() << ","
+            << pracownik.getLogin() << "," << pracownik.getHaslo() << ","
+            << pracownik.getPensja() << "," << pracownik.getFunkcja() << "\n";
         plik.close();
         cout << "Pracownik " << pracownik.getLogin() << " zostal dodany do bazy." << endl;
     }
@@ -78,4 +92,54 @@ void BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
         cerr << "Nie mozna otworzyc pliku do zapisu!\n";
     }
 }
+
+void BazaPracownikow::usunPracownika(const Pracownik& pracownik) {
+    string pesel = pracownik.getPesel();
+    ifstream input_file("baza_pracownikow.txt");
+
+    if (!input_file.is_open()) {
+        cerr << "Blad otwarcia pliku do odczytu!" << endl;
+        return;
+    }
+
+    vector<string> lines;
+    string line;
+    bool found = false;
+
+    // Odczytujemy plik i zapisujemy wszystkie linie oprócz tej z usuwanym PESEL
+    while (getline(input_file, line)) {
+        stringstream ss(line);
+        string id;
+        getline(ss, id, ',');  // Odczytaj PESEL z pliku
+
+        if (id != pesel) {
+            lines.push_back(line);  // Jeœli PESEL siê nie zgadza, zapisujemy liniê
+        }
+        else {
+            found = true;  // ZnaleŸliœmy pracownika do usuniêcia
+        }
+    }
+
+    input_file.close();
+
+    if (!found) {
+        cout << "Nie znaleziono pracownika o Peselu " << pesel << endl;
+        return;
+    }
+
+    // Teraz zapisujemy zaktualizowane dane do pliku, nadpisuj¹c go
+    ofstream output_file("baza_pracownikow.txt");
+    if (!output_file.is_open()) {
+        cerr << "Blad otwarcia pliku do zapisu!" << endl;
+        return;
+    }
+
+    for (const auto& l : lines) {
+        output_file << l << endl;  // Zapisujemy ka¿d¹ liniê do pliku
+    }
+
+    output_file.close();
+    cout << "Pracownik o numerze PESEL " << pesel << " zostal usuniety." << endl;
+}
+
 

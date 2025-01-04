@@ -77,8 +77,10 @@ int main() {
                     }
                     case 3: {
                         //dodaj pracownika
-                        string imie, nazwisko, login, haslo, funkcja;
+                        string pesel, imie, nazwisko, login, haslo, funkcja;
                         float pensja;
+                        cout << "Podaj pesel: ";
+                        cin >> pesel;
                         cout << "Podaj imie: ";
                         cin >> imie;
                         cout << "Podaj nazwisko: ";
@@ -91,17 +93,18 @@ int main() {
                         cin >> pensja;
                         cout << "Podaj funkcje (admin/pracownik): ";
                         cin >> funkcja;
-                        Pracownik nowyPracownik(imie, nazwisko, login, haslo, pensja, funkcja);
-                        bazaPracownikow.dodajPracownika(nowyPracownik);
+                        Pracownik nowyPracownik(pesel, imie, nazwisko, login, haslo, pensja, funkcja);
+                        admin.dodajPracownika(bazaPracownikow,nowyPracownik);
                         break;
                     }
                     case 4: {
                         // Usuwanie pracownika
-                        string loginDoUsuniecia;
-                        cout << "Podaj login pracownika do usuniecia: ";
-                        cin >> loginDoUsuniecia;
-                        // Metoda usunięcia pracownika
-                        // bazaPracownikow.usunPracownika(loginDoUsuniecia);
+                        string pesel, imie, nazwisko, login, haslo, funkcja;
+                        float pensja;
+                        cout << "Podaj pesel: ";
+                        cin >> pesel;
+                        Pracownik pracownikDoUsuniecia(pesel);
+                        admin.usunPracownika(bazaPracownikow,pracownikDoUsuniecia);
                         break;
                     }
                     case 5: {
@@ -131,12 +134,12 @@ int main() {
                 cout << "Witaj " << login << " (pracownik)" << endl;
                 do {
                     cout << "\n--- Menu Pracownika ---\n";
-                    cout << "1. Sprawdz konto czytelnika\n";
+                    cout << "//1. Sprawdz konto czytelnika\n";
                     cout << "2. Utworz konto czytelnika\n";
                     cout << "3. Usun konto czytelnika\n";
-                    cout << "4. Zwrot ksiazki\n";
-                    cout << "5. Wypozyczenie ksiazki\n";
-                    cout << "6. Przyjmij kaucje\n";
+                    cout << "//4. Zwrot ksiazki\n";
+                    cout << "//5. Wypozyczenie ksiazki\n";
+                    cout << "//6. Przyjmij kaucje\n";
                     cout << "7. Wyswietl ksiazki z bazy\n";
                     cout << "8. Wyswietl liste czytelnikow\n";
                     cout << "9. Zamknij program\n";

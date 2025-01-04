@@ -11,5 +11,6 @@ public:
     BazaPracownikow();
     pair<string, string> logowanie();
     void dodajPracownika(const Pracownik& pracownik);
+    void usunPracownika(const Pracownik& pracownik);
 
 };
