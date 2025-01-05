@@ -1,20 +1,19 @@
-11111111111, anna, nowak
-12345678910, helena, nowak
-12312312312, anna, nowak
-12121212121, anna, pierwsza
-98765432101, piotr, kowalski
-55555555555, marcin, zielinski
-67890123456, agnieszka, piotrowska
-13579246800, ewa, wiśniewska
-24681357902, adam, kowalczyk
-10293847564, karolina, lewandowska
-31415926535, tomek, mazur
-98765432100, paweł, baran
-55566677788, aneta, jasinski
-66677788899, zofia, koziol
-11122334455, wojciech, woźniak
-22334455667, krzysztof, strzyż
-33445566778, karol, nowakowski
-44556677889, magdalena, chmiel
-55667788990, zbigniew, dąbrowski
-66778899001, patryk, adamczak
+11111111111,anna,nowak
+12345678910,helena,nowak
+12312312312,anna,nowak
+12121212121,anna,pierwsza
+98765432101,piotr,kowalski
+55555555555,marcin,zielinski
+67890123456,agnieszka,piotrowska
+13579246800,ewa,wiśniewska
+24681357902,adam,kowalczyk
+10293847564,karolina,lewandowska
+31415926535,tomek,mazur
+98765432100,paweł,baran
+55566677788,aneta,jasinski
+66677788899,zofia,koziol
+11122334455,wojciech,woźniak
+22334455667,krzysztof,strzyż
+33445566778,karol,nowakowski
+44556677889,magdalena,chmiel
+55667788990,zbigniew,dąbrowski

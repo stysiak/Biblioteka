@@ -31,7 +31,7 @@ int BazaKsiazek::aktualizujStanDodaj(const Ksiazka& ksiazka) {
 
     ofstream outPlik("baza_ksiazek.txt", ios::app);
     if (outPlik.is_open()) {
-        outPlik << ksiazka.getID() << ", " << ksiazka.getTytul() << ", " << ksiazka.getNazwiskoAutora() << ", " << ksiazka.getRokWydania() << endl;
+        outPlik << ksiazka.getID() << "," << ksiazka.getTytul() << "," << ksiazka.getNazwiskoAutora() << "," << ksiazka.getRokWydania() << endl;
         outPlik.close();
     }
     else {

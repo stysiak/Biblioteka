@@ -39,7 +39,7 @@ int BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
 
     ofstream outPlik("baza_czytelnikow.txt", ios::app);
     if (outPlik.is_open()) {
-        outPlik << peselStr << ", " << czytelnik.getImie() << ", " << czytelnik.getNazwisko() << endl;
+        outPlik << peselStr << "," << czytelnik.getImie() << "," << czytelnik.getNazwisko() << endl;
         outPlik.close();
     }
     else {

@@ -67,8 +67,6 @@ pair<string, string> BazaPracownikow::logowanie() {
             return { login, funkcja };
         }
     }
-
-    cout << "Blad logowania! Zle dane logowania" << endl;
     return { "", "" };
 }
 
