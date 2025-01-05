@@ -11,4 +11,5 @@ public:
     void usunKsiazke(BazaKsiazek& baza, const Ksiazka& ksiazka);
     void dodajPracownika(BazaPracownikow& baza, const Pracownik& pracownik);
     void usunPracownika(BazaPracownikow& baza, const Pracownik& pracownik);
+    void wyswietlListePracownikow(BazaPracownikow& baza);
 };

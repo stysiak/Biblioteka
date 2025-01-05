@@ -44,7 +44,8 @@ int main() {
                     cout << "4. Usun pracownika\n";
                     cout << "5. Wyswietl ksiazki z bazy\n";
                     cout << "6. Wyswietl czytelnikow z bazy\n";
-                    cout << "7. Zamknij program\n";
+                    cout << "7. Wyswietl pracownikow z bazy\n";
+                    cout << "8. Zamknij program\n";
                     cout << "Wybor: ";
                     cin >> wybor;
 
@@ -79,8 +80,6 @@ int main() {
                         //dodaj pracownika
                         string pesel, imie, nazwisko, login, haslo, funkcja;
                         float pensja;
-                        cout << "Podaj pesel: ";
-                        cin >> pesel;
                         cout << "Podaj imie: ";
                         cin >> imie;
                         cout << "Podaj nazwisko: ";
@@ -91,6 +90,8 @@ int main() {
                         cin >> haslo;
                         cout << "Podaj pensje: ";
                         cin >> pensja;
+                        cout << "Podaj pesel: ";
+                        cin >> pesel;
                         cout << "Podaj funkcje (admin/pracownik): ";
                         cin >> funkcja;
                         Pracownik nowyPracownik(pesel, imie, nazwisko, login, haslo, pensja, funkcja);
@@ -117,8 +118,13 @@ int main() {
                         admin.wyswietlListeCzytelnikow(bazaCzytelnikow);
                         break;
                     }
-
                     case 7: {
+                        // Wywietlanie pracownikow
+                        admin.wyswietlListePracownikow(bazaPracownikow);
+                        break;
+                    }
+
+                    case 8: {
                         cout << "Zamykanie programu..." << endl;
                         exit(0);
                         break;

@@ -8,8 +8,8 @@ private:
 public:
     BazaCzytelnikow();
 
-    double tworzenieKonta(const KontoCzytelnika& kontoCzytelnika);
-    double usuniecieKonta(const KontoCzytelnika& kontoCzytelnika);
+    int tworzenieKonta(const KontoCzytelnika& kontoCzytelnika);
+    int usuniecieKonta(const KontoCzytelnika& kontoCzytelnika);
     void wyswietlListeCzytelnikow() const;
     bool sprawdzenieKonta(const KontoCzytelnika& czytelnik);
 };

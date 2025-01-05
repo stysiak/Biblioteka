@@ -1,2 +1,5 @@
 0,admin,admin,admin,admin,0,admin
 0,pracownik,pracownik,pracownik,pracownik,0,pracownik
+23232323232,anna,nowak,anna,nowak,23,pracownik
+12345678910,jan,nowak,jan,nowak,123,pracownik
+12312312345,anna,kowalska,anna,kowalska,123,pracownik

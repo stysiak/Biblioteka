@@ -10,7 +10,8 @@ private:
 public:
     BazaPracownikow();
     pair<string, string> logowanie();
-    void dodajPracownika(const Pracownik& pracownik);
-    void usunPracownika(const Pracownik& pracownik);
+    int dodajPracownika(const Pracownik& pracownik);
+    int usunPracownika(const Pracownik& pracownik);
+    void wyswietlListePracownikow() const;
 
 };

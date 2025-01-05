@@ -5,7 +5,7 @@ using namespace std;
 
 BazaCzytelnikow::BazaCzytelnikow() {}
 
-double BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
+int BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
     string peselStr = czytelnik.getPesel();
     if (peselStr.length() != 11) {
         cerr << "Nieprawidlowy PESEL: " << peselStr << ". PESEL powinien miec 11 cyfr." << endl;
@@ -46,10 +46,10 @@ double BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
         cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
         return -1;
     }
-    return id;
+    return 1;
 }
 
-double BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
+int BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
     string kID = czytelnik.getPesel();
     ifstream input_file("baza_czytelnikow.txt");
 
@@ -93,7 +93,7 @@ double BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
     }
     output_file.close();
 
-    return 1;  // Zwracamy sukces (1)
+    return 1;
 }
 
 void BazaCzytelnikow::wyswietlListeCzytelnikow() const {

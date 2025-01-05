@@ -1,4 +1,5 @@
 #include "Administrator.h"
+#include "BazaPracownikow.h"
 #include <iostream>
 using namespace std;
 
@@ -23,9 +24,19 @@ void Administrator::usunKsiazke(BazaKsiazek& baza, const Ksiazka& ksiazka) {
 }
 
 void Administrator::dodajPracownika(BazaPracownikow& baza, const Pracownik& pracownik) {
-    baza.dodajPracownika(pracownik);
+    int id = baza.dodajPracownika(pracownik);
+    if (id != -1) {
+        cout << "Pracownik o Peselu " << pracownik.getPesel() << " zostal dodany do bazy." << endl;
+    }
 }
 
 void Administrator::usunPracownika(BazaPracownikow& baza, const Pracownik& pracownik) {
-    baza.usunPracownika(pracownik);
+    int id = baza.usunPracownika(pracownik);
+    if (id != -1) {
+        cout << "Pracownik o Peselu " << pracownik.getPesel() << " zostal usuniety z bazy." << endl;
+    }
+}
+
+void Administrator::wyswietlListePracownikow(BazaPracownikow& baza) {
+    baza.wyswietlListePracownikow();
 }
