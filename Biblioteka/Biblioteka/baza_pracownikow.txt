@@ -1,5 +1,11 @@
-0,admin,admin,admin,admin,0,admin
-0,pracownik,pracownik,pracownik,pracownik,0,pracownik
-23232323232,anna,nowak,anna,nowak,23,pracownik
-12345678910,jan,nowak,jan,nowak,123,pracownik
-12312312345,anna,kowalska,anna,kowalska,123,pracownik
+0,admin,admin,admin,admin123,0,admin
+0,pracownik,pracownik,pracownik123,0,pracownik
+23232323232,anna,nowak,ann4N0w0k,Passw0rd1,2300,pracownik
+12345678910,jan,nowak,janN0w0k,1234Secure,2500,admin
+12312312345,anna,kowalska,4nnK0w0k,S3cur3a12,2600,pracownik
+98765432101,piotr,kowalski,p1otrK0w,Password123,2700,admin
+55555555555,marcin,ziemek,m4rc1nZ1em3k,Salary2023,2800,pracownik
+67890123456,agnieszka,piotrowska,4gn1szkPiotr,Agni3Pass,2900,pracownik
+13579246800,ewa,wiśniewska,eWi4Wi1neWska,EwaPass123,3000,admin
+24681357902,adam,kowalczyk,4dmK0w0l,1dmk0w123,3100,pracownik
+10293847564,karolina,lewandowska,Krol1nL3w,KrolinaPass,3200,admin

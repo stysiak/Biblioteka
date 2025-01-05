@@ -42,10 +42,12 @@ int main() {
                     cout << "2. Usun ksiazke\n";
                     cout << "3. Dodaj pracownika\n";
                     cout << "4. Usun pracownika\n";
-                    cout << "5. Wyswietl ksiazki z bazy\n";
-                    cout << "6. Wyswietl czytelnikow z bazy\n";
-                    cout << "7. Wyswietl pracownikow z bazy\n";
-                    cout << "8. Zamknij program\n";
+                    cout << "5. Dodaj czytelnika\n";
+                    cout << "6. Usun czytelnika\n";
+                    cout << "7. Wyswietl ksiazki z bazy\n";
+                    cout << "8. Wyswietl czytelnikow z bazy\n";
+                    cout << "9. Wyswietl pracownikow z bazy\n";
+                    cout << "10. Zamknij program\n";
                     cout << "Wybor: ";
                     cin >> wybor;
 
@@ -109,22 +111,46 @@ int main() {
                         break;
                     }
                     case 5: {
+                        //Dodaj czytelnika
+                        string pesel, imie, nazwisko;
+
+                        cout << "Podaj imie: ";
+                        cin >> imie;
+                        cout << "Podaj nazwisko: ";
+                        cin >> nazwisko;
+                        cout << "Podaj Pesel: ";
+                        cin >> pesel;
+
+                        KontoCzytelnika nowyCzytelnik(pesel, imie, nazwisko);
+                        admin.dodajCzytelnika(bazaCzytelnikow, nowyCzytelnik);
+                        break;
+                    }
+                    case 6: {
+                        //Usun czytelnika
+                        string pesel;
+                        cout << "Podaj Pesel czytelnika do usuniecia: ";
+                        cin >> pesel;
+                        KontoCzytelnika czytelnikDoUsuniecia(pesel);
+                        admin.usunCzytelnika(bazaCzytelnikow, czytelnikDoUsuniecia);
+                        break;
+                    }
+                    case 7: {
                         // Wyświetlanie książek
                         admin.wyswietlListeKsiazek(bazaKsiazek);
                         break;
                     }
-                    case 6: {
+                    case 8: {
                         // Wyswietlanie czytelnikow
                         admin.wyswietlListeCzytelnikow(bazaCzytelnikow);
                         break;
                     }
-                    case 7: {
+                    case 9: {
                         // Wywietlanie pracownikow
                         admin.wyswietlListePracownikow(bazaPracownikow);
                         break;
                     }
 
-                    case 8: {
+                    case 10: {
                         cout << "Zamykanie programu..." << endl;
                         exit(0);
                         break;
