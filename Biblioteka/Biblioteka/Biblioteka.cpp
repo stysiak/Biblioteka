@@ -54,8 +54,9 @@ int main() {
                     switch (wybor) {
                     case 1: {
                         //dodaj ksiazke
-                        string tytul, autor;
+                        string tytul, autor, stan;
                         int rok, ID;
+                        
                         cout << "Podaj tytul ksiazki: ";
                         cin.ignore();
                         getline(cin, tytul);
@@ -65,7 +66,7 @@ int main() {
                         cin >> rok;
                         cout << "Nadaj ID ksiazki: ";
                         cin >> ID;
-                        Ksiazka nowaKsiazka(ID, tytul, autor, rok);
+                        Ksiazka nowaKsiazka(ID, tytul, autor, rok, stan);
                         admin.dodajKsiazke(bazaKsiazek, nowaKsiazka);
                         break;
                     }
@@ -210,13 +211,21 @@ int main() {
 
                     }
                     case 4: {
-                        // Zwrot książki
-                        // pracownik.zwrotKsiazki();
+                        int egzemplarzID;
+                        cout << "Podaj ID egzemplarza do zwrotu: ";
+                        cin >> egzemplarzID;
+                        pracownik.zwrocKsiazke(bazaKsiazek, egzemplarzID);
                         break;
                     }
                     case 5: {
-                        // Wypożyczenie książki
-                        // pracownik.wypozyczKsiazke();
+                        int egzemplarzID;
+                        string pesel;
+                        cout << "Podaj ID egzemplarza: ";
+                        cin >> egzemplarzID;
+                        cout << "Podaj pesel czytelnika: ";
+                        cin >> pesel;
+                        KontoCzytelnika czytelnik(pesel);
+                        pracownik.wypozyczKsiazke(bazaKsiazek, egzemplarzID, czytelnik);
                         break;
                     }
                     case 6: {

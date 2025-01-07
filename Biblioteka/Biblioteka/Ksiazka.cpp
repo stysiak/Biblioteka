@@ -1,13 +1,13 @@
 #include "Ksiazka.h"
 
-Ksiazka::Ksiazka() : ID(0), tytul(""), nazwiskoAutora(""), rokWydania(0) {}
+Ksiazka::Ksiazka() : ID(0), tytul(""), nazwiskoAutora(""), rokWydania(0), stan("") {}
 
 Ksiazka::Ksiazka(int ID)
 	: ID(ID) {
 }
 
-Ksiazka::Ksiazka(int ID, const string& tytul, const string& nazwiskoAutora, int rokWydania) 
-	: ID(ID), tytul(tytul), nazwiskoAutora(nazwiskoAutora), rokWydania(rokWydania) {
+Ksiazka::Ksiazka(int ID, const string& tytul, const string& nazwiskoAutora, int rokWydania, string stan = "dostepna")
+	: ID(ID), tytul(tytul), nazwiskoAutora(nazwiskoAutora), rokWydania(rokWydania), stan(stan) {
 }
 
 int Ksiazka::getID() const { 
@@ -21,4 +21,16 @@ string Ksiazka::getNazwiskoAutora() const {
 }
 int Ksiazka::getRokWydania() const { 
 	return rokWydania; 
+}
+
+string Ksiazka::getStan() const {
+	return stan;
+}
+
+void Ksiazka::oznaczJakoWypozyczony() {
+	stan = "niedostepna";
+}
+
+void Ksiazka::oznaczJakoDostepny() {
+	stan = "dostepna";
 }

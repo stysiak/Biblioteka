@@ -1,5 +1,5 @@
 0,admin,admin,admin,admin123,0,admin
-0,pracownik,pracownik,pracownik123,0,pracownik
+0,pracownik,pracownik,pracownik,pracownik123,0,pracownik
 23232323232,anna,nowak,ann4N0w0k,Passw0rd1,2300,pracownik
 12345678910,jan,nowak,janN0w0k,1234Secure,2500,admin
 12312312345,anna,kowalska,4nnK0w0k,S3cur3a12,2600,pracownik

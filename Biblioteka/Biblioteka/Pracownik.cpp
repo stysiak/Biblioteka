@@ -66,6 +66,15 @@ void sprawdzenieKonta(KontoCzytelnika) {
 
 }
 
+void Pracownik::wypozyczKsiazke(BazaKsiazek& bazaKsiazek, int egzemplarzID, const KontoCzytelnika& czytelnik) {
+    bazaKsiazek.wypozyczKsiazke(egzemplarzID, czytelnik);
+}
+
+void Pracownik::zwrocKsiazke(BazaKsiazek& bazaKsiazek, int egzemplarzID) {
+    bazaKsiazek.zwrocKsiazke(egzemplarzID);
+}
+
+
 //void przyjmijKaucje(KontoCzytelnika, Egzemplarz) {
 //
 //}

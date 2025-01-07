@@ -17,7 +17,7 @@ int BazaKsiazek::aktualizujStanDodaj(const Ksiazka& ksiazka) {
             if (fileID == ksiazka.getID()) {
                 cerr << "Ksiazka o ID " << ksiazka.getID() << " juz istnieje." << endl;
                 plik.close();
-                return -1; 
+                return -1;
             }
         }
         plik.close();
@@ -26,30 +26,20 @@ int BazaKsiazek::aktualizujStanDodaj(const Ksiazka& ksiazka) {
         cerr << "Nie mozna otworzyc pliku!" << endl;
         return -1;
     }
-    int id;
-    ksiazki[id] = make_shared<Ksiazka>(ksiazka);
+
+    ksiazki[ksiazka.getID()] = make_shared<Ksiazka>(ksiazka);
 
     ofstream outPlik("baza_ksiazek.txt", ios::app);
     if (outPlik.is_open()) {
-        outPlik << ksiazka.getID() << "," << ksiazka.getTytul() << "," << ksiazka.getNazwiskoAutora() << "," << ksiazka.getRokWydania() << endl;
+        outPlik << ksiazka.getID() << "," << ksiazka.getTytul() << "," << ksiazka.getNazwiskoAutora() << "," << ksiazka.getRokWydania() << "," << ksiazka.getStan() << endl;
         outPlik.close();
     }
     else {
         cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
         return -1;
     }
-    return id;
+    return ksiazka.getID();
 }
-
-//void BazaKsiazek::dodajEgzemplarzDoKsiazki(int kID) {
-//    if (ksiazki.count(kID) > 0) {
-//        int eID = ++egzID;
-//        ksiazki.at(kID)->dodajEgzemplarz(eID);
-//    }
-//    else {
-//        cout << "Podano bledne ID ksiazki" << endl;
-//    }
-//}
 
 int BazaKsiazek::aktualizujStanUsun(const Ksiazka& ksiazka) {
     int kID = ksiazka.getID();
@@ -95,14 +85,8 @@ int BazaKsiazek::aktualizujStanUsun(const Ksiazka& ksiazka) {
     }
     output_file.close();
 
+    ksiazki.erase(kID);
     return kID;
-}
-
-
-
-
-void BazaKsiazek::usunEgzemplarzKsiazki(int eID) {
-
 }
 
 bool BazaKsiazek::aktualizujStanPoWypozyczeniu(Egzemplarz e) {
@@ -122,19 +106,96 @@ void BazaKsiazek::wyswietlListeKsiazek() const {
 
     while (getline(plik, linia)) {
         stringstream ss(linia);
-        string id, tytul, autor, rok;
+        string id, tytul, autor, rok, stan;
 
         getline(ss, id, ',');
         getline(ss, tytul, ',');
         getline(ss, autor, ',');
         getline(ss, rok, ',');
+        getline(ss, stan, ',');
 
         cout << "ID: " << id
             << ", Tytul: " << tytul
             << ", Autor: " << autor
-            << ", Rok: " << rok << endl;
+            << ", Rok: " << rok
+            << ", Stan: " << stan << endl;
     }
 
     plik.close();
 }
 
+int BazaKsiazek::wypozyczKsiazke(int egzemplarzID, const KontoCzytelnika& czytelnik) {
+    ifstream plik("baza_ksiazek.txt");
+    vector<string> lines;
+    string line;
+    bool found = false;
+
+    while (getline(plik, line)) {
+        stringstream ss(line);
+        string id, tytul, autor, rok, stan;
+        getline(ss, id, ',');
+        getline(ss, tytul, ',');
+        getline(ss, autor, ',');
+        getline(ss, rok, ',');
+        getline(ss, stan, ',');
+
+        if (stoi(id) == egzemplarzID && stan == "dostepna") {
+            line = id + "," + tytul + "," + autor + "," + rok + ",niedostepna";
+            found = true;
+        }
+        lines.push_back(line);
+    }
+    plik.close();
+
+    if (!found) {
+        cerr << "Egzemplarz jest niedostepny lub nie istnieje!" << endl;
+        return -1;
+    }
+
+    ofstream outPlik("baza_ksiazek.txt");
+    for (const auto& l : lines) {
+        outPlik << l << endl;
+    }
+    outPlik.close();
+
+    cout << "Ksiazka o ID " << egzemplarzID << " zostala wypozyczona." << endl;
+    return egzemplarzID;
+}
+
+int BazaKsiazek::zwrocKsiazke(int egzemplarzID) {
+    ifstream plik("baza_ksiazek.txt");
+    vector<string> lines;
+    string line;
+    bool found = false;
+
+    while (getline(plik, line)) {
+        stringstream ss(line);
+        string id, tytul, autor, rok, stan;
+        getline(ss, id, ',');
+        getline(ss, tytul, ',');
+        getline(ss, autor, ',');
+        getline(ss, rok, ',');
+        getline(ss, stan, ',');
+
+        if (stoi(id) == egzemplarzID && stan == "niedostepna") {
+            line = id + "," + tytul + "," + autor + "," + rok + ",dostepna";
+            found = true;
+        }
+        lines.push_back(line);
+    }
+    plik.close();
+
+    if (!found) {
+        cerr << "Blad zwrotu! Egzemplarz nie byl wypozyczony." << endl;
+        return -1;
+    }
+
+    ofstream outPlik("baza_ksiazek.txt");
+    for (const auto& l : lines) {
+        outPlik << l << endl;
+    }
+    outPlik.close();
+
+    cout << "Ksiazka o ID " << egzemplarzID << " zostala zwrocona." << endl;
+    return egzemplarzID;
+}
