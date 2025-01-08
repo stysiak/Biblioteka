@@ -35,7 +35,6 @@ int main() {
         if (!login.empty() && !funkcja.empty()) {
             if (funkcja == "admin") {
                 Administrator admin;
-                cout << "Witaj " << login << " (admin)" << endl;
                 do {
                     cout << "\n--- Menu Administratora ---\n";
                     cout << "1. Dodaj ksiazke\n";
@@ -164,14 +163,13 @@ int main() {
             else if (funkcja == "pracownik") {
                 // Tworzymy obiekt Pracownika
                 Pracownik pracownik;
-                cout << "Witaj " << login << " (pracownik)" << endl;
                 do {
                     cout << "\n--- Menu Pracownika ---\n";
                     cout << "//1. Sprawdz konto czytelnika\n";
                     cout << "2. Utworz konto czytelnika\n";
                     cout << "3. Usun konto czytelnika\n";
                     cout << "//4. Zwrot ksiazki\n";
-                    cout << "//5. Wypozyczenie ksiazki\n";
+                    cout << "5. Wypozyczenie ksiazki\n";
                     cout << "//6. Przyjmij kaucje\n";
                     cout << "7. Wyswietl ksiazki z bazy\n";
                     cout << "8. Wyswietl liste czytelnikow\n";
@@ -225,7 +223,7 @@ int main() {
                         cout << "Podaj pesel czytelnika: ";
                         cin >> pesel;
                         KontoCzytelnika czytelnik(pesel);
-                        pracownik.wypozyczKsiazke(bazaKsiazek, egzemplarzID, czytelnik);
+                        pracownik.wypozyczKsiazke(bazaKsiazek, bazaCzytelnikow, egzemplarzID, czytelnik);
                         break;
                     }
                     case 6: {
