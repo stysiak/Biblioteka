@@ -30,7 +30,7 @@ public:
     //void przyjmijKaucje(KontoCzytelnika, Egzemplarz);
     void wyswietlListeKsiazek(BazaKsiazek& baza);
     void wyswietlListeCzytelnikow(BazaCzytelnikow& baza);
-    void wypozyczKsiazke(BazaKsiazek& bazaKsiazek, int egzemplarzID, const KontoCzytelnika& czytelnik);
+    void wypozyczKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik);
     void zwrocKsiazke(BazaKsiazek& bazaKsiazek, int egzemplarzID);
 
 };

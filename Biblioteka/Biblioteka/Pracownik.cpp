@@ -66,7 +66,7 @@ void sprawdzenieKonta(KontoCzytelnika) {
 
 }
 
-void Pracownik::wypozyczKsiazke(BazaKsiazek& bazaKsiazek, int egzemplarzID, const KontoCzytelnika& czytelnik) {
+void Pracownik::wypozyczKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik) {
     bazaKsiazek.wypozyczKsiazke(egzemplarzID, czytelnik);
 }
 

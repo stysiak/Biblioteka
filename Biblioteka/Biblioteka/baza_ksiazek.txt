@@ -12,9 +12,9 @@
 12,Wielki Gatsby,F. Scott Fitzgerald,2019,dostepna
 13,W poszukiwaniu straconego czasu,Marcel Proust,2021,dostepna
 14,Duma i uprzedzenie,Jane Austen,2018,dostepna
-15,1984,George Orwell,2020,dostepna
+15,1984,George Orwell,2020,niedostepna
 16,Sto lat samotnosci,Gabriel Garcia Marquez,2021,dostepna
 17,Wichrowe wzgorza,Emily Bronte,2019,dostepna
-18,Zly,Joseph Roth,2020,dostepna
-19,Katedra Marii Panny w Paryzu,Victor Hugo,2022,dostepna
-20,O jeden most za daleko,Cornelius Ryan,2021,dostepna
+18,Zly,Joseph Roth,2020,niedostepna
+19,Katedra Marii Panny w Paryzu,Victor Hugo,2022,niedostepna
+20,O jeden most za daleko,Cornelius Ryan,2021,niedostepna

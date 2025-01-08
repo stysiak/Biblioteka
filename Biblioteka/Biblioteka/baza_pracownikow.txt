@@ -6,6 +6,6 @@
 98765432101,piotr,kowalski,p1otrK0w,Password123,2700,admin
 55555555555,marcin,ziemek,m4rc1nZ1em3k,Salary2023,2800,pracownik
 67890123456,agnieszka,piotrowska,4gn1szkPiotr,Agni3Pass,2900,pracownik
-13579246800,ewa,wiśniewska,eWi4Wi1neWska,EwaPass123,3000,admin
+13579246800,ewa,wisniewska,eWi4Wi1neWska,EwaPass123,3000,admin
 24681357902,adam,kowalczyk,4dmK0w0l,1dmk0w123,3100,pracownik
 10293847564,karolina,lewandowska,Krol1nL3w,KrolinaPass,3200,admin

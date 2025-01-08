@@ -19,7 +19,7 @@ int BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
         while (getline(plik, linia)) {
             string fileID;
             stringstream ss(linia);
-            getline(ss, fileID, ',');  // Wczytaj PESEL do fileID
+            getline(ss, fileID, ',');
 
             if (fileID == peselStr) {
                 cerr << "Czytelnik o Peselu " << peselStr << " juz istnieje." << endl;
@@ -39,7 +39,7 @@ int BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
 
     ofstream outPlik("baza_czytelnikow.txt", ios::app);
     if (outPlik.is_open()) {
-        outPlik << peselStr << "," << czytelnik.getImie() << "," << czytelnik.getNazwisko() << endl;
+        outPlik << peselStr << "," << czytelnik.getImie() << "," << czytelnik.getNazwisko() << "," << czytelnik.getKaucja() << "," << czytelnik.getIloscKsiazek() << "," << czytelnik.getPrzekroczonoLimit() << endl;
         outPlik.close();
     }
     else {
@@ -109,15 +109,24 @@ void BazaCzytelnikow::wyswietlListeCzytelnikow() const {
 
     while (getline(plik, linia)) {
         stringstream ss(linia);
-        string pesel, imie, nazwisko;
+        string pesel, imie, nazwisko, kaucja, iloscKsiazek, przekroczenieLimitu;
+
 
         getline(ss, pesel, ',');
         getline(ss, imie, ',');
         getline(ss, nazwisko, ',');
+        getline(ss, kaucja, ',');
+        getline(ss, iloscKsiazek, ',');
+        getline(ss, przekroczenieLimitu, ',');
+
 
         cout << "Pesel: " << pesel
             << ", Imie: " << imie
-            << ", Nazwiwsko: " << nazwisko << endl;
+            << ", Nazwisko: " << nazwisko
+            << ", Kaucja: " << kaucja
+            << ", Ilosc wypozyczonych ksiazek: " << iloscKsiazek
+            << ", Przekroczenie limitu: " << przekroczenieLimitu << endl;
+
     }
 
     plik.close();

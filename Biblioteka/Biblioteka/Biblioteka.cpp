@@ -225,7 +225,7 @@ int main() {
                         cout << "Podaj pesel czytelnika: ";
                         cin >> pesel;
                         KontoCzytelnika czytelnik(pesel);
-                        pracownik.wypozyczKsiazke(bazaKsiazek, egzemplarzID, czytelnik);
+                        pracownik.wypozyczKsiazke(bazaKsiazek, bazaCzytelnikow, egzemplarzID, czytelnik);
                         break;
                     }
                     case 6: {
