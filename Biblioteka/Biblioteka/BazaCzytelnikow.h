@@ -12,4 +12,5 @@ public:
     int usuniecieKonta(const KontoCzytelnika& kontoCzytelnika);
     void wyswietlListeCzytelnikow() const;
     void sprawdzenieKonta(const KontoCzytelnika& czytelnik);
+    int podepnijWypozyczenie(const KontoCzytelnika& czytelnik, int egzemplarzID);
 };

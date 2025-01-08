@@ -65,10 +65,10 @@ int BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
     while (getline(input_file, line)) {
         stringstream ss(line);
         string id;
-        getline(ss, id, ',');  // Odczytaj PESEL z pliku
+        getline(ss, id, ',');
 
         if (id != kID) {
-            lines.push_back(line);  // Zapisz wszystkie linie z wyj¹tkiem tej z usuwanym PESEL
+            lines.push_back(line);
         }
         else {
             found = true;
@@ -110,7 +110,7 @@ void BazaCzytelnikow::wyswietlListeCzytelnikow() const {
     while (getline(plik, linia)) {
         stringstream ss(linia);
         string pesel, imie, nazwisko, kaucja, iloscKsiazek, przekroczenieLimitu;
-
+        vector<string> wypozyczoneKsiazki;
 
         getline(ss, pesel, ',');
         getline(ss, imie, ',');
@@ -119,17 +119,68 @@ void BazaCzytelnikow::wyswietlListeCzytelnikow() const {
         getline(ss, iloscKsiazek, ',');
         getline(ss, przekroczenieLimitu, ',');
 
+        string ksiazkaID;
+        while (getline(ss, ksiazkaID, ',')) {
+            wypozyczoneKsiazki.push_back(ksiazkaID);
+        }
 
         cout << "Pesel: " << pesel
             << ", Imie: " << imie
             << ", Nazwisko: " << nazwisko
             << ", Kaucja: " << kaucja
             << ", Ilosc wypozyczonych ksiazek: " << iloscKsiazek
-            << ", Przekroczenie limitu: " << przekroczenieLimitu << endl;
+            << ", Przekroczenie limitu: " << przekroczenieLimitu;
 
+        if (!wypozyczoneKsiazki.empty()) {
+            cout << ", Wypozyczone ksiazki (ID): ";
+            for (const auto& id : wypozyczoneKsiazki) {
+                cout << id << ", ";
+            }
+        }
+        cout << endl;
     }
 
     plik.close();
+}
+
+
+int BazaCzytelnikow::podepnijWypozyczenie(const KontoCzytelnika& czytelnik, int egzemplarzID) {
+    ifstream plik("baza_czytelnikow.txt");
+    vector<string> lines;
+    string line;
+    bool found = false;
+
+    while (getline(plik, line)) {
+        stringstream ss(line);
+        string pesel, imie, nazwisko, kaucja, iloscKsiazek, limit;
+        getline(ss, pesel, ',');
+        getline(ss, imie, ',');
+        getline(ss, nazwisko, ',');
+        getline(ss, kaucja, ',');
+        getline(ss, iloscKsiazek, ',');
+        getline(ss, limit);
+
+        if (pesel == czytelnik.getPesel()) {
+            line += "," + to_string(egzemplarzID);
+            found = true;
+        }
+        lines.push_back(line);
+    }
+    plik.close();
+
+    if (!found) {
+        cerr << "Nie znaleziono czytelnika o PESEL " << czytelnik.getPesel() << endl;
+        return -1;
+    }
+
+    ofstream outPlik("baza_czytelnikow.txt");
+    for (const auto& l : lines) {
+        outPlik << l << endl;
+    }
+    outPlik.close();
+
+    cout << "Ksiazka o ID " << egzemplarzID << " zostala przypisana do czytelnika." << endl;
+    return egzemplarzID;
 }
 
 //bool BazaCzytelnikow::sprawdzenieKonta(const KontoCzytelnika& czytelnik) {

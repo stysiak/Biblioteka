@@ -67,7 +67,9 @@ void sprawdzenieKonta(KontoCzytelnika) {
 }
 
 void Pracownik::wypozyczKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik) {
-    bazaKsiazek.wypozyczKsiazke(egzemplarzID, czytelnik);
+    if (bazaKsiazek.wypozyczKsiazke(egzemplarzID, czytelnik) != -1) {
+        bazaCzytelnikow.podepnijWypozyczenie(czytelnik, egzemplarzID);
+    }
 }
 
 void Pracownik::zwrocKsiazke(BazaKsiazek& bazaKsiazek, int egzemplarzID) {
