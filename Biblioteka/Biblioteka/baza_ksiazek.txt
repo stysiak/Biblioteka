@@ -5,13 +5,13 @@
 5,Opowiesci z Narnii: Lew czarownica i stara szafa,C.S. Lewis,2021,niedostepna
 6,Czlowiek w poszukiwaniu sensu,Viktor E. Frankl,2020,dostepna
 7,Proces,Franz Kafka,2018,dostepna
-8,Don Kichot,Miguel de Cervantes,2017,dostepna
+8,Don Kichot,Miguel de Cervantes,2017,niedostepna
 9,Maly ksiaze,Antoine de Saint-Exupery,2022,dostepna
 10,Pani Bovary,Gustave Flaubert,2021,dostepna
 11,Anna Karenina,Lew Tolstoj,2020,dostepna
 12,Wielki Gatsby,F. Scott Fitzgerald,2019,dostepna
 13,W poszukiwaniu straconego czasu,Marcel Proust,2021,dostepna
-14,Duma i uprzedzenie,Jane Austen,2018,dostepna
+14,Duma i uprzedzenie,Jane Austen,2018,niedostepna
 15,1984,George Orwell,2020,niedostepna
 16,Sto lat samotnosci,Gabriel Garcia Marquez,2021,dostepna
 17,Wichrowe wzgorza,Emily Bronte,2019,dostepna

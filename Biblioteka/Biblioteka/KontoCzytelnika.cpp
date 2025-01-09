@@ -1,7 +1,7 @@
 #include "KontoCzytelnika.h"
 
-KontoCzytelnika::KontoCzytelnika(const string& pesel, const string& imie, const string& nazwisko, const float& kaucja, const int& iloscKsiazek = 0, const string& przekroczonoLimit = "nie")
-    : pesel(pesel), imie(imie), nazwisko(nazwisko), kaucja(kaucja), iloscKsiazek(iloscKsiazek), przekroczonoLimit(przekroczonoLimit) {
+KontoCzytelnika::KontoCzytelnika(const string& pesel, const string& imie, const string& nazwisko, const float& kaucja, const int& iloscKsiazek = 0)
+    : pesel(pesel), imie(imie), nazwisko(nazwisko), kaucja(kaucja), iloscKsiazek(iloscKsiazek) {
 }
 
 KontoCzytelnika::KontoCzytelnika(const string& pesel, const string& imie, const string& nazwisko)
@@ -32,7 +32,4 @@ int KontoCzytelnika::getIloscKsiazek() const {
     return iloscKsiazek;
 }
 
-string KontoCzytelnika::getPrzekroczonoLimit() const {
-    return przekroczonoLimit;
-}
 
