@@ -18,7 +18,7 @@ public:
     //void usunEgzemplarzKsiazki(int eID);
     bool aktualizujStanPoWypozyczeniu(Egzemplarz e);
     void wyswietlListeKsiazek() const;
-    int wypozyczKsiazke(int egzemplarzID, const KontoCzytelnika& czytelnik);
+    int wypozyczKsiazke(int egzemplarzID);
     int zwrocKsiazke(int egzemplarzID);
 
 };

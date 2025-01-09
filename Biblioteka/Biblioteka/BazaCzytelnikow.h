@@ -13,4 +13,5 @@ public:
     void wyswietlListeCzytelnikow() const;
     void sprawdzenieKonta(const KontoCzytelnika& czytelnik);
     int podepnijWypozyczenie(const KontoCzytelnika& czytelnik, int egzemplarzID);
+    int usunWypozyczenie(const KontoCzytelnika& czytelnik, int egzemplarzID);
 };

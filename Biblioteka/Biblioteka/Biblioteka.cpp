@@ -168,7 +168,7 @@ int main() {
                     cout << "//1. Sprawdz konto czytelnika\n";
                     cout << "2. Utworz konto czytelnika\n";
                     cout << "3. Usun konto czytelnika\n";
-                    cout << "//4. Zwrot ksiazki\n";
+                    cout << "4. Zwrot ksiazki\n";
                     cout << "5. Wypozyczenie ksiazki\n";
                     cout << "//6. Przyjmij kaucje\n";
                     cout << "7. Wyswietl ksiazki z bazy\n";
@@ -210,9 +210,13 @@ int main() {
                     }
                     case 4: {
                         int egzemplarzID;
-                        cout << "Podaj ID egzemplarza do zwrotu: ";
+                        string pesel;
+                        cout << "Podaj ID egzemplarza: ";
                         cin >> egzemplarzID;
-                        pracownik.zwrocKsiazke(bazaKsiazek, egzemplarzID);
+                        cout << "Podaj pesel czytelnika: ";
+                        cin >> pesel;
+                        KontoCzytelnika czytelnik(pesel);
+                        pracownik.zwrocKsiazke(bazaKsiazek, bazaCzytelnikow, egzemplarzID, czytelnik);
                         break;
                     }
                     case 5: {

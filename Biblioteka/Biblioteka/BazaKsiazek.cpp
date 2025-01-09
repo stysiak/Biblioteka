@@ -124,7 +124,7 @@ void BazaKsiazek::wyswietlListeKsiazek() const {
     plik.close();
 }
 
-int BazaKsiazek::wypozyczKsiazke(int egzemplarzID, const KontoCzytelnika& czytelnik) {
+int BazaKsiazek::wypozyczKsiazke(int egzemplarzID) {
     ifstream plik("baza_ksiazek.txt");
     vector<string> lines;
     string line;

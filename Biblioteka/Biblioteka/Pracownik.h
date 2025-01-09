@@ -31,6 +31,6 @@ public:
     void wyswietlListeKsiazek(BazaKsiazek& baza);
     void wyswietlListeCzytelnikow(BazaCzytelnikow& baza);
     void wypozyczKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik);
-    void zwrocKsiazke(BazaKsiazek& bazaKsiazek, int egzemplarzID);
+    void zwrocKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik);
 
 };

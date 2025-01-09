@@ -67,13 +67,15 @@ void sprawdzenieKonta(KontoCzytelnika) {
 }
 
 void Pracownik::wypozyczKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik) {
-    if (bazaKsiazek.wypozyczKsiazke(egzemplarzID, czytelnik) != -1) {
+    if (bazaKsiazek.wypozyczKsiazke(egzemplarzID) != -1) {
         bazaCzytelnikow.podepnijWypozyczenie(czytelnik, egzemplarzID);
     }
 }
 
-void Pracownik::zwrocKsiazke(BazaKsiazek& bazaKsiazek, int egzemplarzID) {
-    bazaKsiazek.zwrocKsiazke(egzemplarzID);
+void Pracownik::zwrocKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik) {
+    if (bazaKsiazek.zwrocKsiazke(egzemplarzID) != -1) {
+        bazaCzytelnikow.usunWypozyczenie(czytelnik, egzemplarzID);
+    }
 }
 
 
