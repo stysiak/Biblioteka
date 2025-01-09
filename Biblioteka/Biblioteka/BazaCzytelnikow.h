@@ -14,4 +14,5 @@ public:
     void sprawdzenieKonta(const KontoCzytelnika& czytelnik);
     int podepnijWypozyczenie(const KontoCzytelnika& czytelnik, int egzemplarzID);
     int usunWypozyczenie(const KontoCzytelnika& czytelnik, int egzemplarzID);
+    bool czyMoznaWypozyczyc(const KontoCzytelnika& czytelnik);
 };

@@ -67,10 +67,16 @@ void sprawdzenieKonta(KontoCzytelnika) {
 }
 
 void Pracownik::wypozyczKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik) {
+    if (!bazaCzytelnikow.czyMoznaWypozyczyc(czytelnik)) {
+        return; 
+    }
     if (bazaKsiazek.wypozyczKsiazke(egzemplarzID) != -1) {
         bazaCzytelnikow.podepnijWypozyczenie(czytelnik, egzemplarzID);
     }
 }
+
+
+
 
 void Pracownik::zwrocKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik) {
     if (bazaKsiazek.zwrocKsiazke(egzemplarzID) != -1) {

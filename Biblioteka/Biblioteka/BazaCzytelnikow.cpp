@@ -248,6 +248,39 @@ int BazaCzytelnikow::usunWypozyczenie(const KontoCzytelnika& czytelnik, int egze
     return egzemplarzID;
 }
 
+bool BazaCzytelnikow::czyMoznaWypozyczyc(const KontoCzytelnika& czytelnik) {
+    ifstream plik("baza_czytelnikow.txt");
+    string linia;
+
+    while (getline(plik, linia)) {
+        stringstream ss(linia);
+        string pesel, imie, nazwisko, kaucja, iloscKsiazek, limit;
+
+        getline(ss, pesel, ',');
+        getline(ss, imie, ',');
+        getline(ss, nazwisko, ',');
+        getline(ss, kaucja, ',');
+        getline(ss, iloscKsiazek, ',');
+        getline(ss, limit, ',');
+
+        if (pesel == czytelnik.getPesel()) {
+            int currentCount = stoi(iloscKsiazek);
+
+            if (currentCount >= 5) {
+                cerr << "Czytelnik o PESEL " << pesel << " nie moze wypozyczyc wiecej ksiazek (limit 5)." << endl;
+                return false;
+            }
+
+            return true; 
+        }
+    }
+
+    cerr << "Nie znaleziono czytelnika o PESEL " << czytelnik.getPesel() << endl;
+    return false; 
+}
+
+
+
 
 
 

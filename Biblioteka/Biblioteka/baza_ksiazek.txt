@@ -1,8 +1,8 @@
-1,Lalka,Boleslaw Prus,2020,dostepna
-2,Zbrodnia i kara,Fiodor Dostojewski,2021,dostepna
-3,Mistrz i Malgorzata,Michail Bulhakow,2019,dostepna
-4,Wojna i pokoj,Lew Tolstoj,2020,dostepna
-5,Opowiesci z Narnii: Lew czarownica i stara szafa,C.S. Lewis,2021,dostepna
+1,Lalka,Boleslaw Prus,2020,niedostepna
+2,Zbrodnia i kara,Fiodor Dostojewski,2021,niedostepna
+3,Mistrz i Malgorzata,Michail Bulhakow,2019,niedostepna
+4,Wojna i pokoj,Lew Tolstoj,2020,niedostepna
+5,Opowiesci z Narnii: Lew czarownica i stara szafa,C.S. Lewis,2021,niedostepna
 6,Czlowiek w poszukiwaniu sensu,Viktor E. Frankl,2020,dostepna
 7,Proces,Franz Kafka,2018,dostepna
 8,Don Kichot,Miguel de Cervantes,2017,dostepna
