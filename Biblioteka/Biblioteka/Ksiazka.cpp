@@ -29,11 +29,3 @@ int Ksiazka::getRokWydania() const {
 string Ksiazka::getStan() const {
 	return stan;
 }
-
-void Ksiazka::oznaczJakoWypozyczony() {
-	stan = "niedostepna";
-}
-
-void Ksiazka::oznaczJakoDostepny() {
-	stan = "dostepna";
-}

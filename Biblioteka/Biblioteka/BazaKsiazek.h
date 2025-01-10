@@ -14,6 +14,6 @@ public:
     int aktualizujStanDodaj(const Ksiazka& ksiazka);
     int aktualizujStanUsun(const Ksiazka& ksiazka);
     void wyswietlListeKsiazek() const;
-    int wypozyczKsiazke(int egzemplarzID);
-    int zwrocKsiazke(int egzemplarzID);
+    int wypozyczKsiazke(const Ksiazka& ksiazka);
+    float zwrocKsiazke(const Ksiazka& ksiazka);
 };

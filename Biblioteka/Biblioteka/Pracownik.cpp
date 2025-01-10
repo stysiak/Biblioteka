@@ -41,17 +41,12 @@ string Pracownik::getFunkcja() const {
 }
 
 void Pracownik::dodajCzytelnika(BazaCzytelnikow& baza, const KontoCzytelnika& czytelnik) {
-    double id = baza.tworzenieKonta(czytelnik);
-    if (id != -1) {
-        cout << "Czytelnik o Peselu " << czytelnik.getPesel() << " zostal dodany do bazy." << endl;
-    }
+    baza.tworzenieKonta(czytelnik);
+ 
 }
 
 void Pracownik::usunCzytelnika(BazaCzytelnikow& baza, const KontoCzytelnika& czytelnik) {
-    double id = baza.usuniecieKonta(czytelnik);
-    if (id != -1) {
-        cout << "Czytelnik o Peselu " << czytelnik.getPesel() << " zostal usuniety z bazy." << endl;
-    }
+    baza.usuniecieKonta(czytelnik);
 }
 
 void Pracownik::wyswietlListeKsiazek(BazaKsiazek& baza) {
@@ -62,7 +57,7 @@ void Pracownik::wyswietlListeCzytelnikow(BazaCzytelnikow& baza) {
     baza.wyswietlListeCzytelnikow();
 }
 
-void sprawdzenieKonta(KontoCzytelnika) {
+void sprawdzenieKonta(BazaCzytelnikow& baza, const KontoCzytelnika& czytelnik) {
 
 }
 
@@ -75,19 +70,26 @@ void Pracownik::wypozyczKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaC
     }
 }
 
-
-
-
 void Pracownik::zwrocKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik) {
-    if (bazaKsiazek.zwrocKsiazke(egzemplarzID) != -1) {
+    float kaucja = bazaKsiazek.zwrocKsiazke(egzemplarzID);
+
+    if (kaucja != -1) {
         bazaCzytelnikow.usunWypozyczenie(czytelnik, egzemplarzID);
+
+        if (kaucja > 0) {
+            bazaCzytelnikow.naliczKaucje(const_cast<KontoCzytelnika&>(czytelnik), kaucja);
+        }
+    }
+    else {
+        cout << "Blad podczas zwrotu ksi¹¿ki. Egzemplarz o ID " << egzemplarzID << " nie istnieje lub nie by³ wypozyczony." << endl;
     }
 }
 
 
-//void przyjmijKaucje(KontoCzytelnika, Egzemplarz) {
-//
-//}
+void Pracownik::przyjmijKaucje(BazaCzytelnikow& bazaCzytelnikow, KontoCzytelnika& czytelnik) {
+    bazaCzytelnikow.usunKaucje(czytelnik);
+}
+
 
 
 

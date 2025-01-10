@@ -18,13 +18,12 @@ public:
     Ksiazka();
     Ksiazka(int ID, const string& tytul, const string& nazwiskoAutora, int rokWydania, string stan);
     Ksiazka(int ID);
-    void wypiszDane(); 
+    //void wypiszDane(); 
     int getID() const;
     string getTytul() const;
     string getNazwiskoAutora() const;
     int getRokWydania() const;
     string getStan() const;
-    void oznaczJakoWypozyczony();
-    void oznaczJakoDostepny();
+  
 };
 

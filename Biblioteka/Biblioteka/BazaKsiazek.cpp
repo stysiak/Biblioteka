@@ -127,7 +127,8 @@ void BazaKsiazek::wyswietlListeKsiazek() const {
     plik.close();
 }
 
-int BazaKsiazek::wypozyczKsiazke(int egzemplarzID) {
+// Zaktualizowana funkcja wypo¿yczaj¹ca ksi¹¿kê
+int BazaKsiazek::wypozyczKsiazke(const Ksiazka& ksiazka) {
     ifstream plik("baza_ksiazek.txt");
     vector<string> lines;
     string line;
@@ -136,7 +137,7 @@ int BazaKsiazek::wypozyczKsiazke(int egzemplarzID) {
     time_t now = time(0);
     tm ltm = {};
     localtime_s(&ltm, &now);
-    ltm.tm_mday += 30;
+    ltm.tm_mday += 30;  // Dodajemy 30 dni do bie¿¹cej daty
     mktime(&ltm);
     ostringstream oss;
     oss << put_time(&ltm, "%Y-%m-%d");
@@ -152,7 +153,7 @@ int BazaKsiazek::wypozyczKsiazke(int egzemplarzID) {
         getline(ss, stan, ',');
         getline(ss, dataZwrotuFile, ',');
 
-        if (stoi(id) == egzemplarzID && stan == "dostepna") {
+        if (stoi(id) == ksiazka.getID() && stan == "dostepna") {
             line = id + "," + tytul + "," + autor + "," + rok + ",niedostepna," + dataZwrotu;
             found = true;
         }
@@ -161,7 +162,7 @@ int BazaKsiazek::wypozyczKsiazke(int egzemplarzID) {
     plik.close();
 
     if (!found) {
-        cerr << "Egzemplarz jest niedostepny lub nie istnieje!" << endl;
+        cerr << "Ksiazka o ID " << ksiazka.getID() << " jest niedostepna lub nie istnieje!" << endl;
         return -1;
     }
 
@@ -171,11 +172,19 @@ int BazaKsiazek::wypozyczKsiazke(int egzemplarzID) {
     }
     outPlik.close();
 
-    cout << "Ksiazka o ID " << egzemplarzID << " zostala wypozyczona. Data zwrotu: " << dataZwrotu << endl;
-    return egzemplarzID;
+    cout << "Ksiazka o ID " << ksiazka.getID() << " zostala wypozyczona. Data zwrotu: " << dataZwrotu << endl;
+    return ksiazka.getID();
 }
 
-int BazaKsiazek::zwrocKsiazke(int egzemplarzID) {
+// Zaktualizowana funkcja zwracaj¹ca ksi¹¿kê
+float BazaKsiazek::zwrocKsiazke(const Ksiazka& ksiazka) {
+    float kaucja = 0.0f;  // Zmienna do przechowywania kaucji
+    string dataZwrotuFile;
+    time_t now = time(0);
+    tm localTime = {};
+    localtime_s(&localTime, &now);
+    string currentDate = to_string(1900 + localTime.tm_year) + "-" + to_string(1 + localTime.tm_mon) + "-" + to_string(localTime.tm_mday);
+
     ifstream plik("baza_ksiazek.txt");
     vector<string> lines;
     string line;
@@ -191,26 +200,56 @@ int BazaKsiazek::zwrocKsiazke(int egzemplarzID) {
         getline(ss, stan, ',');
         getline(ss, dataZwrotuFile, ',');
 
-        if (stoi(id) == egzemplarzID && stan == "niedostepna") {
-            line = id + "," + tytul + "," + autor + "," + rok + ",dostepna,";
+        if (stoi(id) == ksiazka.getID() && stan == "niedostepna") {
             found = true;
+
+            // Calculate late fee if applicable
+            if (dataZwrotuFile < currentDate) {
+                tm dataZwrotu = {};
+                istringstream ss(dataZwrotuFile);
+                ss >> get_time(&dataZwrotu, "%Y-%m-%d");
+                if (ss.fail()) {
+                    cerr << "Blad konwersji daty!" << endl;
+                    return -1.0f;
+                }
+
+                time_t tDataZwrotu = mktime(&dataZwrotu);
+                double secondsLate = difftime(now, tDataZwrotu);
+                int lateDays = secondsLate / (60 * 60 * 24);
+                if (lateDays > 0) {
+                    kaucja = lateDays * 2.0f;  // Kaucja = late days * 2zl
+                }
+            }
+
+            // Update the line to set the book to "dostepna" and clear the return date
+            line = id + "," + tytul + "," + autor + "," + rok + ",dostepna,";
         }
         lines.push_back(line);
     }
     plik.close();
 
     if (!found) {
-        cerr << "Blad zwrotu! Egzemplarz nie byl wypozyczony." << endl;
-        return -1;
+        cerr << "Blad zwrotu! Egzemplarz o ID " << ksiazka.getID() << " nie byl wypozyczony." << endl;
+        return -1.0f;
     }
 
+    // Save updated lines to the file
     ofstream outPlik("baza_ksiazek.txt");
     for (const auto& l : lines) {
         outPlik << l << endl;
     }
     outPlik.close();
 
-    cout << "Ksiazka o ID " << egzemplarzID << " zostala zwrocona." << endl;
-    return egzemplarzID;
+    // Output the result of the return
+    if (kaucja > 0.0f) {
+        cout << "Ksiazka zwrocona po terminie. Naliczenie kaucji: " << kaucja << " zl." << endl;
+    }
+    else {
+        cout << "Ksiazka o ID " << ksiazka.getID() << " zostala zwrocona w terminie." << endl;
+    }
+
+    return kaucja;  // Zwracamy wartoœæ kaucji
 }
+
+
 

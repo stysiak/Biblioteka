@@ -1,11 +1,11 @@
-1,Lalka,Boleslaw Prus,2020,niedostepna
-2,Zbrodnia i kara,Fiodor Dostojewski,2021,niedostepna
-3,Mistrz i Malgorzata,Michail Bulhakow,2019,niedostepna
-4,Wojna i pokoj,Lew Tolstoj,2020,niedostepna
-5,Opowiesci z Narnii: Lew czarownica i stara szafa,C.S. Lewis,2021,niedostepna
+1,Lalka,Boleslaw Prus,2020,dostepna,
+2,Zbrodnia i kara,Fiodor Dostojewski,2021,dostepna
+3,Mistrz i Malgorzata,Michail Bulhakow,2019,dostepna
+4,Wojna i pokoj,Lew Tolstoj,2020,dostepna
+5,Opowiesci z Narnii: Lew czarownica i stara szafa,C.S. Lewis,2021,dostepna
 6,Czlowiek w poszukiwaniu sensu,Viktor E. Frankl,2020,dostepna
 7,Proces,Franz Kafka,2018,dostepna
-8,Don Kichot,Miguel de Cervantes,2017,niedostepna
+8,Don Kichot,Miguel de Cervantes,2017,dostepna
 9,Maly ksiaze,Antoine de Saint-Exupery,2022,dostepna
 10,Pani Bovary,Gustave Flaubert,2021,dostepna
 11,Anna Karenina,Lew Tolstoj,2020,dostepna
@@ -15,6 +15,6 @@
 15,1984,George Orwell,2020,niedostepna
 16,Sto lat samotnosci,Gabriel Garcia Marquez,2021,dostepna
 17,Wichrowe wzgorza,Emily Bronte,2019,dostepna
-18,Zly,Joseph Roth,2020,niedostepna
+18,Zly,Joseph Roth,2020,dostepna
 19,Katedra Marii Panny w Paryzu,Victor Hugo,2022,dostepna
-20,O jeden most za daleko,Cornelius Ryan,2021,niedostepna,2025-02-09
+20,O jeden most za daleko,Cornelius Ryan,2021,dostepna,

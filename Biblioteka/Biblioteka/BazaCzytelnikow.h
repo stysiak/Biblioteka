@@ -15,4 +15,6 @@ public:
     int podepnijWypozyczenie(const KontoCzytelnika& czytelnik, int egzemplarzID);
     int usunWypozyczenie(const KontoCzytelnika& czytelnik, int egzemplarzID);
     bool czyMoznaWypozyczyc(const KontoCzytelnika& czytelnik);
+    int naliczKaucje(KontoCzytelnika& czytelnik, float kaucja);
+    int usunKaucje(KontoCzytelnika& czytelnik);
 };
