@@ -89,10 +89,6 @@ int BazaKsiazek::aktualizujStanUsun(const Ksiazka& ksiazka) {
     return kID;
 }
 
-bool BazaKsiazek::aktualizujStanPoWypozyczeniu(Egzemplarz e) {
-    return true;
-}
-
 void BazaKsiazek::wyswietlListeKsiazek() const {
     ifstream plik("baza_ksiazek.txt");
 
@@ -106,19 +102,26 @@ void BazaKsiazek::wyswietlListeKsiazek() const {
 
     while (getline(plik, linia)) {
         stringstream ss(linia);
-        string id, tytul, autor, rok, stan;
+        string id, tytul, autor, rok, stan, dataZwrotuFile;
 
         getline(ss, id, ',');
         getline(ss, tytul, ',');
         getline(ss, autor, ',');
         getline(ss, rok, ',');
         getline(ss, stan, ',');
+        getline(ss, dataZwrotuFile, ',');
 
         cout << "ID: " << id
             << ", Tytul: " << tytul
             << ", Autor: " << autor
             << ", Rok: " << rok
-            << ", Stan: " << stan << endl;
+            << ", Stan: " << stan;
+
+        if (stan == "niedostepna") {
+            cout << ", Data zwrotu: " << dataZwrotuFile;
+        }
+
+        cout << endl;
     }
 
     plik.close();
@@ -130,17 +133,27 @@ int BazaKsiazek::wypozyczKsiazke(int egzemplarzID) {
     string line;
     bool found = false;
 
+    time_t now = time(0);
+    tm ltm = {};
+    localtime_s(&ltm, &now);
+    ltm.tm_mday += 30;
+    mktime(&ltm);
+    ostringstream oss;
+    oss << put_time(&ltm, "%Y-%m-%d");
+    string dataZwrotu = oss.str();
+
     while (getline(plik, line)) {
         stringstream ss(line);
-        string id, tytul, autor, rok, stan;
+        string id, tytul, autor, rok, stan, dataZwrotuFile;
         getline(ss, id, ',');
         getline(ss, tytul, ',');
         getline(ss, autor, ',');
         getline(ss, rok, ',');
         getline(ss, stan, ',');
+        getline(ss, dataZwrotuFile, ',');
 
         if (stoi(id) == egzemplarzID && stan == "dostepna") {
-            line = id + "," + tytul + "," + autor + "," + rok + ",niedostepna";
+            line = id + "," + tytul + "," + autor + "," + rok + ",niedostepna," + dataZwrotu;
             found = true;
         }
         lines.push_back(line);
@@ -158,7 +171,7 @@ int BazaKsiazek::wypozyczKsiazke(int egzemplarzID) {
     }
     outPlik.close();
 
-    cout << "Ksiazka o ID " << egzemplarzID << " zostala wypozyczona." << endl;
+    cout << "Ksiazka o ID " << egzemplarzID << " zostala wypozyczona. Data zwrotu: " << dataZwrotu << endl;
     return egzemplarzID;
 }
 
@@ -170,15 +183,16 @@ int BazaKsiazek::zwrocKsiazke(int egzemplarzID) {
 
     while (getline(plik, line)) {
         stringstream ss(line);
-        string id, tytul, autor, rok, stan;
+        string id, tytul, autor, rok, stan, dataZwrotuFile;
         getline(ss, id, ',');
         getline(ss, tytul, ',');
         getline(ss, autor, ',');
         getline(ss, rok, ',');
         getline(ss, stan, ',');
+        getline(ss, dataZwrotuFile, ',');
 
         if (stoi(id) == egzemplarzID && stan == "niedostepna") {
-            line = id + "," + tytul + "," + autor + "," + rok + ",dostepna";
+            line = id + "," + tytul + "," + autor + "," + rok + ",dostepna,";
             found = true;
         }
         lines.push_back(line);
@@ -199,3 +213,4 @@ int BazaKsiazek::zwrocKsiazke(int egzemplarzID) {
     cout << "Ksiazka o ID " << egzemplarzID << " zostala zwrocona." << endl;
     return egzemplarzID;
 }
+

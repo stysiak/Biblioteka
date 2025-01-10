@@ -17,4 +17,4 @@
 17,Wichrowe wzgorza,Emily Bronte,2019,dostepna
 18,Zly,Joseph Roth,2020,niedostepna
 19,Katedra Marii Panny w Paryzu,Victor Hugo,2022,dostepna
-20,O jeden most za daleko,Cornelius Ryan,2021,dostepna
+20,O jeden most za daleko,Cornelius Ryan,2021,niedostepna,2025-02-09

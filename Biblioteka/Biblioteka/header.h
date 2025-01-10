@@ -8,6 +8,8 @@
 #include <memory>
 #include <fstream>
 #include <sstream>
+#include <ctime>
+#include <iomanip>
 
 using namespace std;
 //wszystkie nazwy klas
