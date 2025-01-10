@@ -1,6 +1,7 @@
 #pragma once
 #include "header.h"
 #include "Egzemplarz.h"
+#include "Data.h"
 
 class Ksiazka {
 private:
@@ -10,21 +11,19 @@ private:
     //int iloscEgzemplarzy;
     int rokWydania;
     string stan = "dostepna";
+    string dataZwrotu;
     vector<shared_ptr<Egzemplarz>> egzemplarze;
 
 public:
     Ksiazka();
     Ksiazka(int ID, const string& tytul, const string& nazwiskoAutora, int rokWydania, string stan);
     Ksiazka(int ID);
-    void wypiszDane();
-    //void dodajEgzemplarz(int egzID); 
-
+    //void wypiszDane(); 
     int getID() const;
     string getTytul() const;
     string getNazwiskoAutora() const;
     int getRokWydania() const;
-    string getStan() const; // Metoda sprawdzaj¹ca dostêpnoœæ
-    void oznaczJakoWypozyczony(); // Zmiana stanu na wypo¿yczony
-    void oznaczJakoDostepny();   // Zmiana stanu na dostêpny
+    string getStan() const;
+  
 };
 

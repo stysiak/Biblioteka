@@ -13,24 +13,19 @@ Ksiazka::Ksiazka(int ID, const string& tytul, const string& nazwiskoAutora, int 
 int Ksiazka::getID() const { 
 	return ID; 
 }
+
 string Ksiazka::getTytul() const { 
 	return tytul; 
 }
+
 string Ksiazka::getNazwiskoAutora() const { 
 	return nazwiskoAutora; 
 }
+
 int Ksiazka::getRokWydania() const { 
 	return rokWydania; 
 }
 
 string Ksiazka::getStan() const {
 	return stan;
-}
-
-void Ksiazka::oznaczJakoWypozyczony() {
-	stan = "niedostepna";
-}
-
-void Ksiazka::oznaczJakoDostepny() {
-	stan = "dostepna";
 }

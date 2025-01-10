@@ -1,4 +1,4 @@
-11111111111,anna,nowak,0,0
+11111111111,anna,nowak,0.0,0,
 12345678910,helena,nowak,0,0
 12312312312,anna,nowak,0,0
 12121212121,anna,pierwsza,0,0

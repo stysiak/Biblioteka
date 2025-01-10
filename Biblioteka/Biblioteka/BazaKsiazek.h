@@ -13,12 +13,7 @@ public:
     BazaKsiazek();
     int aktualizujStanDodaj(const Ksiazka& ksiazka);
     int aktualizujStanUsun(const Ksiazka& ksiazka);
-
-    //void dodajEgzemplarzDoKsiazki(int kID);
-    //void usunEgzemplarzKsiazki(int eID);
-    bool aktualizujStanPoWypozyczeniu(Egzemplarz e);
     void wyswietlListeKsiazek() const;
-    int wypozyczKsiazke(int egzemplarzID);
-    int zwrocKsiazke(int egzemplarzID);
-
+    int wypozyczKsiazke(const Ksiazka& ksiazka);
+    float zwrocKsiazke(const Ksiazka& ksiazka);
 };

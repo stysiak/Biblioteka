@@ -102,8 +102,7 @@ int main() {
                     }
                     case 4: {
                         // Usuwanie pracownika
-                        string pesel, imie, nazwisko, login, haslo, funkcja;
-                        float pensja;
+                        string pesel;
                         cout << "Podaj pesel: ";
                         cin >> pesel;
                         Pracownik pracownikDoUsuniecia(pesel);
@@ -232,7 +231,11 @@ int main() {
                     }
                     case 6: {
                         // Przyjęcie kaucji
-                        // pracownik.przyjmijKaucje();
+                        string pesel;
+                        cout << "Podaj PESEL czytelnika: ";
+                        cin >> pesel;
+                        KontoCzytelnika czytelnik(pesel);
+                        pracownik.przyjmijKaucje(bazaCzytelnikow, czytelnik);
                         break;
                     }
                     case 7: {
