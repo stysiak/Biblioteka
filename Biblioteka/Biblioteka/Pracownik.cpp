@@ -57,8 +57,8 @@ void Pracownik::wyswietlListeCzytelnikow(BazaCzytelnikow& baza) {
     baza.wyswietlListeCzytelnikow();
 }
 
-void sprawdzenieKonta(BazaCzytelnikow& baza, const KontoCzytelnika& czytelnik) {
-
+void Pracownik::sprawdzenieKonta(BazaCzytelnikow& baza, const KontoCzytelnika& czytelnik) {
+    baza.sprawdzenieKonta(czytelnik);
 }
 
 void Pracownik::wypozyczKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik) {

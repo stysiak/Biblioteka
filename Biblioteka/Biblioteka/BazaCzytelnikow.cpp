@@ -333,25 +333,51 @@ bool BazaCzytelnikow::czyMoznaWypozyczyc(const KontoCzytelnika& czytelnik) {
 }
 
 
-//bool BazaCzytelnikow::sprawdzenieKonta(const KontoCzytelnika& czytelnik) {
-//    ifstream plik("baza_czytelnikow.txt");
-//    string linia;
-//
-//    while (getline(plik, linia)) {
-//        stringstream ss(linia);
-//        string imie, nazwisko, pesel;
-//
-//        getline(ss, pesel, ',');
-//        getline(ss, imie, ',');
-//        getline(ss, nazwisko, ',');
-//
-//        if (pesel == czytelnik.getPesel()) {
-//            return true;
-//        }
-//    }
-//
-//    return false;
-//}
+void BazaCzytelnikow::sprawdzenieKonta(const KontoCzytelnika& czytelnik) {
+    ifstream plik("baza_czytelnikow.txt");
+    if (!plik.is_open()) {
+        cerr << "Nie mozna otworzyc pliku baza_czytelnikow.txt" << endl;
+        return;
+    }
+
+    string linia;
+    bool found = false;
+
+    while (getline(plik, linia)) {
+        stringstream ss(linia);
+        string pesel, imie, nazwisko, kaucja, iloscKsiazek, wypozyczoneKsiazki;
+        getline(ss, pesel, ',');
+        getline(ss, imie, ',');
+        getline(ss, nazwisko, ',');
+        getline(ss, kaucja, ',');
+        getline(ss, iloscKsiazek, ',');
+
+        if (pesel == czytelnik.getPesel()) {
+            found = true;
+            cout << "\n--- Dane czytelnika ---" << endl;
+            cout << "Pesel: " << pesel << endl;
+            cout << "Imie: " << imie << endl;
+            cout << "Nazwisko: " << nazwisko << endl;
+            cout << "Kaucja: " << kaucja << " zl" << endl;
+            cout << "Liczba wypozyczonych ksiazek: " << iloscKsiazek << endl;
+
+            if (getline(ss, wypozyczoneKsiazki)) {
+                cout << "Wypozyczone ksiazki (ID): " << wypozyczoneKsiazki << endl;
+            }
+            else {
+                cout << "Brak wypozyczonych ksiazek." << endl;
+            }
+            break;
+        }
+    }
+
+    plik.close();
+
+    if (!found) {
+        cerr << "Nie znaleziono czytelnika o PESEL " << czytelnik.getPesel() << endl;
+    }
+}
+
 
 int BazaCzytelnikow::naliczKaucje(KontoCzytelnika& czytelnik, float kaucja) {
     ifstream plik("baza_czytelnikow.txt");

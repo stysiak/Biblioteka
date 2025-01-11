@@ -164,12 +164,12 @@ int main() {
                 Pracownik pracownik;
                 do {
                     cout << "\n--- Menu Pracownika ---\n";
-                    cout << "//1. Sprawdz konto czytelnika\n";
+                    cout << "1. Sprawdz konto czytelnika\n";
                     cout << "2. Utworz konto czytelnika\n";
                     cout << "3. Usun konto czytelnika\n";
                     cout << "4. Zwrot ksiazki\n";
                     cout << "5. Wypozyczenie ksiazki\n";
-                    cout << "//6. Przyjmij kaucje\n";
+                    cout << "6. Przyjmij kaucje\n";
                     cout << "7. Wyswietl ksiazki z bazy\n";
                     cout << "8. Wyswietl liste czytelnikow\n";
                     cout << "9. Zamknij program\n";
@@ -179,7 +179,11 @@ int main() {
                     switch (wybor) {
                     case 1: {
                         // Sprawdzenie konta czytelnika
-                        // pracownik.sprawdzenieKonta();
+                        string pesel;
+                        cout << "Podaj Pesel: ";
+                        cin >> pesel;
+                        KontoCzytelnika nowyCzytelnik(pesel);
+                        pracownik.sprawdzenieKonta(bazaCzytelnikow, nowyCzytelnik);
                         break;
                     }
                     case 2: {

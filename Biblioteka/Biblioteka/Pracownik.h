@@ -26,11 +26,10 @@ public:
     string getFunkcja() const;
     void dodajCzytelnika(BazaCzytelnikow& baza, const KontoCzytelnika& czytelnik);
     void usunCzytelnika(BazaCzytelnikow& baza, const KontoCzytelnika& czytelnik);
-    //void sprawdzenieKonta(KontoCzytelnika);
+    void sprawdzenieKonta(BazaCzytelnikow& baza, const KontoCzytelnika& czytelnik);
     void przyjmijKaucje(BazaCzytelnikow& bazaCzytelnikow, KontoCzytelnika& czytelnik);
     void wyswietlListeKsiazek(BazaKsiazek& baza);
     void wyswietlListeCzytelnikow(BazaCzytelnikow& baza);
     void wypozyczKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik);
     void zwrocKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik);
-
 };

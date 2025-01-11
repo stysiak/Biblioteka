@@ -11,8 +11,8 @@
 11,Anna Karenina,Lew Tolstoj,2020,dostepna
 12,Wielki Gatsby,F. Scott Fitzgerald,2019,dostepna
 13,W poszukiwaniu straconego czasu,Marcel Proust,2021,dostepna
-14,Duma i uprzedzenie,Jane Austen,2018,niedostepna
-15,1984,George Orwell,2020,niedostepna
+14,Duma i uprzedzenie,Jane Austen,2018,dostepna
+15,1984,George Orwell,2020,dostepna
 16,Sto lat samotnosci,Gabriel Garcia Marquez,2021,dostepna
 17,Wichrowe wzgorza,Emily Bronte,2019,dostepna
 18,Zly,Joseph Roth,2020,dostepna
