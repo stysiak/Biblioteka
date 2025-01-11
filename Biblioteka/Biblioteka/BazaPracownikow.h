@@ -2,6 +2,7 @@
 #include "header.h"
 #include "Pracownik.h"
 #include "Administrator.h"
+#include "BazaKsiazek.h"
 
 class BazaPracownikow {
 private:

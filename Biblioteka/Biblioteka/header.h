@@ -14,10 +14,7 @@
 using namespace std;
 //wszystkie nazwy klas
 class Data;
-class Egzemplarz;
 class Ksiazka;
-class Zwrot;
-class Wypozyczenie;
 class KontoCzytelnika;
 class Pracownik;
 class BazaCzytelnikow;

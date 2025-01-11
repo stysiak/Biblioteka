@@ -1,7 +1,4 @@
 #include "BazaCzytelnikow.h"
-#include "header.h"
-
-using namespace std;
 
 BazaCzytelnikow::BazaCzytelnikow() {}
 

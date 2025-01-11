@@ -1,7 +1,8 @@
 #pragma once
 #include "header.h"
 #include "KontoCzytelnika.h"
-#include "Egzemplarz.h"
+#include "BazaKsiazek.h"
+#include "BazaCzytelnikow.h"
 
 class Pracownik {
 private:

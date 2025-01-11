@@ -1,7 +1,4 @@
 #include "Administrator.h"
-#include "BazaPracownikow.h"
-#include <iostream>
-using namespace std;
 
 Administrator::Administrator() : Pracownik() {}
 

@@ -1,7 +1,5 @@
 #include "BazaKsiazek.h"
 
-using namespace std;
-
 BazaKsiazek::BazaKsiazek() {}
 
 int BazaKsiazek::aktualizujStanDodaj(const Ksiazka& ksiazka) {
@@ -221,7 +219,6 @@ float BazaKsiazek::zwrocKsiazke(const Ksiazka& ksiazka) {
                 }
             }
 
-            // Update the line to set the book to "dostepna" and clear the return date
             line = id + "," + tytul + "," + autor + "," + rok + ",dostepna,";
         }
         lines.push_back(line);

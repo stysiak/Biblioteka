@@ -1,6 +1,5 @@
 #pragma once
 #include "header.h"
-#include "Egzemplarz.h"
 #include "Ksiazka.h"
 
 class BazaKsiazek {

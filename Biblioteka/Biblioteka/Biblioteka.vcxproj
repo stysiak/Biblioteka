@@ -133,12 +133,9 @@
     <ClCompile Include="BazaPracownikow.cpp" />
     <ClCompile Include="Biblioteka.cpp" />
     <ClCompile Include="Data.cpp" />
-    <ClCompile Include="Egzemplarz.cpp" />
     <ClCompile Include="KontoCzytelnika.cpp" />
     <ClCompile Include="Ksiazka.cpp" />
     <ClCompile Include="Pracownik.cpp" />
-    <ClCompile Include="Wypozyczenie.cpp" />
-    <ClCompile Include="Zwrot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Administrator.h" />
@@ -146,13 +143,10 @@
     <ClInclude Include="BazaKsiazek.h" />
     <ClInclude Include="BazaPracownikow.h" />
     <ClInclude Include="Data.h" />
-    <ClInclude Include="Egzemplarz.h" />
     <ClInclude Include="header.h" />
     <ClInclude Include="KontoCzytelnika.h" />
     <ClInclude Include="Ksiazka.h" />
     <ClInclude Include="Pracownik.h" />
-    <ClInclude Include="Wypozyczenie.h" />
-    <ClInclude Include="Zwrot.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

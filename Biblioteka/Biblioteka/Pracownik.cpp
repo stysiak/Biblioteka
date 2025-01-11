@@ -1,6 +1,4 @@
 #include "Pracownik.h"
-#include "BazaKsiazek.h"
-#include "BazaCzytelnikow.h"
 
 Pracownik::Pracownik() : pesel(""), imie(""), nazwisko(""), login(""), haslo(""), pensja(0.0), funkcja("") {}
 

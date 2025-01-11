@@ -1,5 +1,4 @@
 #include "BazaPracownikow.h"
-#include "BazaKsiazek.h"
 
 BazaPracownikow::BazaPracownikow() {
     ifstream plik("baza_pracownikow.txt");
