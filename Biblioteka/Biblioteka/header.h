@@ -21,6 +21,7 @@ class BazaCzytelnikow;
 class BazaKsiazek;
 class BazaPracownikow;
 class Wypozyczene;
+class Zwrot;
 //plik header do wszystkich nag³ówków
 //jesli klasa korzysta z obiektow innych klas, to nag³ówek te klasy dodaæ do nag³ówku klasy u¿ywaj¹cej
 

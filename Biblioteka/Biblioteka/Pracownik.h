@@ -4,6 +4,7 @@
 #include "BazaKsiazek.h"
 #include "BazaCzytelnikow.h"
 #include "Wypozyczenie.h"
+#include "Zwrot.h"
 
 class Pracownik {
 private:
@@ -15,6 +16,7 @@ private:
     float pensja;
     string funkcja;
     Wypozyczenie wypozyczenie;
+    Zwrot zwrot;
 
 public:
     Pracownik();

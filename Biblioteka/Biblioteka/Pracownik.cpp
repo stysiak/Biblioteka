@@ -69,7 +69,7 @@ void Pracownik::wypozyczKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaC
 }
 
 void Pracownik::zwrocKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik) {
-    float kaucja = bazaKsiazek.zwrocKsiazke(egzemplarzID);
+    float kaucja = zwrot.zwrocKsiazke(egzemplarzID);
 
     if (kaucja != -1) {
         bazaCzytelnikow.usunWypozyczenie(czytelnik, egzemplarzID);

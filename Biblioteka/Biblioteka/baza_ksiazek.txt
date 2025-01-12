@@ -1,4 +1,4 @@
-1,Lalka,Boleslaw Prus,2020,niedostepna,2025-02-11
+1,Lalka,Boleslaw Prus,2020,dostepna,
 2,Zbrodnia i kara,Fiodor Dostojewski,2021,dostepna
 3,Mistrz i Malgorzata,Michail Bulhakow,2019,dostepna
 4,Wojna i pokoj,Lew Tolstoj,2020,dostepna
