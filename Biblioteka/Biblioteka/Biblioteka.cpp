@@ -6,6 +6,7 @@
 #include "Ksiazka.h"
 #include "Pracownik.h"
 #include "BazaPracownikow.h"
+#include "Wypozyczenie.h"
 
 using namespace std;
 

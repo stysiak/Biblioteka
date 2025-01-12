@@ -63,7 +63,7 @@ void Pracownik::wypozyczKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaC
     if (!bazaCzytelnikow.czyMoznaWypozyczyc(czytelnik)) {
         return; 
     }
-    if (bazaKsiazek.wypozyczKsiazke(egzemplarzID) != -1) {
+    if (wypozyczenie.wypozyczKsiazke(egzemplarzID) != -1) {
         bazaCzytelnikow.podepnijWypozyczenie(czytelnik, egzemplarzID);
     }
 }
