@@ -63,13 +63,13 @@ void Pracownik::wypozyczKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaC
     if (!bazaCzytelnikow.czyMoznaWypozyczyc(czytelnik)) {
         return; 
     }
-    if (bazaKsiazek.wypozyczKsiazke(egzemplarzID) != -1) {
+    if (wypozyczenie.wypozyczKsiazke(egzemplarzID) != -1) {
         bazaCzytelnikow.podepnijWypozyczenie(czytelnik, egzemplarzID);
     }
 }
 
 void Pracownik::zwrocKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik) {
-    float kaucja = bazaKsiazek.zwrocKsiazke(egzemplarzID);
+    float kaucja = zwrot.zwrocKsiazke(egzemplarzID);
 
     if (kaucja != -1) {
         bazaCzytelnikow.usunWypozyczenie(czytelnik, egzemplarzID);
