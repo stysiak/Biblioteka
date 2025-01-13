@@ -42,7 +42,7 @@ BazaPracownikow::BazaPracownikow() {
         }
 
         // Dodanie pracownika do listy
-        Pracownik p(imie, nazwisko, login, haslo, pesel, funkcja);  // Pensja ustawiona na 0.0f, bo ju¿ jej nie ma w pliku
+        Pracownik p(imie, nazwisko, login, haslo, pesel, funkcja);
         listaPracownikow.push_back(p);
     }
     plik.close();
@@ -66,7 +66,6 @@ pair<string, string> BazaPracownikow::logowanie() {
         stringstream ss(linia);
         string imie, nazwisko, login, haslo, funkcja, pesel;
 
-        // Odczytujemy dane z linii (teraz bez pensji)
         getline(ss, pesel, ',');
         getline(ss, imie, ',');
         getline(ss, nazwisko, ',');
@@ -128,11 +127,10 @@ int BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
     // Dodanie pracownika
     listaPracownikow.push_back(pracownik);
 
-    // Zapis danych do pliku bez pensji
     ofstream plikDoZapisu("baza_pracownikow.txt", ios::app);
     if (plikDoZapisu.is_open()) {
         plikDoZapisu << pracownik.getPesel() << "," << pracownik.getImie() << "," << pracownik.getNazwisko() << ","
-            << pracownik.getLogin() << "," << pracownik.getHaslo() << "," << pracownik.getFunkcja() << "\n"; // Pensji brak
+            << pracownik.getLogin() << "," << pracownik.getHaslo() << "," << pracownik.getFunkcja() << "\n";
         plikDoZapisu.close();
         return 1;
     }
@@ -222,7 +220,6 @@ void BazaPracownikow::wyswietlListePracownikow() const {
         getline(ss, haslo, ',');
         getline(ss, funkcja, ',');
 
-        // Wyœwietlamy dane pracowników bez pensji
         cout << "Pesel: " << pesel
             << ", Imie: " << imie
             << ", Nazwiwsko: " << nazwisko
