@@ -1,6 +1,6 @@
 #include "BazaPracownikow.h"
 
-//konstruktor domyœlny; wczytuje dane pracowników z pliku i inicjalizuje listê pracowników
+// Konstruktor domyœlny; wczytuje dane pracowników z pliku i inicjalizuje listê pracowników
 BazaPracownikow::BazaPracownikow() {
     ifstream plik("baza_pracownikow.txt");
     if (!plik.is_open()) {
@@ -12,28 +12,28 @@ BazaPracownikow::BazaPracownikow() {
     while (getline(plik, linia)) {
         stringstream ss(linia);
         string imie, nazwisko, login, haslo, funkcja, pesel;
-        float pensja;
 
+        // Odczytujemy dane z pliku
         getline(ss, pesel, ',');
         getline(ss, imie, ',');
         getline(ss, nazwisko, ',');
         getline(ss, login, ',');
         getline(ss, haslo, ',');
-        ss >> pensja;
-        ss.ignore(1, ',');
         getline(ss, funkcja, ',');
 
+        // Sprawdzamy funkcjê pracownika
         if (funkcja != "admin" && funkcja != "pracownik") {
             cerr << "Niepoprawna funkcja: " << funkcja << ". Pomijanie wpisu." << endl;
             continue;
         }
-        //dodanie pracownika do listy
-        Pracownik p(imie, nazwisko, login, haslo, pesel, pensja, funkcja);
+
+        // Dodanie pracownika do listy
+        Pracownik p(imie, nazwisko, login, haslo, pesel, funkcja);  // Pensja ustawiona na 0.0f, bo ju¿ jej nie ma w pliku
         listaPracownikow.push_back(p);
     }
     plik.close();
 }
-//funckja s³u¿¹ca do logowania pracownika na podstawie wpisanego loginu i has³a
+
 pair<string, string> BazaPracownikow::logowanie() {
     string wpisanyLogin, wpisaneHaslo;
     cout << "Podaj login: ";
@@ -51,57 +51,123 @@ pair<string, string> BazaPracownikow::logowanie() {
     while (getline(plik, linia)) {
         stringstream ss(linia);
         string imie, nazwisko, login, haslo, funkcja, pesel;
-        float pensja;
 
+        // Odczytujemy dane z linii (teraz bez pensji)
         getline(ss, pesel, ',');
         getline(ss, imie, ',');
         getline(ss, nazwisko, ',');
         getline(ss, login, ',');
         getline(ss, haslo, ',');
-        ss >> pensja;
-        ss.ignore(1, ',');
         getline(ss, funkcja, ',');
-        //sprawdzenie poprawnoœci loginu i has³a
+
+        // Sprawdzenie poprawnoœci loginu i has³a
         if (login == wpisanyLogin && haslo == wpisaneHaslo) {
             cout << "Logowanie pomyslne. Witaj " << login << " (" << funkcja << ")!" << endl;
             return { login, funkcja };
         }
     }
+
+    // Jeœli nie znaleziono dopasowania
     return { "", "" };
 }
 
-//funkcja dodaj¹ca nowego pracownika do bazy i zapisuj¹ca jego dane w pliku
+
+// Funkcja dodaj¹ca nowego pracownika do bazy i zapisuj¹ca jego dane w pliku
 int BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
     string peselStr = pracownik.getPesel();
+
+    // Sprawdzenie d³ugoœci PESEL
     if (peselStr.length() != 11) {
         cerr << "Nieprawidlowy PESEL: " << peselStr << ". PESEL powinien miec 11 cyfr." << endl;
         return -1;
     }
-    //sprawdzenie funkcji pracownika
+
+    // Sprawdzenie, czy PESEL zawiera wy³¹cznie cyfry
+    bool is_valid_pesel = true;
+    for (char ch : peselStr) {
+        if (!isdigit(ch)) {
+            is_valid_pesel = false;
+            break;
+        }
+    }
+    if (!is_valid_pesel) {
+        cerr << "Nieprawidlowy PESEL: " << peselStr << ". PESEL powinien zawierac tylko cyfry." << endl;
+        return -1;
+    }
+
+    // Sprawdzamy, czy pracownik o tym samym PESEL ju¿ istnieje w bazie
+    ifstream plik("baza_pracownikow.txt");
+    if (!plik.is_open()) {
+        cerr << "Nie mozna otworzyc pliku baza_pracownikow.txt" << endl;
+        return -1;
+    }
+
+    string linia;
+    while (getline(plik, linia)) {
+        stringstream ss(linia);
+        string istniej¹cyPesel;
+
+        // Odczytujemy PESEL pracownika z pliku
+        getline(ss, istniej¹cyPesel, ',');
+
+        // Sprawdzamy, czy PESEL ju¿ istnieje
+        if (istniej¹cyPesel == peselStr) {
+            cerr << "Pracownik o takim PESEL juz istnieje!" << endl;
+            plik.close();
+            return -1;
+        }
+    }
+
+    plik.close();
+
+    // Sprawdzenie funkcji pracownika
     if (pracownik.getFunkcja() != "admin" && pracownik.getFunkcja() != "pracownik") {
         cerr << "Niepoprawna funkcja: " << pracownik.getFunkcja() << ". Pracownik nie zostal dodany." << endl;
         return -1;
     }
-    //dodanie pracownika
+
+    // Dodanie pracownika
     listaPracownikow.push_back(pracownik);
 
-    ofstream plik("baza_pracownikow.txt", ios::app);
-    if (plik.is_open()) {
-        plik << pracownik.getPesel() << "," << pracownik.getImie() << "," << pracownik.getNazwisko() << ","
-            << pracownik.getLogin() << "," << pracownik.getHaslo() << ","
-            << pracownik.getPensja() << "," << pracownik.getFunkcja() << "\n";
-        plik.close();
+    // Zapis danych do pliku bez pensji
+    ofstream plikDoZapisu("baza_pracownikow.txt", ios::app);
+    if (plikDoZapisu.is_open()) {
+        plikDoZapisu << pracownik.getPesel() << "," << pracownik.getImie() << "," << pracownik.getNazwisko() << ","
+            << pracownik.getLogin() << "," << pracownik.getHaslo() << "," << pracownik.getFunkcja() << "\n"; // Pensji brak
+        plikDoZapisu.close();
         return 1;
     }
     else {
         cerr << "Nie mozna otworzyc pliku do zapisu!\n";
     }
 
+    return -1;
 }
+
 
 //funkcja usuwaj¹ca pracownika z bazy na podstawie jego numeru PESEL
 int BazaPracownikow::usunPracownika(const Pracownik& pracownik) {
     string pesel = pracownik.getPesel();
+
+    // Sprawdzenie d³ugoœci PESEL
+    if (pesel.length() != 11) {
+        cerr << "Nieprawidlowy PESEL: " << pesel << ". PESEL powinien miec 11 cyfr." << endl;
+        return -1;
+    }
+
+    // Sprawdzenie, czy PESEL zawiera wy³¹cznie cyfry
+    bool is_valid_pesel = true;
+    for (char ch : pesel) {
+        if (!isdigit(ch)) {
+            is_valid_pesel = false;
+            break;
+        }
+    }
+    if (!is_valid_pesel) {
+        cerr << "Nieprawidlowy PESEL: " << pesel << ". PESEL powinien zawierac tylko cyfry." << endl;
+        return -1;
+    }
+
     ifstream input_file("baza_pracownikow.txt");
 
     if (!input_file.is_open()) {
@@ -116,20 +182,20 @@ int BazaPracownikow::usunPracownika(const Pracownik& pracownik) {
     while (getline(input_file, line)) {
         stringstream ss(line);
         string id;
-        getline(ss, id, ',');  
+        getline(ss, id, ',');
 
         if (id != pesel) {
-            lines.push_back(line);  
+            lines.push_back(line);
         }
         else {
-            found = true;  
+            found = true;
         }
     }
 
     input_file.close();
 
     if (!found) {
-        cout << "Nie znaleziono pracownika o Peselu " << pesel << endl;
+        cout << "Nie znaleziono pracownika o PESEL " << pesel << endl;
         return -1;
     }
 
@@ -147,7 +213,8 @@ int BazaPracownikow::usunPracownika(const Pracownik& pracownik) {
 
     return 1;
 }
-//funkcja wyœwietlaj¹ca listê wszystkich pracowników w bazie
+
+// Funkcja wyœwietlaj¹ca listê wszystkich pracowników w bazie
 void BazaPracownikow::wyswietlListePracownikow() const {
     ifstream plik("baza_pracownikow.txt");
 
@@ -161,26 +228,24 @@ void BazaPracownikow::wyswietlListePracownikow() const {
 
     while (getline(plik, linia)) {
         stringstream ss(linia);
-        string pesel, imie, nazwisko, login, haslo, pensja, funkcja;
+        string pesel, imie, nazwisko, login, haslo, funkcja;
 
+        // Odczytujemy dane z pliku
         getline(ss, pesel, ',');
         getline(ss, imie, ',');
         getline(ss, nazwisko, ',');
         getline(ss, login, ',');
         getline(ss, haslo, ',');
-        getline(ss, pensja, ',');
         getline(ss, funkcja, ',');
 
+        // Wyœwietlamy dane pracowników bez pensji
         cout << "Pesel: " << pesel
             << ", Imie: " << imie
             << ", Nazwiwsko: " << nazwisko
             << ", Login: " << login
             << ", Haslo: " << haslo
-            << ", Pensja: " << pensja
             << ", Funkcja: " << funkcja << endl;
     }
 
     plik.close();
 }
-
-

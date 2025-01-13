@@ -10,6 +10,7 @@
 #include <sstream>
 #include <ctime>
 #include <iomanip>
+#include <algorithm>
 
 using namespace std;
 //wszystkie nazwy klas
