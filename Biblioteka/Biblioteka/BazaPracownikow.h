@@ -11,8 +11,8 @@ private:
 public:
     BazaPracownikow();
     pair<string, string> logowanie();
+    bool walidujPesel(const string& pesel);
     int dodajPracownika(const Pracownik& pracownik);
     int usunPracownika(const Pracownik& pracownik);
     void wyswietlListePracownikow() const;
-
 };

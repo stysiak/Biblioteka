@@ -1,5 +1,19 @@
 #include "BazaPracownikow.h"
 
+bool BazaPracownikow::walidujPesel(const string& pesel) {
+    if (pesel.length() != 11) {
+        cerr << "Nieprawidlowy PESEL: " << pesel << ". PESEL powinien miec 11 cyfr." << endl;
+        return false;
+    }
+
+    if (!std::all_of(pesel.begin(), pesel.end(), ::isdigit)) {
+        cerr << "PESEL musi zawierac tylko cyfry!" << endl;
+        return false;
+    }
+
+    return true;
+}
+
 // Konstruktor domyœlny; wczytuje dane pracowników z pliku i inicjalizuje listê pracowników
 BazaPracownikow::BazaPracownikow() {
     ifstream plik("baza_pracownikow.txt");
@@ -76,22 +90,7 @@ pair<string, string> BazaPracownikow::logowanie() {
 int BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
     string peselStr = pracownik.getPesel();
 
-    // Sprawdzenie d³ugoœci PESEL
-    if (peselStr.length() != 11) {
-        cerr << "Nieprawidlowy PESEL: " << peselStr << ". PESEL powinien miec 11 cyfr." << endl;
-        return -1;
-    }
-
-    // Sprawdzenie, czy PESEL zawiera wy³¹cznie cyfry
-    bool is_valid_pesel = true;
-    for (char ch : peselStr) {
-        if (!isdigit(ch)) {
-            is_valid_pesel = false;
-            break;
-        }
-    }
-    if (!is_valid_pesel) {
-        cerr << "Nieprawidlowy PESEL: " << peselStr << ". PESEL powinien zawierac tylko cyfry." << endl;
+    if (!walidujPesel(peselStr)) {
         return -1;
     }
 
@@ -149,22 +148,7 @@ int BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
 int BazaPracownikow::usunPracownika(const Pracownik& pracownik) {
     string pesel = pracownik.getPesel();
 
-    // Sprawdzenie d³ugoœci PESEL
-    if (pesel.length() != 11) {
-        cerr << "Nieprawidlowy PESEL: " << pesel << ". PESEL powinien miec 11 cyfr." << endl;
-        return -1;
-    }
-
-    // Sprawdzenie, czy PESEL zawiera wy³¹cznie cyfry
-    bool is_valid_pesel = true;
-    for (char ch : pesel) {
-        if (!isdigit(ch)) {
-            is_valid_pesel = false;
-            break;
-        }
-    }
-    if (!is_valid_pesel) {
-        cerr << "Nieprawidlowy PESEL: " << pesel << ". PESEL powinien zawierac tylko cyfry." << endl;
+    if (!walidujPesel(pesel)) {
         return -1;
     }
 

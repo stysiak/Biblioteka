@@ -18,4 +18,3 @@
 44556677889,magdalena,chmiel,0,0
 55667788990,zbigniew,dabrowski,0,0
 67676767676,ewa,kowalska,0,0
-12334567898,er,er,0,0

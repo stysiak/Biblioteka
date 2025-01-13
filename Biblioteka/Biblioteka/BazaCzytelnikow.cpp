@@ -2,23 +2,28 @@
 
 BazaCzytelnikow::BazaCzytelnikow() {}
 
+bool BazaCzytelnikow::walidujPesel(const string& pesel) {
+    if (pesel.length() != 11) {
+        cerr << "Nieprawidlowy PESEL: " << pesel << ". PESEL powinien miec 11 cyfr." << endl;
+        return false;
+    }
+
+    if (!std::all_of(pesel.begin(), pesel.end(), ::isdigit)) {
+        cerr << "PESEL musi zawierac tylko cyfry!" << endl;
+        return false;
+    }
+
+    return true;
+}
+
 //funkcja tworzy nowe konto czytelnika i zapisuje je w pliku
 int BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
     string peselStr = czytelnik.getPesel();
 
-    // Sprawdzanie d³ugoœci PESEL
-    if (peselStr.length() != 11) {
-        cerr << "Nieprawidlowy PESEL: " << peselStr << ". PESEL powinien miec 11 cyfr." << endl;
+    if (!walidujPesel(peselStr)) {
         return -1;
     }
 
-    // Sprawdzanie, czy PESEL sk³ada siê tylko z cyfr
-    for (char c : peselStr) {
-        if (!isdigit(c)) {
-            cerr << "PESEL musi zawierac tylko cyfry!" << endl;
-            return -1;
-        }
-    }
 
     // Sprawdzanie, czy PESEL ju¿ istnieje w bazie
     ifstream plik("baza_czytelnikow.txt");
@@ -52,7 +57,7 @@ int BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
     if (outPlik.is_open()) {
         outPlik << peselStr << "," << czytelnik.getImie() << "," << czytelnik.getNazwisko() << "," << czytelnik.getKaucja() << "," << czytelnik.getIloscKsiazek() << endl;
         outPlik.close();
-        cout << "Konto czytelnika o Peselu " << peselStr << " zostalo pomyœlnie utworzone." << endl;
+        cout << "Konto czytelnika o Peselu " << peselStr << " zostalo pomyslnie utworzone." << endl;
     }
     else {
         cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
@@ -63,13 +68,12 @@ int BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
 }
 
 int BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
-    string kID = czytelnik.getPesel();
+    string peselStr = czytelnik.getPesel();
 
-    // Sprawdzamy, czy PESEL zawiera tylko cyfry
-    if (kID.length() != 11 || !std::all_of(kID.begin(), kID.end(), ::isdigit)) {
-        cerr << "Blad: PESEL musi zawierac tylko cyfry i miec 11 znakow." << endl;
+    if (!walidujPesel(peselStr)) {
         return -1;
     }
+
 
     ifstream input_file("baza_czytelnikow.txt");
 
@@ -88,7 +92,7 @@ int BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
         string id;
         getline(ss, id, ',');
 
-        if (id != kID) {
+        if (id != peselStr) {
             lines.push_back(line); //dodanie linijki do wektora, jeœli nie dotyczy usuwanego czytelnika
         }
         else {
@@ -99,7 +103,7 @@ int BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
     input_file.close();
 
     if (!found) {
-        cout << "Nie znaleziono czytelnika o Peselu " << kID << endl;
+        cout << "Nie znaleziono czytelnika o Peselu " << peselStr << endl;
         return -1;
     }
 
@@ -114,7 +118,7 @@ int BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
     }
     output_file.close();
 
-    cout << "Konto czytelnika o Peselu " << kID << " zostalo pomyslnie usuniete." << endl;
+    cout << "Konto czytelnika o Peselu " << peselStr << " zostalo pomyslnie usuniete." << endl;
     return 1;
 }
 
@@ -187,6 +191,7 @@ int BazaCzytelnikow::podepnijWypozyczenie(const KontoCzytelnika& czytelnik, int 
         getline(ss, egzemplarze);
 
         if (pesel == czytelnik.getPesel()) {
+            
             int currentCount;
             try {
                 currentCount = stoi(iloscKsiazek);
@@ -258,6 +263,7 @@ int BazaCzytelnikow::usunWypozyczenie(const KontoCzytelnika& czytelnik, int egze
         getline(ss, egzemplarze); 
 
         if (pesel == czytelnik.getPesel()) {
+            
             int currentCount;
             try {
                 currentCount = stoi(iloscKsiazek); //konwersja string na int
@@ -336,7 +342,9 @@ bool BazaCzytelnikow::czyMoznaWypozyczyc(const KontoCzytelnika& czytelnik) {
         getline(ss, kaucja, ',');
         getline(ss, iloscKsiazek, ',');
 
+
         if (pesel == czytelnik.getPesel()) {
+            
             int currentCount = stoi(iloscKsiazek);
 
             if (currentCount >= 5) { //sprawdzenie limitu wypo¿yczeñ
@@ -373,6 +381,7 @@ void BazaCzytelnikow::sprawdzenieKonta(const KontoCzytelnika& czytelnik) {
         getline(ss, iloscKsiazek, ',');
 
         if (pesel == czytelnik.getPesel()) {
+            
             found = true;
             cout << "\n--- Dane czytelnika ---" << endl;
             cout << "Pesel: " << pesel << endl;
@@ -420,7 +429,9 @@ int BazaCzytelnikow::naliczKaucje(KontoCzytelnika& czytelnik, float kaucja) {
         getline(ss, iloscKsiazek, ',');
         getline(ss, egzemplarze);
 
+        
         if (pesel == czytelnik.getPesel()) {
+
             kaucjaStr = to_string(kaucja);
 
             line = pesel + "," + imie + "," + nazwisko + "," + kaucjaStr + "," + iloscKsiazek + "," + egzemplarze;
