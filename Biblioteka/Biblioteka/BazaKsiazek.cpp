@@ -2,6 +2,7 @@
 
 BazaKsiazek::BazaKsiazek() {}
 
+//funkcja dodaj¹ca now¹ ksi¹¿kê do bazy, sprawdzaj¹c czy ksi¹¿ka o danym ID ju¿ istnieje
 int BazaKsiazek::aktualizujStanDodaj(const Ksiazka& ksiazka) {
     ifstream plik("baza_ksiazek.txt");
     string linia;
@@ -12,7 +13,7 @@ int BazaKsiazek::aktualizujStanDodaj(const Ksiazka& ksiazka) {
             stringstream ss(linia);
             ss >> fileID;
 
-            if (fileID == ksiazka.getID()) {
+            if (fileID == ksiazka.getID()) { //porównanie ID
                 cerr << "Ksiazka o ID " << ksiazka.getID() << " juz istnieje." << endl;
                 plik.close();
                 return -1;
@@ -25,6 +26,7 @@ int BazaKsiazek::aktualizujStanDodaj(const Ksiazka& ksiazka) {
         return -1;
     }
 
+    //dodanie ksi¹¿ki do mapy
     ksiazki[ksiazka.getID()] = make_shared<Ksiazka>(ksiazka);
 
     ofstream outPlik("baza_ksiazek.txt", ios::app);
@@ -39,6 +41,7 @@ int BazaKsiazek::aktualizujStanDodaj(const Ksiazka& ksiazka) {
     return ksiazka.getID();
 }
 
+//funkcja usuwaj¹ca ksi¹¿kê z bazy na podstawie ID
 int BazaKsiazek::aktualizujStanUsun(const Ksiazka& ksiazka) {
     int kID = ksiazka.getID();
     ifstream input_file("baza_ksiazek.txt");
@@ -58,7 +61,7 @@ int BazaKsiazek::aktualizujStanUsun(const Ksiazka& ksiazka) {
         ss >> id;
 
         if (id != kID) {
-            lines.push_back(line);
+            lines.push_back(line); //dodanie wiersza do wektora, jeœli nie dotyczy usuwanej ksi¹¿ki
         }
         else {
             found = true;
@@ -83,10 +86,11 @@ int BazaKsiazek::aktualizujStanUsun(const Ksiazka& ksiazka) {
     }
     output_file.close();
 
-    ksiazki.erase(kID);
+    ksiazki.erase(kID); //usuniêcie ksi¹¿ki z mapy
     return kID;
 }
 
+//funkcja wyœwietlaj¹ca listê wszystkich ksi¹¿ek w bazie
 void BazaKsiazek::wyswietlListeKsiazek() const {
     ifstream plik("baza_ksiazek.txt");
 

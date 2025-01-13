@@ -4,7 +4,7 @@
 float Zwrot::zwrocKsiazke(const Ksiazka& ksiazka) {
     float kaucja = 0.0f;  // Zmienna do przechowywania kaucji
     string dataZwrotuFile;
-    time_t now = time(0);
+    time_t now = time(0); //pobranie aktualnej daty
     tm localTime = {};
     localtime_s(&localTime, &now);
     string currentDate = to_string(1900 + localTime.tm_year) + "-" + to_string(1 + localTime.tm_mon) + "-" + to_string(localTime.tm_mday);
@@ -27,7 +27,7 @@ float Zwrot::zwrocKsiazke(const Ksiazka& ksiazka) {
         if (stoi(id) == ksiazka.getID() && stan == "niedostepna") {
             found = true;
 
-            // Calculate late fee if applicable
+            //obliczenie op³aty za zw³okê, jeœli ksi¹¿ka jest zwracana po terminie
             if (dataZwrotuFile < currentDate) {
                 tm dataZwrotu = {};
                 istringstream ss(dataZwrotuFile);
@@ -44,7 +44,7 @@ float Zwrot::zwrocKsiazke(const Ksiazka& ksiazka) {
                     kaucja = lateDays * 2.0f;  // Kaucja = late days * 2zl
                 }
             }
-
+            //aktualizacja statusu ksi¹¿ki na "dostêpna"
             line = id + "," + tytul + "," + autor + "," + rok + ",dostepna,";
         }
         lines.push_back(line);
@@ -56,14 +56,14 @@ float Zwrot::zwrocKsiazke(const Ksiazka& ksiazka) {
         return -1.0f;
     }
 
-    // Save updated lines to the file
+    //zapis zaktualizowanych danych do pliku
     ofstream outPlik("baza_ksiazek.txt");
     for (const auto& l : lines) {
         outPlik << l << endl;
     }
     outPlik.close();
 
-    // Output the result of the return
+    //informowanie o wyniku zwrotu
     if (kaucja > 0.0f) {
         cout << "Ksiazka zwrocona po terminie. Naliczenie kaucji: " << kaucja << " zl." << endl;
     }

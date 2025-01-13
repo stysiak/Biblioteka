@@ -2,23 +2,24 @@
 
 BazaCzytelnikow::BazaCzytelnikow() {}
 
+//funkcja tworzy nowe konto czytelnika i zapisuje je w pliku
 int BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
     string peselStr = czytelnik.getPesel();
-    if (peselStr.length() != 11) {
+    if (peselStr.length() != 11) { //sprawdzenie czy PESEL ma poprawn¹ d³ugoœæ
         cerr << "Nieprawidlowy PESEL: " << peselStr << ". PESEL powinien miec 11 cyfr." << endl;
         return -1;
     }
-
+    //otwarcie pliku w trybie odczytu, aby sprawdziæ, czy PESEL ju¿ istnieje w bazie
     ifstream plik("baza_czytelnikow.txt");
     string linia;
 
     if (plik.is_open()) {
-        while (getline(plik, linia)) {
+        while (getline(plik, linia)) { 
             string fileID;
             stringstream ss(linia);
             getline(ss, fileID, ',');
 
-            if (fileID == peselStr) {
+            if (fileID == peselStr) { //porównanie z PESELem z bazy
                 cerr << "Czytelnik o Peselu " << peselStr << " juz istnieje." << endl;
                 plik.close();
                 return -1;
@@ -33,7 +34,7 @@ int BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
 
     int id = czytelnicy.size() + 1;  // Generowanie ID na podstawie wielkoœci mapy
     czytelnicy[id] = make_shared<KontoCzytelnika>(czytelnik);
-
+    //otwarcie pliku w trybie dopisywanie, aby zapisaæ nowego czytelnika
     ofstream outPlik("baza_czytelnikow.txt", ios::app);
     if (outPlik.is_open()) {
         outPlik << peselStr << "," << czytelnik.getImie() << "," << czytelnik.getNazwisko() << "," << czytelnik.getKaucja() << "," << czytelnik.getIloscKsiazek() << endl;
@@ -47,7 +48,7 @@ int BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
     return 1;
 }
 
-
+//funkcja usuwaj¹ca konto czytelnika na podstawie jego danych
 int BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
     string kID = czytelnik.getPesel();
     ifstream input_file("baza_czytelnikow.txt");
@@ -61,16 +62,17 @@ int BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
     string line;
     bool found = false;
 
+    //przeszukiwanie pliku w celu znalezienia czytelnika o podanym PESELu
     while (getline(input_file, line)) {
         stringstream ss(line);
         string id;
         getline(ss, id, ',');
 
         if (id != kID) {
-            lines.push_back(line);
+            lines.push_back(line); //dodanie linijki do wektora, jeœli nie dotyczy usuwamego czytelnika
         }
         else {
-            found = true;
+            found = true; //czytelnik znaleziony
         }
     }
 
@@ -80,13 +82,12 @@ int BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
         cout << "Nie znaleziono czytelnika o Peselu " << kID << endl;
         return -1;
     }
-
+    //zapisanie zaktualizowanego pliku bez danych usuniêtego czytelnika
     ofstream output_file("baza_czytelnikow.txt");
     if (!output_file.is_open()) {
         cerr << "Blad otwarcia pliku do zapisu!" << endl;
         return -1;
     }
-
     for (const auto& l : lines) {
         output_file << l << endl;
     }
@@ -96,7 +97,7 @@ int BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
     return 1;
 }
 
-
+//funkcja wyœwietlaj¹ca wszystkich czytelników zapisanych w pliku
 void BazaCzytelnikow::wyswietlListeCzytelnikow() const {
     ifstream plik("baza_czytelnikow.txt");
 
@@ -129,7 +130,7 @@ void BazaCzytelnikow::wyswietlListeCzytelnikow() const {
             << ", Nazwisko: " << nazwisko
             << ", Kaucja: " << kaucja
             << ", Ilosc wypozyczonych ksiazek: " << iloscKsiazek;
-
+        //wyœwietlenie listy wypo¿yczonych ksi¹¿ek, jeœli istniej¹
         if (!wypozyczoneKsiazki.empty()) {
             cout << ", Wypozyczone ksiazki (ID): ";
             for (const auto& id : wypozyczoneKsiazki) {
@@ -142,7 +143,7 @@ void BazaCzytelnikow::wyswietlListeCzytelnikow() const {
     plik.close();
 }
 
-
+//funkcja przypisuj¹ca wypo¿yczenie ksi¹¿ki do danego czytelnika
 int BazaCzytelnikow::podepnijWypozyczenie(const KontoCzytelnika& czytelnik, int egzemplarzID) {
     ifstream plik("baza_czytelnikow.txt");
     vector<string> lines;
@@ -153,7 +154,7 @@ int BazaCzytelnikow::podepnijWypozyczenie(const KontoCzytelnika& czytelnik, int 
         cerr << "Nie mozna otworzyc pliku!" << endl;
         return -1;
     }
-
+    //przeszukanie pliku w celu znalezienia czytelnika i aktualizacji jego danych
     while (getline(plik, line)) {
         stringstream ss(line);
         string pesel, imie, nazwisko, kaucja, iloscKsiazek, egzemplarze;
@@ -174,7 +175,7 @@ int BazaCzytelnikow::podepnijWypozyczenie(const KontoCzytelnika& czytelnik, int 
                 return -1;
             }
             currentCount += 1;
-
+            //dodanie ID ksi¹¿ki do listy wypo¿yczeñ
             if (egzemplarze.empty()) {
                 egzemplarze = to_string(egzemplarzID);
             }
@@ -194,7 +195,7 @@ int BazaCzytelnikow::podepnijWypozyczenie(const KontoCzytelnika& czytelnik, int 
         cerr << "Nie znaleziono czytelnika o PESEL " << czytelnik.getPesel() << endl;
         return -1;
     }
-
+    //zapisz zaktualizowanych danych do pliku
     ofstream outPlik("baza_czytelnikow.txt");
     if (!outPlik.is_open()) {
         cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
@@ -212,7 +213,7 @@ int BazaCzytelnikow::podepnijWypozyczenie(const KontoCzytelnika& czytelnik, int 
 }
 
 
-
+//funkcja usuwaj¹ca wypo¿yczenie ksi¹¿ki przypisanej do danego czytelnika
 int BazaCzytelnikow::usunWypozyczenie(const KontoCzytelnika& czytelnik, int egzemplarzID) {
     ifstream plik("baza_czytelnikow.txt");
     vector<string> lines;
@@ -224,7 +225,7 @@ int BazaCzytelnikow::usunWypozyczenie(const KontoCzytelnika& czytelnik, int egze
         cerr << "Nie mozna otworzyc pliku!" << endl;
         return -1;
     }
-
+    //przeszukiwanie pliku w celu znalezienia czytelnika i aktualizacji danych
     while (getline(plik, line)) {
         stringstream ss(line);
         string pesel, imie, nazwisko, kaucja, iloscKsiazek, egzemplarze;
@@ -238,7 +239,7 @@ int BazaCzytelnikow::usunWypozyczenie(const KontoCzytelnika& czytelnik, int egze
         if (pesel == czytelnik.getPesel()) {
             int currentCount;
             try {
-                currentCount = stoi(iloscKsiazek);
+                currentCount = stoi(iloscKsiazek); //konwersja string na int
             }
             catch (const invalid_argument& e) {
                 cerr << "Blad konwersji liczby ksiazek: " << iloscKsiazek << endl;
@@ -259,7 +260,7 @@ int BazaCzytelnikow::usunWypozyczenie(const KontoCzytelnika& czytelnik, int egze
                 }
 
                 currentCount -= 1;
-
+                //aktualizacja linii z danymi czytelnika
                 line = pesel + "," + imie + "," + nazwisko + "," + kaucja + "," + to_string(currentCount) + "," + egzemplarze;
                 found = true;
                 bookReturned = true;
@@ -278,7 +279,7 @@ int BazaCzytelnikow::usunWypozyczenie(const KontoCzytelnika& czytelnik, int egze
         cerr << "Nie znaleziono czytelnika o PESEL " << czytelnik.getPesel() << endl;
         return -1;
     }
-
+    //zapis zaktualizowanych danych, jeœli ksi¹¿ka zosta³a zwrócona
     if (bookReturned) {
         ofstream outPlik("baza_czytelnikow.txt");
         if (!outPlik.is_open()) {
@@ -299,6 +300,7 @@ int BazaCzytelnikow::usunWypozyczenie(const KontoCzytelnika& czytelnik, int egze
     return -1;  // Jeœli nie uda³o siê zwróciæ ksi¹¿ki
 }
 
+//funkcja sprawdzaj¹ca, czy czytelnik mo¿e wypo¿yczyæ kolejn¹ ksi¹¿kê
 bool BazaCzytelnikow::czyMoznaWypozyczyc(const KontoCzytelnika& czytelnik) {
     ifstream plik("baza_czytelnikow.txt");
     string linia;
@@ -316,7 +318,7 @@ bool BazaCzytelnikow::czyMoznaWypozyczyc(const KontoCzytelnika& czytelnik) {
         if (pesel == czytelnik.getPesel()) {
             int currentCount = stoi(iloscKsiazek);
 
-            if (currentCount >= 5) {
+            if (currentCount >= 5) { //sprawdzenie limitu wypo¿yczeñ
                 cerr << "Czytelnik o PESEL " << pesel << " nie moze wypozyczyc wiecej ksiazek (limit 5)." << endl;
                 return false;
             }
@@ -329,7 +331,7 @@ bool BazaCzytelnikow::czyMoznaWypozyczyc(const KontoCzytelnika& czytelnik) {
     return false;
 }
 
-
+//funkcja wyœwietlaj¹ca dane konta
 void BazaCzytelnikow::sprawdzenieKonta(const KontoCzytelnika& czytelnik) {
     ifstream plik("baza_czytelnikow.txt");
     if (!plik.is_open()) {
@@ -375,7 +377,7 @@ void BazaCzytelnikow::sprawdzenieKonta(const KontoCzytelnika& czytelnik) {
     }
 }
 
-
+//funkcja naliczaj¹ca kaucje czytelnikowi
 int BazaCzytelnikow::naliczKaucje(KontoCzytelnika& czytelnik, float kaucja) {
     ifstream plik("baza_czytelnikow.txt");
     vector<string> lines;
@@ -431,7 +433,7 @@ int BazaCzytelnikow::naliczKaucje(KontoCzytelnika& czytelnik, float kaucja) {
 }
 
 
-
+//funkcja usuwaj¹ca naliczon¹ kaucjê czytelnikowi
 int BazaCzytelnikow::usunKaucje(KontoCzytelnika& czytelnik) {
     ifstream plik("baza_czytelnikow.txt");
     vector<string> lines;
@@ -454,7 +456,7 @@ int BazaCzytelnikow::usunKaucje(KontoCzytelnika& czytelnik) {
         getline(ss, egzemplarze);
 
         if (pesel == czytelnik.getPesel()) {
-            kaucja = "0.0";
+            kaucja = "0.0"; //resetowanie kaucji
 
             line = pesel + "," + imie + "," + nazwisko + "," + kaucja + "," + iloscKsiazek + "," + egzemplarze;
             found = true;

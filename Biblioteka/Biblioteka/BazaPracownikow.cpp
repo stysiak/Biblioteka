@@ -1,5 +1,6 @@
 #include "BazaPracownikow.h"
 
+//konstruktor domyœlny; wczytuje dane pracowników z pliku i inicjalizuje listê pracowników
 BazaPracownikow::BazaPracownikow() {
     ifstream plik("baza_pracownikow.txt");
     if (!plik.is_open()) {
@@ -26,13 +27,13 @@ BazaPracownikow::BazaPracownikow() {
             cerr << "Niepoprawna funkcja: " << funkcja << ". Pomijanie wpisu." << endl;
             continue;
         }
-
+        //dodanie pracownika do listy
         Pracownik p(imie, nazwisko, login, haslo, pesel, pensja, funkcja);
         listaPracownikow.push_back(p);
     }
     plik.close();
 }
-
+//funckja s³u¿¹ca do logowania pracownika na podstawie wpisanego loginu i has³a
 pair<string, string> BazaPracownikow::logowanie() {
     string wpisanyLogin, wpisaneHaslo;
     cout << "Podaj login: ";
@@ -60,7 +61,7 @@ pair<string, string> BazaPracownikow::logowanie() {
         ss >> pensja;
         ss.ignore(1, ',');
         getline(ss, funkcja, ',');
-
+        //sprawdzenie poprawnoœci loginu i has³a
         if (login == wpisanyLogin && haslo == wpisaneHaslo) {
             cout << "Logowanie pomyslne. Witaj " << login << " (" << funkcja << ")!" << endl;
             return { login, funkcja };
@@ -69,21 +70,19 @@ pair<string, string> BazaPracownikow::logowanie() {
     return { "", "" };
 }
 
-
-
-
+//funkcja dodaj¹ca nowego pracownika do bazy i zapisuj¹ca jego dane w pliku
 int BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
     string peselStr = pracownik.getPesel();
     if (peselStr.length() != 11) {
         cerr << "Nieprawidlowy PESEL: " << peselStr << ". PESEL powinien miec 11 cyfr." << endl;
         return -1;
     }
-
+    //sprawdzenie funkcji pracownika
     if (pracownik.getFunkcja() != "admin" && pracownik.getFunkcja() != "pracownik") {
         cerr << "Niepoprawna funkcja: " << pracownik.getFunkcja() << ". Pracownik nie zostal dodany." << endl;
         return -1;
     }
-
+    //dodanie pracownika
     listaPracownikow.push_back(pracownik);
 
     ofstream plik("baza_pracownikow.txt", ios::app);
@@ -100,6 +99,7 @@ int BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
 
 }
 
+//funkcja usuwaj¹ca pracownika z bazy na podstawie jego numeru PESEL
 int BazaPracownikow::usunPracownika(const Pracownik& pracownik) {
     string pesel = pracownik.getPesel();
     ifstream input_file("baza_pracownikow.txt");
@@ -147,7 +147,7 @@ int BazaPracownikow::usunPracownika(const Pracownik& pracownik) {
 
     return 1;
 }
-
+//funkcja wyœwietlaj¹ca listê wszystkich pracowników w bazie
 void BazaPracownikow::wyswietlListePracownikow() const {
     ifstream plik("baza_pracownikow.txt");
 
