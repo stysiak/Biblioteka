@@ -1,7 +1,6 @@
 ﻿#include "header.h"
 #include "BazaCzytelnikow.h"
 #include "BazaKsiazek.h"
-#include "Data.h"
 #include "KontoCzytelnika.h"
 #include "Ksiazka.h"
 #include "Pracownik.h"

@@ -11,8 +11,5 @@ public:
     Data(int d, int m, int r);
 
     Data();
-
-    Data zwrocDate();  
-
-    void ustawDate(int d, int m, int r);  
+   
 };

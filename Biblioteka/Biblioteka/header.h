@@ -13,7 +13,6 @@
 
 using namespace std;
 //wszystkie nazwy klas
-class Data;
 class Ksiazka;
 class KontoCzytelnika;
 class Pracownik;

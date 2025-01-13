@@ -18,5 +18,4 @@ public:
 	string getNazwisko() const;
 	float getKaucja() const;
 	int getIloscKsiazek() const;
-	friend class BazaCzytelnikow;
 };

@@ -132,7 +132,6 @@
     <ClCompile Include="BazaKsiazek.cpp" />
     <ClCompile Include="BazaPracownikow.cpp" />
     <ClCompile Include="Biblioteka.cpp" />
-    <ClCompile Include="Data.cpp" />
     <ClCompile Include="KontoCzytelnika.cpp" />
     <ClCompile Include="Ksiazka.cpp" />
     <ClCompile Include="Pracownik.cpp" />
@@ -144,7 +143,6 @@
     <ClInclude Include="BazaCzytelnikow.h" />
     <ClInclude Include="BazaKsiazek.h" />
     <ClInclude Include="BazaPracownikow.h" />
-    <ClInclude Include="Data.h" />
     <ClInclude Include="header.h" />
     <ClInclude Include="KontoCzytelnika.h" />
     <ClInclude Include="Ksiazka.h" />

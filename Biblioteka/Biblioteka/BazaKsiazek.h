@@ -4,8 +4,6 @@
 
 class BazaKsiazek {
 private:
-    int ID;
-    int egzID;
     unordered_map<int, shared_ptr<Ksiazka>> ksiazki;
 
 public:
