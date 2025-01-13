@@ -79,7 +79,6 @@ int main() {
                     case 3: {
                         //dodaj pracownika
                         string pesel, imie, nazwisko, login, haslo, funkcja;
-                        float pensja;
                         cout << "Podaj imie: ";
                         cin >> imie;
                         cout << "Podaj nazwisko: ";
@@ -88,13 +87,11 @@ int main() {
                         cin >> login;
                         cout << "Podaj haslo: ";
                         cin >> haslo;
-                        cout << "Podaj pensje: ";
-                        cin >> pensja;
                         cout << "Podaj pesel: ";
                         cin >> pesel;
                         cout << "Podaj funkcje (admin/pracownik): ";
                         cin >> funkcja;
-                        Pracownik nowyPracownik(pesel, imie, nazwisko, login, haslo, pensja, funkcja);
+                        Pracownik nowyPracownik(pesel, imie, nazwisko, login, haslo, funkcja);
                         admin.dodajPracownika(bazaPracownikow,nowyPracownik);
                         break;
                     }

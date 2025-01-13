@@ -2,8 +2,8 @@
 
 Administrator::Administrator() : Pracownik() {}
 
-Administrator::Administrator(const string& pesel, const string& imie, const string& nazwisko, const string& login, const string& haslo, float pensja, const string& funkcja)
-    : Pracownik(pesel, imie, nazwisko, login, haslo, pensja, funkcja) {
+Administrator::Administrator(const string& pesel, const string& imie, const string& nazwisko, const string& login, const string& haslo, const string& funkcja)
+    : Pracownik(pesel, imie, nazwisko, login, haslo, funkcja) {
 }
 
 //funkcja dodaj¹ca now¹ ksi¹¿kê do bazy

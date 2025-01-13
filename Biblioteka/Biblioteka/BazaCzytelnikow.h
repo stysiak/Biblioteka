@@ -7,7 +7,7 @@ private:
     unordered_map<int, shared_ptr<KontoCzytelnika>> czytelnicy;
 public:
     BazaCzytelnikow();
-
+    bool walidujPesel(const string& pesel);
     int tworzenieKonta(const KontoCzytelnika& kontoCzytelnika);
     int usuniecieKonta(const KontoCzytelnika& kontoCzytelnika);
     void wyswietlListeCzytelnikow() const;
