@@ -24,48 +24,58 @@ int BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
         return -1;
     }
 
+    ifstream input_file("baza_czytelnikow.txt");
 
-    // Sprawdzanie, czy PESEL ju¿ istnieje w bazie
-    ifstream plik("baza_czytelnikow.txt");
-    string linia;
-
-    if (plik.is_open()) {
-        while (getline(plik, linia)) {
-            string fileID;
-            stringstream ss(linia);
-            getline(ss, fileID, ',');
-
-            if (fileID == peselStr) { // Sprawdzenie, czy PESEL ju¿ istnieje
-                cerr << "Czytelnik o Peselu " << peselStr << " juz istnieje." << endl;
-                plik.close();
-                return -1;
-            }
-        }
-        plik.close();
-    }
-    else {
-        cerr << "Nie mozna otworzyc pliku!" << endl;
+    if (!input_file.is_open()) {
+        cerr << "Blad otwarcia pliku do odczytu!" << endl;
         return -1;
     }
 
-    // Dodanie czytelnika do bazy
-    int id = czytelnicy.size() + 1; // Generowanie ID na podstawie wielkoœci mapy
+    vector<string> lines;
+    string line;
+
+    while (getline(input_file, line)) {
+        stringstream ss(line);
+        string id;
+        getline(ss, id, ',');
+
+        if (id == peselStr) {
+            cerr << "Czytelnik o Peselu " << peselStr << " juz istnieje." << endl;
+            input_file.close();
+            return -1;
+        }
+
+        lines.push_back(line);
+    }
+
+    input_file.close();
+
+    // Dodanie nowego czytelnika do kolekcji w pamiêci
+    int id = czytelnicy.size() + 1;
     czytelnicy[id] = make_shared<KontoCzytelnika>(czytelnik);
 
-    // Otwarcie pliku w trybie dopisywania, aby zapisaæ nowego czytelnika
-    ofstream outPlik("baza_czytelnikow.txt", ios::app);
-    if (outPlik.is_open()) {
-        outPlik << peselStr << "," << czytelnik.getImie() << "," << czytelnik.getNazwisko() << "," << czytelnik.getKaucja() << "," << czytelnik.getIloscKsiazek() << endl;
-        outPlik.close();
-        cout << "Konto czytelnika o Peselu " << peselStr << " zostalo pomyslnie utworzone." << endl;
-    }
-    else {
-        cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
+    // Dodanie nowego czytelnika do listy w celu zapisania do pliku
+    string new_record = peselStr + "," + czytelnik.getImie() + "," +
+        czytelnik.getNazwisko() + "," + to_string(czytelnik.getKaucja()) +
+        "," + to_string(czytelnik.getIloscKsiazek());
+    lines.push_back(new_record);
+
+    ofstream output_file("baza_czytelnikow.txt");
+    if (!output_file.is_open()) {
+        cerr << "Blad otwarcia pliku do zapisu!" << endl;
         return -1;
     }
 
+    for (const auto& l : lines) {
+        output_file << l << endl;
+    }
+
+    output_file.close();
+
+    cout << "Konto czytelnika o Peselu " << peselStr << " zostalo pomyslnie utworzone." << endl;
     return 1;
 }
+
 
 int BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
     string peselStr = czytelnik.getPesel();
