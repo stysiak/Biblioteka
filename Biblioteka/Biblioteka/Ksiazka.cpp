@@ -6,7 +6,7 @@ Ksiazka::Ksiazka(int ID)
 	: ID(ID) {
 }
 
-Ksiazka::Ksiazka(int ID, const string& tytul, const string& nazwiskoAutora, int rokWydania, string stan = "dostepna")
+Ksiazka::Ksiazka(int ID, const string& tytul, const string& nazwiskoAutora, int rokWydania, string stan)
 	: ID(ID), tytul(tytul), nazwiskoAutora(nazwiskoAutora), rokWydania(rokWydania), stan(stan) {
 }
 

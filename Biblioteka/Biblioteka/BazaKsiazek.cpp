@@ -26,20 +26,25 @@ int BazaKsiazek::aktualizujStanDodaj(const Ksiazka& ksiazka) {
         return -1;
     }
 
-    //dodanie ksi¹¿ki do mapy
-    ksiazki[ksiazka.getID()] = make_shared<Ksiazka>(ksiazka);
+    // Tworzenie lokalnej kopii ksi¹¿ki z automatycznie ustawionym stanem "dostêpna"
+    Ksiazka nowaKsiazka(ksiazka.getID(), ksiazka.getTytul(), ksiazka.getNazwiskoAutora(), ksiazka.getRokWydania(), "dostepna");
+
+    // Dodanie ksi¹¿ki do mapy
+    ksiazki[nowaKsiazka.getID()] = make_shared<Ksiazka>(nowaKsiazka);
 
     ofstream outPlik("baza_ksiazek.txt", ios::app);
     if (outPlik.is_open()) {
-        outPlik << ksiazka.getID() << "," << ksiazka.getTytul() << "," << ksiazka.getNazwiskoAutora() << "," << ksiazka.getRokWydania() << "," << ksiazka.getStan() << endl;
+        outPlik << nowaKsiazka.getID() << "," << nowaKsiazka.getTytul() << "," << nowaKsiazka.getNazwiskoAutora() << "," << nowaKsiazka.getRokWydania() << "," << nowaKsiazka.getStan() << endl;
         outPlik.close();
     }
     else {
         cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
         return -1;
     }
-    return ksiazka.getID();
+    return nowaKsiazka.getID();
 }
+
+
 
 //funkcja usuwaj¹ca ksi¹¿kê z bazy na podstawie ID
 int BazaKsiazek::aktualizujStanUsun(const Ksiazka& ksiazka) {

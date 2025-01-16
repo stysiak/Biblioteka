@@ -7,7 +7,7 @@ private:
     string tytul;
     string nazwiskoAutora;
     int rokWydania;
-    string stan = "dostepna";
+    string stan;
     string dataZwrotu;
 
 public:
