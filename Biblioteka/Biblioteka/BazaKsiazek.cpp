@@ -23,7 +23,7 @@ int BazaKsiazek::aktualizujStanDodaj(const Ksiazka& ksiazka) {
     }
     else {
         cerr << "Nie mozna otworzyc pliku!" << endl;
-        return -1;
+        return -2;
     }
 
     // Tworzenie lokalnej kopii ksi¹¿ki z automatycznie ustawionym stanem "dostêpna"
@@ -39,7 +39,7 @@ int BazaKsiazek::aktualizujStanDodaj(const Ksiazka& ksiazka) {
     }
     else {
         cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
-        return -1;
+        return -3;
     }
     return nowaKsiazka.getID();
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include "header.h"
-#include "Ksiazka.h"
+//#include "Ksiazka.h"
 
 class KontoCzytelnika {
 private:
