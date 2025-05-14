@@ -1,33 +1,31 @@
+# Katalogi build
+cmake-build-debug/
+cmake-build-release/
+build/
 Debug/
 Release/
-.vscode/
-*.vcxproj*
+.vs/
+
+# Pliki IDE
+.idea/
 *.user
 *.suo
-*.ncb
-.vs/
-*.obj
+*.sln.docstates
+
+# Pliki skompilowane
 *.exe
-*.pdb
-*.ilk
-*.idb
-*.ipch
-*.log
-*.tlog
-*.lastbuildstate
+*.dll
+*.so
+*.dylib
+*.obj
+*.o
 
-*.suo
-*.user
-*.userosscache
-*.rsuser
-.vs/
-
-*.pch
-*.cpp~*
-*.tmp
-
-CMakeFiles/
+# Pliki CMake
 CMakeCache.txt
-cmake_install.cmake
+CMakeFiles/
+*.cmake
+!CMakeLists.txt
 
+# Pliki tymczasowe
+*.tmp
 *.log

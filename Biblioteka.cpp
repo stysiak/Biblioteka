@@ -1,12 +1,12 @@
-﻿#include "header.h"
+﻿#include "Biblioteka/header.h"
 #include "BazaCzytelnikow.h"
 #include "BazaKsiazek.h"
-#include "KontoCzytelnika.h"
-#include "Ksiazka.h"
+#include "Biblioteka/KontoCzytelnika.h"
+#include "Biblioteka/Ksiazka.h"
 #include "Pracownik.h"
 #include "BazaPracownikow.h"
-#include "Wypozyczenie.h"
-#include "Zwrot.h"
+#include "Biblioteka/Wypozyczenie.h"
+#include "Biblioteka/Zwrot.h"
 
 using namespace std;
 

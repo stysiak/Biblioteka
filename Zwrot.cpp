@@ -1,6 +1,6 @@
 #include "Zwrot.h"
 
-// Zaktualizowana funkcja zwracaj¹ca ksi¹¿kê
+// Zaktualizowana funkcja zwracajï¿½ca ksiï¿½ï¿½kï¿½
 float Zwrot::zwrocKsiazke(const Ksiazka& ksiazka) {
     float kaucja = 0.0f;  // Zmienna do przechowywania kaucji
     string dataZwrotuFile;
@@ -27,7 +27,7 @@ float Zwrot::zwrocKsiazke(const Ksiazka& ksiazka) {
         if (stoi(id) == ksiazka.getID() && stan == "niedostepna") {
             found = true;
 
-            //obliczenie op³aty za zw³okê, jeœli ksi¹¿ka jest zwracana po terminie
+            //obliczenie opï¿½aty za zwï¿½okï¿½, jeï¿½li ksiï¿½ï¿½ka jest zwracana po terminie
             if (dataZwrotuFile < currentDate) {
                 tm dataZwrotu = {};
                 istringstream ss(dataZwrotuFile);
@@ -44,7 +44,7 @@ float Zwrot::zwrocKsiazke(const Ksiazka& ksiazka) {
                     kaucja = lateDays * 2.0f;  // Kaucja = late days * 2zl
                 }
             }
-            //aktualizacja statusu ksi¹¿ki na "dostêpna"
+            //aktualizacja statusu ksiï¿½ï¿½ki na "dostï¿½pna"
             line = id + "," + tytul + "," + autor + "," + rok + ",dostepna,";
         }
         lines.push_back(line);
@@ -71,5 +71,5 @@ float Zwrot::zwrocKsiazke(const Ksiazka& ksiazka) {
         cout << "Ksiazka o ID " << ksiazka.getID() << " zostala zwrocona w terminie." << endl;
     }
 
-    return kaucja;  // Zwracamy wartoœæ kaucji
+    return kaucja;  // Zwracamy wartoï¿½ï¿½ kaucji
 }

@@ -1,6 +1,6 @@
 #include "Wypozyczenie.h"
 
-// Zaktualizowana funkcja wypo¿yczaj¹ca ksi¹¿kê
+// Zaktualizowana funkcja wypoï¿½yczajï¿½ca ksiï¿½ï¿½kï¿½
 int Wypozyczenie::wypozyczKsiazke(const Ksiazka& ksiazka) {
     ifstream plik("baza_ksiazek.txt");
     vector<string> lines;
@@ -10,7 +10,7 @@ int Wypozyczenie::wypozyczKsiazke(const Ksiazka& ksiazka) {
     time_t now = time(0);
     tm ltm = {};
     localtime_s(&ltm, &now);
-    ltm.tm_mday += 30;  // Dodajemy 30 dni do bie¿¹cej daty
+    ltm.tm_mday += 30;  // Dodajemy 30 dni do bieï¿½ï¿½cej daty
     mktime(&ltm);
     ostringstream oss;
     oss << put_time(&ltm, "%Y-%m-%d");

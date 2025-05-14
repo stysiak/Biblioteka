@@ -1,6 +1,6 @@
 #include "Ksiazka.h"
 
-Ksiazka::Ksiazka() : ID(0), tytul(""), nazwiskoAutora(""), rokWydania(0), stan("") {} //konstruktor z wartoœciami domyœlnymi
+Ksiazka::Ksiazka() : ID(0), tytul(""), nazwiskoAutora(""), rokWydania(0), stan("") {} //konstruktor z wartoï¿½ciami domyï¿½lnymi
 
 Ksiazka::Ksiazka(int ID)
 	: ID(ID) {

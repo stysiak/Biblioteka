@@ -1,8 +1,8 @@
-#include "pch.h"  
+#include "TestBazaKsiazek/pch.h"
 #include "CppUnitTest.h" 
 #include "../Biblioteka/BazaKsiazek.h"  
 #include "../Biblioteka/Ksiazka.h"
-#include "../Biblioteka/BazaKsiazek.cpp" 
+#include "BazaKsiazek.cpp"
 #include "../Biblioteka/Ksiazka.cpp"
 
 
@@ -37,17 +37,17 @@ namespace TestProjekt
             BazaKsiazek baza;
             Ksiazka ksiazka(2, "Ksiazka Do Usuniecia", "Autor", 2023, "Dostepna");
 
-            baza.aktualizujStanDodaj(ksiazka);  // Najpierw dodajemy ksi¹¿kê
-            int wynik = baza.aktualizujStanUsun(ksiazka);  // Potem usuwamy ksi¹¿kê
+            baza.aktualizujStanDodaj(ksiazka);  // Najpierw dodajemy ksiï¿½ï¿½kï¿½
+            int wynik = baza.aktualizujStanUsun(ksiazka);  // Potem usuwamy ksiï¿½ï¿½kï¿½
 
-            Assert::AreEqual(2, wynik);  // Sprawdzamy, czy ksi¹¿ka zosta³a usuniêta
+            Assert::AreEqual(2, wynik);  // Sprawdzamy, czy ksiï¿½ï¿½ka zostaï¿½a usuniï¿½ta
 
             remove("baza_ksiazek.txt");
         }
 
         TEST_METHOD(WyswietlListeKsiazek)
         {
-            // Stworzenie pliku z ksi¹¿kami przed testem
+            // Stworzenie pliku z ksiï¿½ï¿½kami przed testem
             ofstream outPlik("baza_ksiazek.txt");
             outPlik << "1,Ksiazka 1,Autor 1,2025,dostepna\n";
             outPlik << "2,Ksiazka 2,Autor 2,2025,niedostepna\n";
@@ -58,7 +58,7 @@ namespace TestProjekt
 
             baza.aktualizujStanDodaj(ksiazka);
 
-            // Capture stdout (przechwytywanie wyjœcia)
+            // Capture stdout (przechwytywanie wyjï¿½cia)
             ostringstream output;
             streambuf* original = std::cout.rdbuf(output.rdbuf());
 
@@ -67,7 +67,7 @@ namespace TestProjekt
             string capturedOutput = output.str();
             Assert::IsTrue(capturedOutput.find("Ksiazka do wyswietlenia") != string::npos); //Sprawdzenie czy ksiazka jest na liscie
 
-            cout.rdbuf(original);  // Przywrócenie oryginalnego strumienia
+            cout.rdbuf(original);  // Przywrï¿½cenie oryginalnego strumienia
 
             remove("baza_ksiazek.txt");
         }

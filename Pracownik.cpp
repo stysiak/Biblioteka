@@ -1,6 +1,6 @@
 #include "Pracownik.h"
 
-Pracownik::Pracownik() : pesel(""), imie(""), nazwisko(""), login(""), haslo(""), funkcja("") {} // konstruktor z wartoœciami domyœlnymi
+Pracownik::Pracownik() : pesel(""), imie(""), nazwisko(""), login(""), haslo(""), funkcja("") {} // konstruktor z wartoï¿½ciami domyï¿½lnymi
 
 Pracownik::Pracownik(const string& pesel, const string& imie, const string& nazwisko, const string& login, const string& haslo, const string& funkcja)
     : pesel(pesel), imie(imie), nazwisko(nazwisko), login(login), haslo(haslo), funkcja(funkcja) {
@@ -10,7 +10,7 @@ Pracownik::Pracownik(const string& pesel)
     : pesel(pesel) {
 }
 
-// Funkcje zwracaj¹ce dan¹ wartoœæ
+// Funkcje zwracajï¿½ce danï¿½ wartoï¿½ï¿½
 string Pracownik::getPesel() const {
     return pesel;
 }
@@ -55,33 +55,33 @@ void Pracownik::sprawdzenieKonta(BazaCzytelnikow& baza, const KontoCzytelnika& c
     baza.sprawdzenieKonta(czytelnik);
 }
 
-// Funkcja sprawdzaj¹ca, czytelnik mo¿e wypo¿yczyæ ksi¹¿kê
+// Funkcja sprawdzajï¿½ca, czytelnik moï¿½e wypoï¿½yczyï¿½ ksiï¿½ï¿½kï¿½
 void Pracownik::wypozyczKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik) {
     if (!bazaCzytelnikow.czyMoznaWypozyczyc(czytelnik)) {
-        return; // wyjœcie z funkcji, jeœli wypo¿yczenie jest niemo¿liwe
+        return; // wyjï¿½cie z funkcji, jeï¿½li wypoï¿½yczenie jest niemoï¿½liwe
     }
-    if (wypozyczenie.wypozyczKsiazke(egzemplarzID) != -1) { // próba wypo¿yczenia; jeœli siê powiedzie, dodaj do wypo¿yczeñ czytelnika
+    if (wypozyczenie.wypozyczKsiazke(egzemplarzID) != -1) { // prï¿½ba wypoï¿½yczenia; jeï¿½li siï¿½ powiedzie, dodaj do wypoï¿½yczeï¿½ czytelnika
         bazaCzytelnikow.podepnijWypozyczenie(czytelnik, egzemplarzID);
     }
 }
 
-// Funkcja sprawdzaj¹c¹, czy zwrot jest mo¿liwy
+// Funkcja sprawdzajï¿½cï¿½, czy zwrot jest moï¿½liwy
 void Pracownik::zwrocKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik) {
-    float kaucja = zwrot.zwrocKsiazke(egzemplarzID); // obliczenie wartoœci kaucji
+    float kaucja = zwrot.zwrocKsiazke(egzemplarzID); // obliczenie wartoï¿½ci kaucji
 
     if (kaucja != -1) {
-        bazaCzytelnikow.usunWypozyczenie(czytelnik, egzemplarzID); // usuniêcie informacji o wypo¿yczeniu z bazy czytelnika
+        bazaCzytelnikow.usunWypozyczenie(czytelnik, egzemplarzID); // usuniï¿½cie informacji o wypoï¿½yczeniu z bazy czytelnika
 
-        if (kaucja > 0) { // jeœli wartoœæ kaucji jest dodatnia, nalicz j¹ czytelnikowi
+        if (kaucja > 0) { // jeï¿½li wartoï¿½ï¿½ kaucji jest dodatnia, nalicz jï¿½ czytelnikowi
             bazaCzytelnikow.naliczKaucje(const_cast<KontoCzytelnika&>(czytelnik), kaucja);
         }
     }
     else {
-        cout << "Blad podczas zwrotu ksi¹¿ki. Egzemplarz o ID " << egzemplarzID << " nie istnieje lub nie by³ wypozyczony." << endl;
+        cout << "Blad podczas zwrotu ksiï¿½ï¿½ki. Egzemplarz o ID " << egzemplarzID << " nie istnieje lub nie byï¿½ wypozyczony." << endl;
     }
 }
 
-// Funkcja aktualizuj¹ca stan konta czytelnika
+// Funkcja aktualizujï¿½ca stan konta czytelnika
 void Pracownik::przyjmijKaucje(BazaCzytelnikow& bazaCzytelnikow, KontoCzytelnika& czytelnik) {
     bazaCzytelnikow.usunKaucje(czytelnik);
 }

@@ -50,7 +50,7 @@ int BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
 
     input_file.close();
 
-    // Dodanie nowego czytelnika do kolekcji w pamiêci
+    // Dodanie nowego czytelnika do kolekcji w pamiï¿½ci
     int id = czytelnicy.size() + 1;
     czytelnicy[id] = make_shared<KontoCzytelnika>(czytelnik);
 
@@ -103,7 +103,7 @@ int BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
         getline(ss, id, ',');
 
         if (id != peselStr) {
-            lines.push_back(line); //dodanie linijki do wektora, jeœli nie dotyczy usuwanego czytelnika
+            lines.push_back(line); //dodanie linijki do wektora, jeï¿½li nie dotyczy usuwanego czytelnika
         }
         else {
             found = true; //czytelnik znaleziony
@@ -117,7 +117,7 @@ int BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
         return -1;
     }
 
-    //zapisanie zaktualizowanego pliku bez danych usuniêtego czytelnika
+    //zapisanie zaktualizowanego pliku bez danych usuniï¿½tego czytelnika
     ofstream output_file("baza_czytelnikow.txt");
     if (!output_file.is_open()) {
         cerr << "Blad otwarcia pliku do zapisu!" << endl;
@@ -132,7 +132,7 @@ int BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
     return 1;
 }
 
-//funkcja wyœwietlaj¹ca wszystkich czytelników zapisanych w pliku
+//funkcja wyï¿½wietlajï¿½ca wszystkich czytelnikï¿½w zapisanych w pliku
 void BazaCzytelnikow::wyswietlListeCzytelnikow() const {
     ifstream plik("baza_czytelnikow.txt");
 
@@ -165,7 +165,7 @@ void BazaCzytelnikow::wyswietlListeCzytelnikow() const {
             << ", Nazwisko: " << nazwisko
             << ", Kaucja: " << kaucja
             << ", Ilosc wypozyczonych ksiazek: " << iloscKsiazek;
-        //wyœwietlenie listy wypo¿yczonych ksi¹¿ek, jeœli istniej¹
+        //wyï¿½wietlenie listy wypoï¿½yczonych ksiï¿½ï¿½ek, jeï¿½li istniejï¿½
         if (!wypozyczoneKsiazki.empty()) {
             cout << ", Wypozyczone ksiazki (ID): ";
             for (const auto& id : wypozyczoneKsiazki) {
@@ -178,7 +178,7 @@ void BazaCzytelnikow::wyswietlListeCzytelnikow() const {
     plik.close();
 }
 
-//funkcja przypisuj¹ca wypo¿yczenie ksi¹¿ki do danego czytelnika
+//funkcja przypisujï¿½ca wypoï¿½yczenie ksiï¿½ï¿½ki do danego czytelnika
 int BazaCzytelnikow::podepnijWypozyczenie(const KontoCzytelnika& czytelnik, int egzemplarzID) {
     ifstream plik("baza_czytelnikow.txt");
     vector<string> lines;
@@ -211,7 +211,7 @@ int BazaCzytelnikow::podepnijWypozyczenie(const KontoCzytelnika& czytelnik, int 
                 return -1;
             }
             currentCount += 1;
-            //dodanie ID ksi¹¿ki do listy wypo¿yczeñ
+            //dodanie ID ksiï¿½ï¿½ki do listy wypoï¿½yczeï¿½
             if (egzemplarze.empty()) {
                 egzemplarze = to_string(egzemplarzID);
             }
@@ -249,7 +249,7 @@ int BazaCzytelnikow::podepnijWypozyczenie(const KontoCzytelnika& czytelnik, int 
 }
 
 
-//funkcja usuwaj¹ca wypo¿yczenie ksi¹¿ki przypisanej do danego czytelnika
+//funkcja usuwajï¿½ca wypoï¿½yczenie ksiï¿½ï¿½ki przypisanej do danego czytelnika
 int BazaCzytelnikow::usunWypozyczenie(const KontoCzytelnika& czytelnik, int egzemplarzID) {
     ifstream plik("baza_czytelnikow.txt");
     vector<string> lines;
@@ -283,16 +283,16 @@ int BazaCzytelnikow::usunWypozyczenie(const KontoCzytelnika& czytelnik, int egze
                 return -1;
             }
 
-            // Sprawdzenie, czy egzemplarzID znajduje siê w liœcie egzemplarzy
+            // Sprawdzenie, czy egzemplarzID znajduje siï¿½ w liï¿½cie egzemplarzy
             size_t pos = egzemplarze.find(to_string(egzemplarzID));
             if (pos != string::npos) {
                 size_t nextPos = egzemplarze.find(",", pos);
                 if (nextPos != string::npos) {
-                    // Jeœli to nie ostatni element, usuwamy go razem z przecinkiem
+                    // Jeï¿½li to nie ostatni element, usuwamy go razem z przecinkiem
                     egzemplarze.erase(pos, nextPos - pos + 1);
                 }
                 else {
-                    // Jeœli to ostatni element w liœcie, usuwamy tylko numer
+                    // Jeï¿½li to ostatni element w liï¿½cie, usuwamy tylko numer
                     egzemplarze.erase(pos);
                 }
 
@@ -316,7 +316,7 @@ int BazaCzytelnikow::usunWypozyczenie(const KontoCzytelnika& czytelnik, int egze
         cerr << "Nie znaleziono czytelnika o PESEL " << czytelnik.getPesel() << endl;
         return -1;
     }
-    //zapis zaktualizowanych danych, jeœli ksi¹¿ka zosta³a zwrócona
+    //zapis zaktualizowanych danych, jeï¿½li ksiï¿½ï¿½ka zostaï¿½a zwrï¿½cona
     if (bookReturned) {
         ofstream outPlik("baza_czytelnikow.txt");
         if (!outPlik.is_open()) {
@@ -334,10 +334,10 @@ int BazaCzytelnikow::usunWypozyczenie(const KontoCzytelnika& czytelnik, int egze
         return egzemplarzID;
     }
 
-    return -1;  // Jeœli nie uda³o siê zwróciæ ksi¹¿ki
+    return -1;  // Jeï¿½li nie udaï¿½o siï¿½ zwrï¿½ciï¿½ ksiï¿½ï¿½ki
 }
 
-//funkcja sprawdzaj¹ca, czy czytelnik mo¿e wypo¿yczyæ kolejn¹ ksi¹¿kê
+//funkcja sprawdzajï¿½ca, czy czytelnik moï¿½e wypoï¿½yczyï¿½ kolejnï¿½ ksiï¿½ï¿½kï¿½
 bool BazaCzytelnikow::czyMoznaWypozyczyc(const KontoCzytelnika& czytelnik) {
     ifstream plik("baza_czytelnikow.txt");
     string linia;
@@ -357,7 +357,7 @@ bool BazaCzytelnikow::czyMoznaWypozyczyc(const KontoCzytelnika& czytelnik) {
             
             int currentCount = stoi(iloscKsiazek);
 
-            if (currentCount >= 5) { //sprawdzenie limitu wypo¿yczeñ
+            if (currentCount >= 5) { //sprawdzenie limitu wypoï¿½yczeï¿½
                 cerr << "Czytelnik o PESEL " << pesel << " nie moze wypozyczyc wiecej ksiazek (limit 5)." << endl;
                 return false;
             }
@@ -370,7 +370,7 @@ bool BazaCzytelnikow::czyMoznaWypozyczyc(const KontoCzytelnika& czytelnik) {
     return false;
 }
 
-//funkcja wyœwietlaj¹ca dane konta
+//funkcja wyï¿½wietlajï¿½ca dane konta
 void BazaCzytelnikow::sprawdzenieKonta(const KontoCzytelnika& czytelnik) {
     ifstream plik("baza_czytelnikow.txt");
     if (!plik.is_open()) {
@@ -417,7 +417,7 @@ void BazaCzytelnikow::sprawdzenieKonta(const KontoCzytelnika& czytelnik) {
     }
 }
 
-//funkcja naliczaj¹ca kaucje czytelnikowi
+//funkcja naliczajï¿½ca kaucje czytelnikowi
 int BazaCzytelnikow::naliczKaucje(KontoCzytelnika& czytelnik, float kaucja) {
     ifstream plik("baza_czytelnikow.txt");
     vector<string> lines;
@@ -475,7 +475,7 @@ int BazaCzytelnikow::naliczKaucje(KontoCzytelnika& czytelnik, float kaucja) {
 }
 
 
-//funkcja usuwaj¹ca naliczon¹ kaucjê czytelnikowi
+//funkcja usuwajï¿½ca naliczonï¿½ kaucjï¿½ czytelnikowi
 int BazaCzytelnikow::usunKaucje(KontoCzytelnika& czytelnik) {
     ifstream plik("baza_czytelnikow.txt");
     vector<string> lines;

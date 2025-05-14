@@ -14,7 +14,7 @@ bool BazaPracownikow::walidujPesel(const string& pesel) {
     return true;
 }
 
-// Konstruktor domyœlny; wczytuje dane pracowników z pliku i inicjalizuje listê pracowników
+// Konstruktor domyï¿½lny; wczytuje dane pracownikï¿½w z pliku i inicjalizuje listï¿½ pracownikï¿½w
 BazaPracownikow::BazaPracownikow() {
     ifstream plik("baza_pracownikow.txt");
     if (!plik.is_open()) {
@@ -35,7 +35,7 @@ BazaPracownikow::BazaPracownikow() {
         getline(ss, haslo, ',');
         getline(ss, funkcja, ',');
 
-        // Sprawdzamy funkcjê pracownika
+        // Sprawdzamy funkcjï¿½ pracownika
         if (funkcja != "admin" && funkcja != "pracownik") {
             cerr << "Niepoprawna funkcja: " << funkcja << ". Pomijanie wpisu." << endl;
             continue;
@@ -73,19 +73,19 @@ pair<string, string> BazaPracownikow::logowanie() {
         getline(ss, haslo, ',');
         getline(ss, funkcja, ',');
 
-        // Sprawdzenie poprawnoœci loginu i has³a
+        // Sprawdzenie poprawnoï¿½ci loginu i hasï¿½a
         if (login == wpisanyLogin && haslo == wpisaneHaslo) {
             cout << "Logowanie pomyslne. Witaj " << login << " (" << funkcja << ")!" << endl;
             return { login, funkcja };
         }
     }
 
-    // Jeœli nie znaleziono dopasowania
+    // Jeï¿½li nie znaleziono dopasowania
     return { "", "" };
 }
 
 
-// Funkcja dodaj¹ca nowego pracownika do bazy i zapisuj¹ca jego dane w pliku
+// Funkcja dodajï¿½ca nowego pracownika do bazy i zapisujï¿½ca jego dane w pliku
 int BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
     string peselStr = pracownik.getPesel();
 
@@ -93,7 +93,7 @@ int BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
         return -1;
     }
 
-    // Sprawdzamy, czy pracownik o tym samym PESEL ju¿ istnieje w bazie
+    // Sprawdzamy, czy pracownik o tym samym PESEL juï¿½ istnieje w bazie
     ifstream plik("baza_pracownikow.txt");
     if (!plik.is_open()) {
         cerr << "Nie mozna otworzyc pliku baza_pracownikow.txt" << endl;
@@ -103,13 +103,13 @@ int BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
     string linia;
     while (getline(plik, linia)) {
         stringstream ss(linia);
-        string istniej¹cyPesel;
+        string istniejï¿½cyPesel;
 
         // Odczytujemy PESEL pracownika z pliku
-        getline(ss, istniej¹cyPesel, ',');
+        getline(ss, istniejï¿½cyPesel, ',');
 
-        // Sprawdzamy, czy PESEL ju¿ istnieje
-        if (istniej¹cyPesel == peselStr) {
+        // Sprawdzamy, czy PESEL juï¿½ istnieje
+        if (istniejï¿½cyPesel == peselStr) {
             cerr << "Pracownik o takim PESEL juz istnieje!" << endl;
             plik.close();
             return -1;
@@ -142,7 +142,7 @@ int BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
 }
 
 
-//funkcja usuwaj¹ca pracownika z bazy na podstawie jego numeru PESEL
+//funkcja usuwajï¿½ca pracownika z bazy na podstawie jego numeru PESEL
 int BazaPracownikow::usunPracownika(const Pracownik& pracownik) {
     string pesel = pracownik.getPesel();
 
@@ -196,7 +196,7 @@ int BazaPracownikow::usunPracownika(const Pracownik& pracownik) {
     return 1;
 }
 
-// Funkcja wyœwietlaj¹ca listê wszystkich pracowników w bazie
+// Funkcja wyï¿½wietlajï¿½ca listï¿½ wszystkich pracownikï¿½w w bazie
 void BazaPracownikow::wyswietlListePracownikow() const {
     ifstream plik("baza_pracownikow.txt");
 
