@@ -35,4 +35,4 @@ Pracownik ma możliwość zarządzania operacjami dotyczącymi czytelników oraz
 
 ## Technologie i narzędzia
 - Projektowanie oprogramowania: Visual Paradigm
-- Tworzenie oprogramowania: Visual Studio 2022
+- Tworzenie oprogramowania: CLion
