@@ -1,4 +1,4 @@
-#include "Ksiazka.h"
+#include "../../include/models/Ksiazka.h"
 
 Ksiazka::Ksiazka() : ID(0), tytul(""), nazwiskoAutora(""), rokWydania(0), stan("") {} //konstruktor z warto�ciami domy�lnymi
 

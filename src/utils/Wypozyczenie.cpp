@@ -1,4 +1,4 @@
-#include "Wypozyczenie.h"
+#include "../../include/utils/Wypozyczenie.h"
 
 // Zaktualizowana funkcja wypo�yczaj�ca ksi��k�
 int Wypozyczenie::wypozyczKsiazke(const Ksiazka& ksiazka) {

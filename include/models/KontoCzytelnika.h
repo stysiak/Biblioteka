@@ -1,5 +1,5 @@
 #pragma once
-#include "header.h"
+#include "../../header.h"
 //#include "Ksiazka.h"
 
 class KontoCzytelnika {

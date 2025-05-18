@@ -1,4 +1,4 @@
-#include "BazaKsiazek.h"
+#include "../../include/database/BazaKsiazek.h"
 
 BazaKsiazek::BazaKsiazek() {}
 

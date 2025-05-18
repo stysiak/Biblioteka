@@ -1,6 +1,6 @@
 #pragma once
-#include "KontoCzytelnika.h"
-#include "header.h"
+#include "../models/KontoCzytelnika.h"
+#include "../../header.h"
 
 class BazaCzytelnikow {
 private:

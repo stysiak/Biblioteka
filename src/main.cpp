@@ -1,12 +1,12 @@
-﻿#include "Biblioteka/header.h"
-#include "BazaCzytelnikow.h"
-#include "BazaKsiazek.h"
-#include "Biblioteka/KontoCzytelnika.h"
-#include "Biblioteka/Ksiazka.h"
-#include "Pracownik.h"
-#include "BazaPracownikow.h"
-#include "Biblioteka/Wypozyczenie.h"
-#include "Biblioteka/Zwrot.h"
+#include "../header.h"
+#include "../include/database/BazaCzytelnikow.h"
+#include "../include/database/BazaKsiazek.h"
+#include "../include/models/KontoCzytelnika.h"
+#include "../include/models/Ksiazka.h"
+#include "../include/models/Pracownik.h"
+#include "../include/database/BazaPracownikow.h"
+#include "../include/utils/Wypozyczenie.h"
+#include "../include/utils/Zwrot.h"
 
 using namespace std;
 
@@ -53,7 +53,7 @@ int main() {
                         //dodaj ksiazke
                         string tytul, autor, stan;
                         int rok, ID;
-                        
+
                         cout << "Podaj tytul ksiazki: ";
                         cin.ignore();
                         getline(cin, tytul);
@@ -184,7 +184,7 @@ int main() {
                     case 2: {
                         // Utwórz konto czytelnika
                         string pesel, imie, nazwisko;
-                        
+
                         cout << "Podaj imie: ";
                         cin >> imie;
                         cout << "Podaj nazwisko: ";

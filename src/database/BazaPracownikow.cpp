@@ -1,4 +1,7 @@
-#include "BazaPracownikow.h"
+#include "../../include/database/BazaPracownikow.h"
+
+string BazaPracownikow::nazwaPliku = "../../data/baza_pracownikow.txt";
+
 
 bool BazaPracownikow::walidujPesel(const string& pesel) {
     if (pesel.length() != 11) {
@@ -16,9 +19,9 @@ bool BazaPracownikow::walidujPesel(const string& pesel) {
 
 // Konstruktor domy�lny; wczytuje dane pracownik�w z pliku i inicjalizuje list� pracownik�w
 BazaPracownikow::BazaPracownikow() {
-    ifstream plik("baza_pracownikow.txt");
+    ifstream plik(nazwaPliku);
     if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku baza_pracownikow.txt" << endl;
+        cerr << "Nie mozna otworzyc pliku baza_pracownikow.txt :(" << endl;
         return;
     }
 
@@ -55,9 +58,9 @@ pair<string, string> BazaPracownikow::logowanie() {
     cout << "Podaj haslo: ";
     cin >> wpisaneHaslo;
 
-    ifstream plik("baza_pracownikow.txt");
+    ifstream plik(nazwaPliku);
     if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku baza_pracownikow.txt" << endl;
+        cerr << "Nie mozna otworzyc pliku baza_pracownikow.txt :-" << endl;
         return { "", "" };
     }
 
@@ -94,9 +97,9 @@ int BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
     }
 
     // Sprawdzamy, czy pracownik o tym samym PESEL ju� istnieje w bazie
-    ifstream plik("baza_pracownikow.txt");
+    ifstream plik(nazwaPliku);
     if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku baza_pracownikow.txt" << endl;
+        cerr << "Nie mozna otworzyc pliku baza_pracownikow.txt ;O" << endl;
         return -1;
     }
 
@@ -127,7 +130,7 @@ int BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
     // Dodanie pracownika
     listaPracownikow.push_back(pracownik);
 
-    ofstream plikDoZapisu("baza_pracownikow.txt", ios::app);
+    ofstream plikDoZapisu(nazwaPliku, ios::app);
     if (plikDoZapisu.is_open()) {
         plikDoZapisu << pracownik.getPesel() << "," << pracownik.getImie() << "," << pracownik.getNazwisko() << ","
             << pracownik.getLogin() << "," << pracownik.getHaslo() << "," << pracownik.getFunkcja() << "\n";
@@ -150,7 +153,7 @@ int BazaPracownikow::usunPracownika(const Pracownik& pracownik) {
         return -1;
     }
 
-    ifstream input_file("baza_pracownikow.txt");
+    ifstream input_file(nazwaPliku);
 
     if (!input_file.is_open()) {
         cerr << "Blad otwarcia pliku do odczytu!" << endl;
@@ -181,7 +184,7 @@ int BazaPracownikow::usunPracownika(const Pracownik& pracownik) {
         return -1;
     }
 
-    ofstream output_file("baza_pracownikow.txt");
+    ofstream output_file(nazwaPliku);
     if (!output_file.is_open()) {
         cerr << "Blad otwarcia pliku do zapisu!" << endl;
         return -1;
@@ -198,10 +201,10 @@ int BazaPracownikow::usunPracownika(const Pracownik& pracownik) {
 
 // Funkcja wy�wietlaj�ca list� wszystkich pracownik�w w bazie
 void BazaPracownikow::wyswietlListePracownikow() const {
-    ifstream plik("baza_pracownikow.txt");
+    ifstream plik(nazwaPliku);
 
     if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku baza_pracownikow.txt" << endl;
+        cerr << "Nie mozna otworzyc pliku baza_pracownikow.txt ;E" << endl;
         return;
     }
 

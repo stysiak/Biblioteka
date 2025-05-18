@@ -1,10 +1,10 @@
 #pragma once
-#include "header.h"
+#include "../../header.h"
 #include "KontoCzytelnika.h"
-#include "BazaKsiazek.h"
-#include "BazaCzytelnikow.h"
-#include "Wypozyczenie.h"
-#include "Zwrot.h"
+#include "../database/BazaKsiazek.h"
+#include "../database/BazaCzytelnikow.h"
+#include "../utils/Wypozyczenie.h"
+#include "../utils/Zwrot.h"
 
 class Pracownik {
 private:

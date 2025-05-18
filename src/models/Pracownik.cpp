@@ -1,4 +1,4 @@
-#include "Pracownik.h"
+#include "../../include/models/Pracownik.h"
 
 Pracownik::Pracownik() : pesel(""), imie(""), nazwisko(""), login(""), haslo(""), funkcja("") {} // konstruktor z warto�ciami domy�lnymi
 
@@ -56,7 +56,9 @@ void Pracownik::sprawdzenieKonta(BazaCzytelnikow& baza, const KontoCzytelnika& c
 }
 
 // Funkcja sprawdzaj�ca, czytelnik mo�e wypo�yczy� ksi��k�
-void Pracownik::wypozyczKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik) {
+void Pracownik::wypozyczKsiazke(BazaKsiazek&, BazaCzytelnikow& bazaCzytelnikow,
+    int egzemplarzID, const KontoCzytelnika& czytelnik) {
+
     if (!bazaCzytelnikow.czyMoznaWypozyczyc(czytelnik)) {
         return; // wyj�cie z funkcji, je�li wypo�yczenie jest niemo�liwe
     }
@@ -66,7 +68,7 @@ void Pracownik::wypozyczKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaC
 }
 
 // Funkcja sprawdzaj�c�, czy zwrot jest mo�liwy
-void Pracownik::zwrocKsiazke(BazaKsiazek& bazaKsiazek, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik) {
+void Pracownik::zwrocKsiazke(BazaKsiazek&, BazaCzytelnikow& bazaCzytelnikow, int egzemplarzID, const KontoCzytelnika& czytelnik) {
     float kaucja = zwrot.zwrocKsiazke(egzemplarzID); // obliczenie warto�ci kaucji
 
     if (kaucja != -1) {
