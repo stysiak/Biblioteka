@@ -1,3 +1,4 @@
+## Opis nieaktualny
 # Biblioteka
 Projekt realizowany w ramach przedmiotu Projektowanie Oprogramowania.
 
