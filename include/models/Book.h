@@ -1,7 +1,7 @@
 #pragma once
 #include "../../header.h"
 
-class Ksiazka {
+class Book {
 private:
     int ID;
     string tytul;
@@ -11,9 +11,9 @@ private:
     string dataZwrotu;
 
 public:
-    Ksiazka();
-    Ksiazka(int ID, const string& tytul, const string& nazwiskoAutora, int rokWydania, string stan);
-    Ksiazka(int ID);
+    Book();
+    Book(int ID, const string& tytul, const string& nazwiskoAutora, int rokWydania, string stan);
+    Book(int ID);
     int getID() const;
     string getTytul() const;
     string getNazwiskoAutora() const;

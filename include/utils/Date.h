@@ -1,15 +1,15 @@
 #pragma once
 #include "../../header.h"
 
-class Data {
+class Date {
 private:
     int dzien;
     int miesiac;
     int rok;
 
 public:
-    Data(int d, int m, int r);
+    Date(int d, int m, int r);
 
-    Data();
+    Date();
    
 };

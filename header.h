@@ -14,14 +14,14 @@
 
 using namespace std;
 //wszystkie nazwy klas
-class Ksiazka;
-class KontoCzytelnika;
-class Pracownik;
-class BazaCzytelnikow;
-class BazaKsiazek;
-class BazaPracownikow;
+class Book;
+class ReaderAccount;
+class Employee;
+class ReaderDatabase;
+class BookDatabase;
+class EmployeeDatabase;
 class Wypozyczene;
-class Zwrot;
-//plik header do wszystkich nag³ówków
-//jesli klasa korzysta z obiektow innych klas, to nag³ówek te klasy dodaæ do nag³ówku klasy u¿ywaj¹cej
+class Return;
+//plik header do wszystkich nagï¿½ï¿½wkï¿½w
+//jesli klasa korzysta z obiektow innych klas, to nagï¿½ï¿½wek te klasy dodaï¿½ do nagï¿½ï¿½wku klasy uï¿½ywajï¿½cej
 

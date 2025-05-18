@@ -1,9 +1,9 @@
-#include "../../include/database/BazaPracownikow.h"
+#include "../../include/database/EmployeeDatabase.h"
 
-string BazaPracownikow::nazwaPliku = "../../data/baza_pracownikow.txt";
+string EmployeeDatabase::fileName = "../../data/employees_database.txt";
 
 
-bool BazaPracownikow::walidujPesel(const string& pesel) {
+bool EmployeeDatabase::walidujPesel(const string& pesel) {
     if (pesel.length() != 11) {
         cerr << "Nieprawidlowy PESEL: " << pesel << ". PESEL powinien miec 11 cyfr." << endl;
         return false;
@@ -18,10 +18,10 @@ bool BazaPracownikow::walidujPesel(const string& pesel) {
 }
 
 // Konstruktor domy�lny; wczytuje dane pracownik�w z pliku i inicjalizuje list� pracownik�w
-BazaPracownikow::BazaPracownikow() {
-    ifstream plik(nazwaPliku);
+EmployeeDatabase::EmployeeDatabase() {
+    ifstream plik(fileName);
     if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku baza_pracownikow.txt :(" << endl;
+        cerr << "Nie mozna otworzyc pliku employees_database.txt :(" << endl;
         return;
     }
 
@@ -45,22 +45,22 @@ BazaPracownikow::BazaPracownikow() {
         }
 
         // Dodanie pracownika do listy
-        Pracownik p(imie, nazwisko, login, haslo, pesel, funkcja);
+        Employee p(imie, nazwisko, login, haslo, pesel, funkcja);
         listaPracownikow.push_back(p);
     }
     plik.close();
 }
 
-pair<string, string> BazaPracownikow::logowanie() {
+pair<string, string> EmployeeDatabase::logowanie() {
     string wpisanyLogin, wpisaneHaslo;
     cout << "Podaj login: ";
     cin >> wpisanyLogin;
     cout << "Podaj haslo: ";
     cin >> wpisaneHaslo;
 
-    ifstream plik(nazwaPliku);
+    ifstream plik(fileName);
     if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku baza_pracownikow.txt :-" << endl;
+        cerr << "Nie mozna otworzyc pliku employees_database.txt :-" << endl;
         return { "", "" };
     }
 
@@ -89,7 +89,7 @@ pair<string, string> BazaPracownikow::logowanie() {
 
 
 // Funkcja dodaj�ca nowego pracownika do bazy i zapisuj�ca jego dane w pliku
-int BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
+int EmployeeDatabase::dodajPracownika(const Employee& pracownik) {
     string peselStr = pracownik.getPesel();
 
     if (!walidujPesel(peselStr)) {
@@ -97,9 +97,9 @@ int BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
     }
 
     // Sprawdzamy, czy pracownik o tym samym PESEL ju� istnieje w bazie
-    ifstream plik(nazwaPliku);
+    ifstream plik(fileName);
     if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku baza_pracownikow.txt ;O" << endl;
+        cerr << "Nie mozna otworzyc pliku employees_database.txt ;O" << endl;
         return -1;
     }
 
@@ -113,7 +113,7 @@ int BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
 
         // Sprawdzamy, czy PESEL ju� istnieje
         if (istniej�cyPesel == peselStr) {
-            cerr << "Pracownik o takim PESEL juz istnieje!" << endl;
+            cerr << "Employee o takim PESEL juz istnieje!" << endl;
             plik.close();
             return -1;
         }
@@ -123,14 +123,14 @@ int BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
 
     // Sprawdzenie funkcji pracownika
     if (pracownik.getFunkcja() != "admin" && pracownik.getFunkcja() != "pracownik") {
-        cerr << "Niepoprawna funkcja: " << pracownik.getFunkcja() << ". Pracownik nie zostal dodany." << endl;
+        cerr << "Niepoprawna funkcja: " << pracownik.getFunkcja() << ". Employee nie zostal dodany." << endl;
         return -1;
     }
 
     // Dodanie pracownika
     listaPracownikow.push_back(pracownik);
 
-    ofstream plikDoZapisu(nazwaPliku, ios::app);
+    ofstream plikDoZapisu(fileName, ios::app);
     if (plikDoZapisu.is_open()) {
         plikDoZapisu << pracownik.getPesel() << "," << pracownik.getImie() << "," << pracownik.getNazwisko() << ","
             << pracownik.getLogin() << "," << pracownik.getHaslo() << "," << pracownik.getFunkcja() << "\n";
@@ -146,14 +146,14 @@ int BazaPracownikow::dodajPracownika(const Pracownik& pracownik) {
 
 
 //funkcja usuwaj�ca pracownika z bazy na podstawie jego numeru PESEL
-int BazaPracownikow::usunPracownika(const Pracownik& pracownik) {
+int EmployeeDatabase::usunPracownika(const Employee& pracownik) {
     string pesel = pracownik.getPesel();
 
     if (!walidujPesel(pesel)) {
         return -1;
     }
 
-    ifstream input_file(nazwaPliku);
+    ifstream input_file(fileName);
 
     if (!input_file.is_open()) {
         cerr << "Blad otwarcia pliku do odczytu!" << endl;
@@ -184,7 +184,7 @@ int BazaPracownikow::usunPracownika(const Pracownik& pracownik) {
         return -1;
     }
 
-    ofstream output_file(nazwaPliku);
+    ofstream output_file(fileName);
     if (!output_file.is_open()) {
         cerr << "Blad otwarcia pliku do zapisu!" << endl;
         return -1;
@@ -200,11 +200,11 @@ int BazaPracownikow::usunPracownika(const Pracownik& pracownik) {
 }
 
 // Funkcja wy�wietlaj�ca list� wszystkich pracownik�w w bazie
-void BazaPracownikow::wyswietlListePracownikow() const {
-    ifstream plik(nazwaPliku);
+void EmployeeDatabase::wyswietlListePracownikow() const {
+    ifstream plik(fileName);
 
     if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku baza_pracownikow.txt ;E" << endl;
+        cerr << "Nie mozna otworzyc pliku employees_database.txt ;E" << endl;
         return;
     }
 

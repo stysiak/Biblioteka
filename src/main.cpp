@@ -1,19 +1,19 @@
 #include "../header.h"
-#include "../include/database/BazaCzytelnikow.h"
-#include "../include/database/BazaKsiazek.h"
-#include "../include/models/KontoCzytelnika.h"
-#include "../include/models/Ksiazka.h"
-#include "../include/models/Pracownik.h"
-#include "../include/database/BazaPracownikow.h"
-#include "../include/utils/Wypozyczenie.h"
-#include "../include/utils/Zwrot.h"
+#include "../include/database/ReaderDatabase.h"
+#include "../include/database/BookDatabase.h"
+#include "../include/models/ReaderAccount.h"
+#include "../include/models/Book.h"
+#include "../include/models/Employee.h"
+#include "../include/database/EmployeeDatabase.h"
+#include "../include/utils/Borrowing.h"
+#include "../include/utils/Return.h"
 
 using namespace std;
 
 int main() {
-    BazaPracownikow bazaPracownikow;
-    BazaCzytelnikow bazaCzytelnikow;
-    BazaKsiazek bazaKsiazek;
+    EmployeeDatabase bazaPracownikow;
+    ReaderDatabase bazaCzytelnikow;
+    BookDatabase bazaKsiazek;
     string login, funkcja;
     int wybor;
 
@@ -63,7 +63,7 @@ int main() {
                         cin >> rok;
                         cout << "Nadaj ID ksiazki: ";
                         cin >> ID;
-                        Ksiazka nowaKsiazka(ID, tytul, autor, rok, stan);
+                        Book nowaKsiazka(ID, tytul, autor, rok, stan);
                         admin.dodajKsiazke(bazaKsiazek, nowaKsiazka);
                         break;
                     }
@@ -72,7 +72,7 @@ int main() {
                         int kID;
                         cout << "Podaj ID ksiazki do usuniecia: ";
                         cin >> kID;
-                        Ksiazka ksiazkaDoUsuniecia(kID);
+                        Book ksiazkaDoUsuniecia(kID);
                         admin.usunKsiazke(bazaKsiazek, ksiazkaDoUsuniecia);
                         break;
                     }
@@ -91,7 +91,7 @@ int main() {
                         cin >> pesel;
                         cout << "Podaj funkcje (admin/pracownik): ";
                         cin >> funkcja;
-                        Pracownik nowyPracownik(pesel, imie, nazwisko, login, haslo, funkcja);
+                        Employee nowyPracownik(pesel, imie, nazwisko, login, haslo, funkcja);
                         admin.dodajPracownika(bazaPracownikow,nowyPracownik);
                         break;
                     }
@@ -100,7 +100,7 @@ int main() {
                         string pesel;
                         cout << "Podaj pesel: ";
                         cin >> pesel;
-                        Pracownik pracownikDoUsuniecia(pesel);
+                        Employee pracownikDoUsuniecia(pesel);
                         admin.usunPracownika(bazaPracownikow,pracownikDoUsuniecia);
                         break;
                     }
@@ -115,7 +115,7 @@ int main() {
                         cout << "Podaj Pesel: ";
                         cin >> pesel;
 
-                        KontoCzytelnika nowyCzytelnik(pesel, imie, nazwisko);
+                        ReaderAccount nowyCzytelnik(pesel, imie, nazwisko);
                         admin.dodajCzytelnika(bazaCzytelnikow, nowyCzytelnik);
                         break;
                     }
@@ -124,7 +124,7 @@ int main() {
                         string pesel;
                         cout << "Podaj Pesel czytelnika do usuniecia: ";
                         cin >> pesel;
-                        KontoCzytelnika czytelnikDoUsuniecia(pesel);
+                        ReaderAccount czytelnikDoUsuniecia(pesel);
                         admin.usunCzytelnika(bazaCzytelnikow, czytelnikDoUsuniecia);
                         break;
                     }
@@ -156,7 +156,7 @@ int main() {
             }
             else if (funkcja == "pracownik") {
                 // Tworzymy obiekt Pracownika
-                Pracownik pracownik;
+                Employee pracownik;
                 do {
                     cout << "\n--- Menu Pracownika ---\n";
                     cout << "1. Sprawdz konto czytelnika\n";
@@ -177,7 +177,7 @@ int main() {
                         string pesel;
                         cout << "Podaj Pesel: ";
                         cin >> pesel;
-                        KontoCzytelnika nowyCzytelnik(pesel);
+                        ReaderAccount nowyCzytelnik(pesel);
                         pracownik.sprawdzenieKonta(bazaCzytelnikow, nowyCzytelnik);
                         break;
                     }
@@ -192,7 +192,7 @@ int main() {
                         cout << "Podaj Pesel: ";
                         cin >> pesel;
 
-                        KontoCzytelnika nowyCzytelnik(pesel, imie, nazwisko);
+                        ReaderAccount nowyCzytelnik(pesel, imie, nazwisko);
                         pracownik.dodajCzytelnika(bazaCzytelnikow, nowyCzytelnik);
                         break;
                     }
@@ -201,7 +201,7 @@ int main() {
                         string pesel;
                         cout << "Podaj Pesel czytelnika do usuniecia: ";
                         cin >> pesel;
-                        KontoCzytelnika czytelnikDoUsuniecia(pesel);
+                        ReaderAccount czytelnikDoUsuniecia(pesel);
                         pracownik.usunCzytelnika(bazaCzytelnikow, czytelnikDoUsuniecia);
                         break;
 
@@ -213,7 +213,7 @@ int main() {
                         cin >> egzemplarzID;
                         cout << "Podaj pesel czytelnika: ";
                         cin >> pesel;
-                        KontoCzytelnika czytelnik(pesel);
+                        ReaderAccount czytelnik(pesel);
                         pracownik.zwrocKsiazke(bazaKsiazek, bazaCzytelnikow, egzemplarzID, czytelnik);
                         break;
                     }
@@ -224,7 +224,7 @@ int main() {
                         cin >> egzemplarzID;
                         cout << "Podaj pesel czytelnika: ";
                         cin >> pesel;
-                        KontoCzytelnika czytelnik(pesel);
+                        ReaderAccount czytelnik(pesel);
                         pracownik.wypozyczKsiazke(bazaKsiazek, bazaCzytelnikow, egzemplarzID, czytelnik);
                         break;
                     }
@@ -233,7 +233,7 @@ int main() {
                         string pesel;
                         cout << "Podaj PESEL czytelnika: ";
                         cin >> pesel;
-                        KontoCzytelnika czytelnik(pesel);
+                        ReaderAccount czytelnik(pesel);
                         pracownik.przyjmijKaucje(bazaCzytelnikow, czytelnik);
                         break;
                     }

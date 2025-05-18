@@ -1,12 +1,12 @@
 #pragma once
-#include "../models/Pracownik.h"
-#include "../database/BazaKsiazek.h"
-#include "../database/BazaPracownikow.h"
+#include "../models/Employee.h"
+#include "../database/BookDatabase.h"
+#include "../database/EmployeeDatabase.h"
 
 /**
  * @brief Klasa reprezentująca administratora systemu bibliotecznego
  */
-class Administrator : public Pracownik {
+class Administrator : public Employee {
 public:
     Administrator();
     Administrator(const string& pesel, const string& imie, const string& nazwisko,
@@ -14,9 +14,9 @@ public:
 
     virtual ~Administrator() = default;
 
-    void dodajKsiazke(BazaKsiazek& baza, const Ksiazka& ksiazka) noexcept;
-    void usunKsiazke(BazaKsiazek& baza, const Ksiazka& ksiazka) noexcept;
-    void dodajPracownika(BazaPracownikow& baza, const Pracownik& pracownik) noexcept;
-    void usunPracownika(BazaPracownikow& baza, const Pracownik& pracownik) noexcept;
-    void wyswietlListePracownikow(const BazaPracownikow& baza) const noexcept;
+    void dodajKsiazke(BookDatabase& baza, const Book& ksiazka) noexcept;
+    void usunKsiazke(BookDatabase& baza, const Book& ksiazka) noexcept;
+    void dodajPracownika(EmployeeDatabase& baza, const Employee& pracownik) noexcept;
+    void usunPracownika(EmployeeDatabase& baza, const Employee& pracownik) noexcept;
+    void wyswietlListePracownikow(const EmployeeDatabase& baza) const noexcept;
 };

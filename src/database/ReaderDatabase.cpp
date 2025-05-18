@@ -1,8 +1,9 @@
-#include "../../include/database/BazaCzytelnikow.h"
+#include "../../include/database/ReaderDatabase.h"
+string ReaderDatabase::fileName = "../../data/readers_database.txt";
 
-BazaCzytelnikow::BazaCzytelnikow() {}
+ReaderDatabase::ReaderDatabase() {}
 
-bool BazaCzytelnikow::walidujPesel(const string& pesel) {
+bool ReaderDatabase::walidujPesel(const string& pesel) {
     if (pesel.length() != 11) {
         cerr << "Nieprawidlowy PESEL: " << pesel << ". PESEL powinien miec 11 cyfr." << endl;
         return false;
@@ -17,14 +18,14 @@ bool BazaCzytelnikow::walidujPesel(const string& pesel) {
 }
 
 //funkcja tworzy nowe konto czytelnika i zapisuje je w pliku
-int BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
+int ReaderDatabase::tworzenieKonta(const ReaderAccount& czytelnik) {
     string peselStr = czytelnik.getPesel();
 
     if (!walidujPesel(peselStr)) {
         return -1;
     }
 
-    ifstream input_file("baza_czytelnikow.txt");
+    ifstream input_file(fileName);
 
     if (!input_file.is_open()) {
         cerr << "Blad otwarcia pliku do odczytu!" << endl;
@@ -52,7 +53,7 @@ int BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
 
     // Dodanie nowego czytelnika do kolekcji w pami�ci
     int id = czytelnicy.size() + 1;
-    czytelnicy[id] = make_shared<KontoCzytelnika>(czytelnik);
+    czytelnicy[id] = make_shared<ReaderAccount>(czytelnik);
 
     // Dodanie nowego czytelnika do listy w celu zapisania do pliku
     string new_record = peselStr + "," + czytelnik.getImie() + "," +
@@ -60,7 +61,7 @@ int BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
         "," + to_string(czytelnik.getIloscKsiazek());
     lines.push_back(new_record);
 
-    ofstream output_file("baza_czytelnikow.txt");
+    ofstream output_file(fileName);
     if (!output_file.is_open()) {
         cerr << "Blad otwarcia pliku do zapisu!" << endl;
         return -1;
@@ -77,7 +78,7 @@ int BazaCzytelnikow::tworzenieKonta(const KontoCzytelnika& czytelnik) {
 }
 
 
-int BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
+int ReaderDatabase::usuniecieKonta(const ReaderAccount& czytelnik) {
     string peselStr = czytelnik.getPesel();
 
     if (!walidujPesel(peselStr)) {
@@ -85,7 +86,7 @@ int BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
     }
 
 
-    ifstream input_file("baza_czytelnikow.txt");
+    ifstream input_file(fileName);
 
     if (!input_file.is_open()) {
         cerr << "Blad otwarcia pliku do odczytu!" << endl;
@@ -118,7 +119,7 @@ int BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
     }
 
     //zapisanie zaktualizowanego pliku bez danych usuni�tego czytelnika
-    ofstream output_file("baza_czytelnikow.txt");
+    ofstream output_file(fileName);
     if (!output_file.is_open()) {
         cerr << "Blad otwarcia pliku do zapisu!" << endl;
         return -1;
@@ -133,11 +134,11 @@ int BazaCzytelnikow::usuniecieKonta(const KontoCzytelnika& czytelnik) {
 }
 
 //funkcja wy�wietlaj�ca wszystkich czytelnik�w zapisanych w pliku
-void BazaCzytelnikow::wyswietlListeCzytelnikow() const {
-    ifstream plik("baza_czytelnikow.txt");
+void ReaderDatabase::wyswietlListeCzytelnikow() const {
+    ifstream plik(fileName);
 
     if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku baza_czytelnikow.txt" << endl;
+        cerr << "Nie mozna otworzyc pliku readers_database.txt" << endl;
         return;
     }
 
@@ -179,8 +180,8 @@ void BazaCzytelnikow::wyswietlListeCzytelnikow() const {
 }
 
 //funkcja przypisuj�ca wypo�yczenie ksi��ki do danego czytelnika
-int BazaCzytelnikow::podepnijWypozyczenie(const KontoCzytelnika& czytelnik, int egzemplarzID) {
-    ifstream plik("baza_czytelnikow.txt");
+int ReaderDatabase::podepnijWypozyczenie(const ReaderAccount& czytelnik, int egzemplarzID) {
+    ifstream plik(fileName);
     vector<string> lines;
     string line;
     bool found = false;
@@ -232,7 +233,7 @@ int BazaCzytelnikow::podepnijWypozyczenie(const KontoCzytelnika& czytelnik, int 
         return -1;
     }
     //zapisz zaktualizowanych danych do pliku
-    ofstream outPlik("baza_czytelnikow.txt");
+    ofstream outPlik("readers_database.txt");
     if (!outPlik.is_open()) {
         cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
         return -1;
@@ -250,8 +251,8 @@ int BazaCzytelnikow::podepnijWypozyczenie(const KontoCzytelnika& czytelnik, int 
 
 
 //funkcja usuwaj�ca wypo�yczenie ksi��ki przypisanej do danego czytelnika
-int BazaCzytelnikow::usunWypozyczenie(const KontoCzytelnika& czytelnik, int egzemplarzID) {
-    ifstream plik("baza_czytelnikow.txt");
+int ReaderDatabase::usunWypozyczenie(const ReaderAccount& czytelnik, int egzemplarzID) {
+    ifstream plik("readers_database.txt");
     vector<string> lines;
     string line;
     bool found = false;
@@ -318,7 +319,7 @@ int BazaCzytelnikow::usunWypozyczenie(const KontoCzytelnika& czytelnik, int egze
     }
     //zapis zaktualizowanych danych, je�li ksi��ka zosta�a zwr�cona
     if (bookReturned) {
-        ofstream outPlik("baza_czytelnikow.txt");
+        ofstream outPlik("readers_database.txt");
         if (!outPlik.is_open()) {
             cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
             return -1;
@@ -338,8 +339,8 @@ int BazaCzytelnikow::usunWypozyczenie(const KontoCzytelnika& czytelnik, int egze
 }
 
 //funkcja sprawdzaj�ca, czy czytelnik mo�e wypo�yczy� kolejn� ksi��k�
-bool BazaCzytelnikow::czyMoznaWypozyczyc(const KontoCzytelnika& czytelnik) {
-    ifstream plik("baza_czytelnikow.txt");
+bool ReaderDatabase::czyMoznaWypozyczyc(const ReaderAccount& czytelnik) {
+    ifstream plik("readers_database.txt");
     string linia;
 
     while (getline(plik, linia)) {
@@ -371,10 +372,10 @@ bool BazaCzytelnikow::czyMoznaWypozyczyc(const KontoCzytelnika& czytelnik) {
 }
 
 //funkcja wy�wietlaj�ca dane konta
-void BazaCzytelnikow::sprawdzenieKonta(const KontoCzytelnika& czytelnik) {
-    ifstream plik("baza_czytelnikow.txt");
+void ReaderDatabase::sprawdzenieKonta(const ReaderAccount& czytelnik) {
+    ifstream plik("readers_database.txt");
     if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku baza_czytelnikow.txt" << endl;
+        cerr << "Nie mozna otworzyc pliku readers_database.txt" << endl;
         return;
     }
 
@@ -418,8 +419,8 @@ void BazaCzytelnikow::sprawdzenieKonta(const KontoCzytelnika& czytelnik) {
 }
 
 //funkcja naliczaj�ca kaucje czytelnikowi
-int BazaCzytelnikow::naliczKaucje(KontoCzytelnika& czytelnik, float kaucja) {
-    ifstream plik("baza_czytelnikow.txt");
+int ReaderDatabase::naliczKaucje(ReaderAccount& czytelnik, float kaucja) {
+    ifstream plik("readers_database.txt");
     vector<string> lines;
     string line;
     bool found = false;
@@ -457,7 +458,7 @@ int BazaCzytelnikow::naliczKaucje(KontoCzytelnika& czytelnik, float kaucja) {
         return -1;
     }
 
-    ofstream outPlik("baza_czytelnikow.txt");
+    ofstream outPlik("readers_database.txt");
     if (!outPlik.is_open()) {
         cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
         return -1;
@@ -476,8 +477,8 @@ int BazaCzytelnikow::naliczKaucje(KontoCzytelnika& czytelnik, float kaucja) {
 
 
 //funkcja usuwaj�ca naliczon� kaucj� czytelnikowi
-int BazaCzytelnikow::usunKaucje(KontoCzytelnika& czytelnik) {
-    ifstream plik("baza_czytelnikow.txt");
+int ReaderDatabase::usunKaucje(ReaderAccount& czytelnik) {
+    ifstream plik("readers_database.txt");
     vector<string> lines;
     string line;
     bool found = false;
@@ -513,7 +514,7 @@ int BazaCzytelnikow::usunKaucje(KontoCzytelnika& czytelnik) {
         return -1;
     }
 
-    ofstream outPlik("baza_czytelnikow.txt");
+    ofstream outPlik("readers_database.txt");
     if (!outPlik.is_open()) {
         cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
         return -1;

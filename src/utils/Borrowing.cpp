@@ -1,8 +1,9 @@
-#include "../../include/utils/Wypozyczenie.h"
+#include "../../include/utils/Borrowing.h"
 
+string Borrowing::fileName = "../../data/books_database.txt";
 // Zaktualizowana funkcja wypo�yczaj�ca ksi��k�
-int Wypozyczenie::wypozyczKsiazke(const Ksiazka& ksiazka) {
-    ifstream plik("baza_ksiazek.txt");
+int Borrowing::wypozyczKsiazke(const Book& ksiazka) {
+    ifstream plik(fileName);
     vector<string> lines;
     string line;
     bool found = false;
@@ -35,16 +36,16 @@ int Wypozyczenie::wypozyczKsiazke(const Ksiazka& ksiazka) {
     plik.close();
 
     if (!found) {
-        cerr << "Ksiazka o ID " << ksiazka.getID() << " jest niedostepna lub nie istnieje!" << endl;
+        cerr << "Book o ID " << ksiazka.getID() << " jest niedostepna lub nie istnieje!" << endl;
         return -1;
     }
 
-    ofstream outPlik("baza_ksiazek.txt");
+    ofstream outPlik(fileName);
     for (const auto& l : lines) {
         outPlik << l << endl;
     }
     outPlik.close();
 
-    cout << "Ksiazka o ID " << ksiazka.getID() << " zostala wypozyczona. Data zwrotu: " << dataZwrotu << endl;
+    cout << "Book o ID " << ksiazka.getID() << " zostala wypozyczona. Data zwrotu: " << dataZwrotu << endl;
     return ksiazka.getID();
 }

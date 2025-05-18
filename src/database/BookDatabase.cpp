@@ -1,10 +1,12 @@
-#include "../../include/database/BazaKsiazek.h"
+#include "../../include/database/BookDatabase.h"
 
-BazaKsiazek::BazaKsiazek() {}
+string BookDatabase::fileName = "../../data/books_database.txt";
 
-//funkcja dodaj�ca now� ksi��k� do bazy, sprawdzaj�c czy ksi��ka o danym ID ju� istnieje
-int BazaKsiazek::aktualizujStanDodaj(const Ksiazka& ksiazka) {
-    ifstream plik("baza_ksiazek.txt");
+BookDatabase::BookDatabase() {}
+
+
+int BookDatabase::aktualizujStanDodaj(const Book& ksiazka) {
+    ifstream plik(fileName);
     string linia;
 
     if (plik.is_open()) {
@@ -14,7 +16,7 @@ int BazaKsiazek::aktualizujStanDodaj(const Ksiazka& ksiazka) {
             ss >> fileID;
 
             if (fileID == ksiazka.getID()) { //por�wnanie ID
-                cerr << "Ksiazka o ID " << ksiazka.getID() << " juz istnieje." << endl;
+                cerr << "Book o ID " << ksiazka.getID() << " juz istnieje." << endl;
                 plik.close();
                 return -1;
             }
@@ -27,12 +29,12 @@ int BazaKsiazek::aktualizujStanDodaj(const Ksiazka& ksiazka) {
     }
 
     // Tworzenie lokalnej kopii ksi��ki z automatycznie ustawionym stanem "dost�pna"
-    Ksiazka nowaKsiazka(ksiazka.getID(), ksiazka.getTytul(), ksiazka.getNazwiskoAutora(), ksiazka.getRokWydania(), "dostepna");
+    Book nowaKsiazka(ksiazka.getID(), ksiazka.getTytul(), ksiazka.getNazwiskoAutora(), ksiazka.getRokWydania(), "dostepna");
 
     // Dodanie ksi��ki do mapy
-    ksiazki[nowaKsiazka.getID()] = make_shared<Ksiazka>(nowaKsiazka);
+    ksiazki[nowaKsiazka.getID()] = make_shared<Book>(nowaKsiazka);
 
-    ofstream outPlik("baza_ksiazek.txt", ios::app);
+    ofstream outPlik(fileName, ios::app);
     if (outPlik.is_open()) {
         outPlik << nowaKsiazka.getID() << "," << nowaKsiazka.getTytul() << "," << nowaKsiazka.getNazwiskoAutora() << "," << nowaKsiazka.getRokWydania() << "," << nowaKsiazka.getStan() << endl;
         outPlik.close();
@@ -47,9 +49,9 @@ int BazaKsiazek::aktualizujStanDodaj(const Ksiazka& ksiazka) {
 
 
 //funkcja usuwaj�ca ksi��k� z bazy na podstawie ID
-int BazaKsiazek::aktualizujStanUsun(const Ksiazka& ksiazka) {
+int BookDatabase::aktualizujStanUsun(const Book& ksiazka) {
     int kID = ksiazka.getID();
-    ifstream input_file("baza_ksiazek.txt");
+    ifstream input_file(fileName);
 
     if (!input_file.is_open()) {
         cerr << "Blad otwarcia pliku do odczytu!" << endl;
@@ -80,7 +82,7 @@ int BazaKsiazek::aktualizujStanUsun(const Ksiazka& ksiazka) {
         return -1;
     }
 
-    ofstream output_file("baza_ksiazek.txt");
+    ofstream output_file(fileName);
     if (!output_file.is_open()) {
         cerr << "Blad otwarcia pliku do zapisu!" << endl;
         return -1;
@@ -96,11 +98,11 @@ int BazaKsiazek::aktualizujStanUsun(const Ksiazka& ksiazka) {
 }
 
 //funkcja wy�wietlaj�ca list� wszystkich ksi��ek w bazie
-void BazaKsiazek::wyswietlListeKsiazek() const {
-    ifstream plik("baza_ksiazek.txt");
+void BookDatabase::wyswietlListeKsiazek() const {
+    ifstream plik(fileName);
 
     if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku baza_ksiazek.txt" << endl;
+        cerr << "Nie mozna otworzyc pliku books_database.txt" << endl;
         return;
     }
 

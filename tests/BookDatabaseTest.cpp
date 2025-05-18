@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../include/database/BazaKsiazek.h"
+#include "../include/database/BookDatabase.h"
 
 int main(int argc, char* argv[]) {
     // Tu będą testy

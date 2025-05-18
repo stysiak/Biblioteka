@@ -7,7 +7,7 @@
 
 
 
-class TestBazaKsiazek {
+class BookDatabaseTest {
 
 };
 

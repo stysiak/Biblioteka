@@ -1,7 +1,8 @@
-#include "../../include/utils/Zwrot.h"
+#include "../../include/utils/Return.h"
 
+string Return::fileName = "../../data/books_database.txt";
 // Zaktualizowana funkcja zwracaj�ca ksi��k�
-float Zwrot::zwrocKsiazke(const Ksiazka& ksiazka) {
+float Return::zwrocKsiazke(const Book& ksiazka) {
     float kaucja = 0.0f;  // Zmienna do przechowywania kaucji
     string dataZwrotuFile;
     time_t now = time(0); //pobranie aktualnej daty
@@ -9,7 +10,7 @@ float Zwrot::zwrocKsiazke(const Ksiazka& ksiazka) {
     localtime_s(&localTime, &now);
     string currentDate = to_string(1900 + localTime.tm_year) + "-" + to_string(1 + localTime.tm_mon) + "-" + to_string(localTime.tm_mday);
 
-    ifstream plik("baza_ksiazek.txt");
+    ifstream plik(fileName);
     vector<string> lines;
     string line;
     bool found = false;
@@ -57,7 +58,7 @@ float Zwrot::zwrocKsiazke(const Ksiazka& ksiazka) {
     }
 
     //zapis zaktualizowanych danych do pliku
-    ofstream outPlik("baza_ksiazek.txt");
+    ofstream outPlik(fileName);
     for (const auto& l : lines) {
         outPlik << l << endl;
     }
@@ -65,10 +66,10 @@ float Zwrot::zwrocKsiazke(const Ksiazka& ksiazka) {
 
     //informowanie o wyniku zwrotu
     if (kaucja > 0.0f) {
-        cout << "Ksiazka zwrocona po terminie. Naliczenie kaucji: " << kaucja << " zl." << endl;
+        cout << "Book zwrocona po terminie. Naliczenie kaucji: " << kaucja << " zl." << endl;
     }
     else {
-        cout << "Ksiazka o ID " << ksiazka.getID() << " zostala zwrocona w terminie." << endl;
+        cout << "Book o ID " << ksiazka.getID() << " zostala zwrocona w terminie." << endl;
     }
 
     return kaucja;  // Zwracamy warto�� kaucji
