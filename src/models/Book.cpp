@@ -26,6 +26,18 @@ int Book::getRokWydania() const {
 	return rokWydania; 
 }
 
-string Book::getStan() const {
+void Book::setStan(const std::string& nowyStan) {
+	if (nowyStan == "dostepna" || nowyStan == "niedostepna") {
+		stan = nowyStan;
+	} else {
+		std::cerr << "Nieprawidlowy stan ksiazki: " << nowyStan << std::endl;
+	}
+}
+
+std::string Book::getStan() const {
 	return stan;
+}
+
+void Book::setDataZwrotu(const std::string& data) {
+	dataZwrotu = data;
 }

@@ -3,9 +3,6 @@
 #include "../database/BookDatabase.h"
 #include "../database/EmployeeDatabase.h"
 
-/**
- * @brief Klasa reprezentująca administratora systemu bibliotecznego
- */
 class Administrator : public Employee {
 public:
     Administrator();

@@ -1,50 +1,49 @@
 #include "../../include/utils/Borrowing.h"
 
-string Borrowing::fileName = "../../data/books_database.txt";
-// Zaktualizowana funkcja wypo�yczaj�ca ksi��k�
-int Borrowing::wypozyczKsiazke(const Book& ksiazka) {
-    ifstream plik(fileName);
-    vector<string> lines;
-    string line;
-    bool found = false;
+string Borrowing::fileName = "../../data/books_database.json";
 
+int Borrowing::wypozyczKsiazke(const Book& ksiazka) {
+    ifstream inFile(fileName);
+    if (!inFile.is_open()) {
+        cerr << "Nie mozna otworzyc pliku JSON!" << endl;
+        return -1;
+    }
+
+    json books;
+    inFile >> books;
+    inFile.close();
+
+    bool found = false;
     time_t now = time(0);
     tm ltm = {};
     localtime_s(&ltm, &now);
-    ltm.tm_mday += 30;  // Dodajemy 30 dni do bie��cej daty
+    ltm.tm_mday += 30;  // Dodajemy 30 dni
     mktime(&ltm);
     ostringstream oss;
     oss << put_time(&ltm, "%Y-%m-%d");
     string dataZwrotu = oss.str();
 
-    while (getline(plik, line)) {
-        stringstream ss(line);
-        string id, tytul, autor, rok, stan, dataZwrotuFile;
-        getline(ss, id, ',');
-        getline(ss, tytul, ',');
-        getline(ss, autor, ',');
-        getline(ss, rok, ',');
-        getline(ss, stan, ',');
-        getline(ss, dataZwrotuFile, ',');
-
-        if (stoi(id) == ksiazka.getID() && stan == "dostepna") {
-            line = id + "," + tytul + "," + autor + "," + rok + ",niedostepna," + dataZwrotu;
+    for (auto& book : books) {
+        if (book["id"] == ksiazka.getID() && book["status"] == "dostepna") {
+            book["status"] = "niedostepna";
+            book["data_zwrotu"] = dataZwrotu;
             found = true;
+            break;
         }
-        lines.push_back(line);
     }
-    plik.close();
 
     if (!found) {
         cerr << "Book o ID " << ksiazka.getID() << " jest niedostepna lub nie istnieje!" << endl;
         return -1;
     }
 
-    ofstream outPlik(fileName);
-    for (const auto& l : lines) {
-        outPlik << l << endl;
+    ofstream outFile(fileName);
+    if (!outFile.is_open()) {
+        cerr << "Nie mozna zapisac pliku JSON!" << endl;
+        return -1;
     }
-    outPlik.close();
+    outFile << setw(4) << books << endl;
+    outFile.close();
 
     cout << "Book o ID " << ksiazka.getID() << " zostala wypozyczona. Data zwrotu: " << dataZwrotu << endl;
     return ksiazka.getID();

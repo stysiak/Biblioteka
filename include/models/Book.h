@@ -18,7 +18,11 @@ public:
     string getTytul() const;
     string getNazwiskoAutora() const;
     int getRokWydania() const;
+
+    void setStan(const string &nowyStan);
+
     string getStan() const;
-  
+
+    void setDataZwrotu(const string& string);
 };
 

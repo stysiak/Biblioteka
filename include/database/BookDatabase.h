@@ -13,4 +13,8 @@ public:
     int aktualizujStanDodaj(const Book& ksiazka);
     int aktualizujStanUsun(const Book& ksiazka);
     void wyswietlListeKsiazek() const;
+
+    bool wypozyczKsiazke(int id, const string &dataZwrotu);
+
+    bool zwrocKsiazke(int id);
 };

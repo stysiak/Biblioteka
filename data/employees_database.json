@@ -1,0 +1,98 @@
+[
+  {
+    "pesel": "0",
+    "imie": "admin",
+    "nazwisko": "admin",
+    "login": "admin",
+    "haslo": "admin123",
+    "rola": "admin"
+  },
+  {
+    "pesel": "0",
+    "imie": "pracownik",
+    "nazwisko": "pracownik",
+    "login": "pracownik",
+    "haslo": "pracownik123",
+    "rola": "pracownik"
+  },
+  {
+    "pesel": "23232323232",
+    "imie": "anna",
+    "nazwisko": "nowak",
+    "login": "ann4N0w0k",
+    "haslo": "Passw0rd1",
+    "rola": "pracownik"
+  },
+  {
+    "pesel": "12345678910",
+    "imie": "jan",
+    "nazwisko": "nowak",
+    "login": "janN0w0k",
+    "haslo": "1234Secure",
+    "rola": "admin"
+  },
+  {
+    "pesel": "12312312345",
+    "imie": "anna",
+    "nazwisko": "kowalska",
+    "login": "4nnK0w0k",
+    "haslo": "S3cur3a12",
+    "rola": "pracownik"
+  },
+  {
+    "pesel": "98765432101",
+    "imie": "piotr",
+    "nazwisko": "kowalski",
+    "login": "p1otrK0w",
+    "haslo": "Password123",
+    "rola": "admin"
+  },
+  {
+    "pesel": "55555555555",
+    "imie": "marcin",
+    "nazwisko": "ziemek",
+    "login": "m4rc1nZ1em3k",
+    "haslo": "Salary2023",
+    "rola": "pracownik"
+  },
+  {
+    "pesel": "67890123456",
+    "imie": "agnieszka",
+    "nazwisko": "piotrowska",
+    "login": "4gn1szkPiotr",
+    "haslo": "Agni3Pass",
+    "rola": "pracownik"
+  },
+  {
+    "pesel": "13579246800",
+    "imie": "ewa",
+    "nazwisko": "wisniewska",
+    "login": "eWi4Wi1neWska",
+    "haslo": "EwaPass123",
+    "rola": "admin"
+  },
+  {
+    "pesel": "24681357902",
+    "imie": "adam",
+    "nazwisko": "kowalczyk",
+    "login": "4dmK0w0l",
+    "haslo": "1dmk0w123",
+    "rola": "pracownik"
+  },
+  {
+    "pesel": "10293847564",
+    "imie": "karolina",
+    "nazwisko": "lewandowska",
+    "login": "Krol1nL3w",
+    "haslo": "KrolinaPass",
+    "rola": "admin"
+  },
+  {
+    "pesel": "12312334545",
+    "imie": "agnieszka",
+    "nazwisko": "nowak",
+    "login": "aga",
+    "haslo": "nowa",
+    "rola": "pracownik"
+  }
+]

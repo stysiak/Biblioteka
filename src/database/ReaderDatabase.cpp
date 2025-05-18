@@ -1,535 +1,165 @@
 #include "../../include/database/ReaderDatabase.h"
-string ReaderDatabase::fileName = "../../data/readers_database.txt";
+
+string ReaderDatabase::fileName = "../../data/readers_database.json";
 
 ReaderDatabase::ReaderDatabase() {}
 
 bool ReaderDatabase::walidujPesel(const string& pesel) {
-    if (pesel.length() != 11) {
-        cerr << "Nieprawidlowy PESEL: " << pesel << ". PESEL powinien miec 11 cyfr." << endl;
+    if (pesel.length() != 11 || !std::all_of(pesel.begin(), pesel.end(), ::isdigit)) {
+        cerr << "Nieprawidlowy PESEL: " << pesel << endl;
         return false;
     }
-
-    if (!std::all_of(pesel.begin(), pesel.end(), ::isdigit)) {
-        cerr << "PESEL musi zawierac tylko cyfry!" << endl;
-        return false;
-    }
-
     return true;
 }
 
-//funkcja tworzy nowe konto czytelnika i zapisuje je w pliku
-int ReaderDatabase::tworzenieKonta(const ReaderAccount& czytelnik) {
-    string peselStr = czytelnik.getPesel();
-
-    if (!walidujPesel(peselStr)) {
-        return -1;
+json ReaderDatabase::wczytajBaze() const {
+    ifstream file(fileName);
+    if (!file.is_open()) {
+        cerr << "Blad otwarcia pliku JSON!" << endl;
+        return {};
     }
-
-    ifstream input_file(fileName);
-
-    if (!input_file.is_open()) {
-        cerr << "Blad otwarcia pliku do odczytu!" << endl;
-        return -1;
-    }
-
-    vector<string> lines;
-    string line;
-
-    while (getline(input_file, line)) {
-        stringstream ss(line);
-        string id;
-        getline(ss, id, ',');
-
-        if (id == peselStr) {
-            cerr << "Czytelnik o Peselu " << peselStr << " juz istnieje." << endl;
-            input_file.close();
-            return -1;
-        }
-
-        lines.push_back(line);
-    }
-
-    input_file.close();
-
-    // Dodanie nowego czytelnika do kolekcji w pami�ci
-    int id = czytelnicy.size() + 1;
-    czytelnicy[id] = make_shared<ReaderAccount>(czytelnik);
-
-    // Dodanie nowego czytelnika do listy w celu zapisania do pliku
-    string new_record = peselStr + "," + czytelnik.getImie() + "," +
-        czytelnik.getNazwisko() + "," + to_string(czytelnik.getKaucja()) +
-        "," + to_string(czytelnik.getIloscKsiazek());
-    lines.push_back(new_record);
-
-    ofstream output_file(fileName);
-    if (!output_file.is_open()) {
-        cerr << "Blad otwarcia pliku do zapisu!" << endl;
-        return -1;
-    }
-
-    for (const auto& l : lines) {
-        output_file << l << endl;
-    }
-
-    output_file.close();
-
-    cout << "Konto czytelnika o Peselu " << peselStr << " zostalo pomyslnie utworzone." << endl;
-    return 1;
+    json j;
+    file >> j;
+    return j;
 }
 
-
-int ReaderDatabase::usuniecieKonta(const ReaderAccount& czytelnik) {
-    string peselStr = czytelnik.getPesel();
-
-    if (!walidujPesel(peselStr)) {
-        return -1;
-    }
-
-
-    ifstream input_file(fileName);
-
-    if (!input_file.is_open()) {
-        cerr << "Blad otwarcia pliku do odczytu!" << endl;
-        return -1;
-    }
-
-    vector<string> lines;
-    string line;
-    bool found = false;
-
-    //przeszukiwanie pliku w celu znalezienia czytelnika o podanym PESELu
-    while (getline(input_file, line)) {
-        stringstream ss(line);
-        string id;
-        getline(ss, id, ',');
-
-        if (id != peselStr) {
-            lines.push_back(line); //dodanie linijki do wektora, je�li nie dotyczy usuwanego czytelnika
-        }
-        else {
-            found = true; //czytelnik znaleziony
-        }
-    }
-
-    input_file.close();
-
-    if (!found) {
-        cout << "Nie znaleziono czytelnika o Peselu " << peselStr << endl;
-        return -1;
-    }
-
-    //zapisanie zaktualizowanego pliku bez danych usuni�tego czytelnika
-    ofstream output_file(fileName);
-    if (!output_file.is_open()) {
-        cerr << "Blad otwarcia pliku do zapisu!" << endl;
-        return -1;
-    }
-    for (const auto& l : lines) {
-        output_file << l << endl;
-    }
-    output_file.close();
-
-    cout << "Konto czytelnika o Peselu " << peselStr << " zostalo pomyslnie usuniete." << endl;
-    return 1;
-}
-
-//funkcja wy�wietlaj�ca wszystkich czytelnik�w zapisanych w pliku
-void ReaderDatabase::wyswietlListeCzytelnikow() const {
-    ifstream plik(fileName);
-
-    if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku readers_database.txt" << endl;
+void ReaderDatabase::zapiszBaze(const json& j) {
+    ofstream file(fileName);
+    if (!file.is_open()) {
+        cerr << "Blad zapisu pliku JSON!" << endl;
         return;
     }
+    file << j.dump(4);
+}
 
-    string linia;
-    cout << "\n--- Lista czytelnikow ---" << endl;
+int ReaderDatabase::tworzenieKonta(const ReaderAccount& czytelnik) {
+    string pesel = czytelnik.getPesel();
+    if (!walidujPesel(pesel)) return -1;
 
-    while (getline(plik, linia)) {
-        stringstream ss(linia);
-        string pesel, imie, nazwisko, kaucja, iloscKsiazek;
-        vector<string> wypozyczoneKsiazki;
+    json baza = wczytajBaze();
+    if (baza.contains(pesel)) {
+        cerr << "Czytelnik o Peselu " << pesel << " juz istnieje." << endl;
+        return -1;
+    }
 
-        getline(ss, pesel, ',');
-        getline(ss, imie, ',');
-        getline(ss, nazwisko, ',');
-        getline(ss, kaucja, ',');
-        getline(ss, iloscKsiazek, ',');
+    baza[pesel] = {
+        {"imie", czytelnik.getImie()},
+        {"nazwisko", czytelnik.getNazwisko()},
+        {"kaucja", czytelnik.getKaucja()},
+        {"iloscKsiazek", czytelnik.getIloscKsiazek()},
+        {"wypozyczone", json::array()}
+    };
 
-        string ksiazkaID;
-        while (getline(ss, ksiazkaID, ',')) {
-            wypozyczoneKsiazki.push_back(ksiazkaID);
-        }
+    zapiszBaze(baza);
+    cout << "Konto czytelnika o PESEL " << pesel << " zostalo utworzone." << endl;
+    return 1;
+}
 
-        cout << "Pesel: " << pesel
-            << ", Imie: " << imie
-            << ", Nazwisko: " << nazwisko
-            << ", Kaucja: " << kaucja
-            << ", Ilosc wypozyczonych ksiazek: " << iloscKsiazek;
-        //wy�wietlenie listy wypo�yczonych ksi��ek, je�li istniej�
-        if (!wypozyczoneKsiazki.empty()) {
-            cout << ", Wypozyczone ksiazki (ID): ";
-            for (const auto& id : wypozyczoneKsiazki) {
-                cout << id << ", ";
-            }
+int ReaderDatabase::usuniecieKonta(const ReaderAccount& czytelnik) {
+    string pesel = czytelnik.getPesel();
+    if (!walidujPesel(pesel)) return -1;
+
+    json baza = wczytajBaze();
+    if (!baza.contains(pesel)) {
+        cerr << "Nie znaleziono czytelnika." << endl;
+        return -1;
+    }
+
+    baza.erase(pesel);
+    zapiszBaze(baza);
+    cout << "Konto usuniete." << endl;
+    return 1;
+}
+
+void ReaderDatabase::wyswietlListeCzytelnikow() const {
+    json baza = wczytajBaze();
+    for (auto& [pesel, dane] : baza.items()) {
+        cout << "PESEL: " << pesel
+             << ", Imie: " << dane["imie"]
+             << ", Nazwisko: " << dane["nazwisko"]
+             << ", Kaucja: " << dane["kaucja"]
+             << ", Ilosc ksiazek: " << dane["iloscKsiazek"];
+
+        if (!dane["wypozyczone"].empty()) {
+            cout << ", Wypozyczone: ";
+            for (const auto& id : dane["wypozyczone"]) cout << id << ", ";
         }
         cout << endl;
     }
-
-    plik.close();
 }
 
-//funkcja przypisuj�ca wypo�yczenie ksi��ki do danego czytelnika
 int ReaderDatabase::podepnijWypozyczenie(const ReaderAccount& czytelnik, int egzemplarzID) {
-    ifstream plik(fileName);
-    vector<string> lines;
-    string line;
-    bool found = false;
+    json baza = wczytajBaze();
+    string pesel = czytelnik.getPesel();
 
-    if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku!" << endl;
-        return -1;
-    }
-    //przeszukanie pliku w celu znalezienia czytelnika i aktualizacji jego danych
-    while (getline(plik, line)) {
-        stringstream ss(line);
-        string pesel, imie, nazwisko, kaucja, iloscKsiazek, egzemplarze;
-        getline(ss, pesel, ',');
-        getline(ss, imie, ',');
-        getline(ss, nazwisko, ',');
-        getline(ss, kaucja, ',');
-        getline(ss, iloscKsiazek, ',');
-        getline(ss, egzemplarze);
+    if (!baza.contains(pesel)) return -1;
 
-        if (pesel == czytelnik.getPesel()) {
-            
-            int currentCount;
-            try {
-                currentCount = stoi(iloscKsiazek);
-            }
-            catch (const invalid_argument& e) {
-                cerr << "Blad konwersji liczby ksiazek: " << iloscKsiazek << endl;
-                return -1;
-            }
-            currentCount += 1;
-            //dodanie ID ksi��ki do listy wypo�ycze�
-            if (egzemplarze.empty()) {
-                egzemplarze = to_string(egzemplarzID);
-            }
-            else {
-                egzemplarze += "," + to_string(egzemplarzID);
-            }
+    auto& dane = baza[pesel];
+    dane["iloscKsiazek"] = int(dane["iloscKsiazek"]) + 1;
+    dane["wypozyczone"].push_back(egzemplarzID);
 
-            line = pesel + "," + imie + "," + nazwisko + "," + kaucja + "," + to_string(currentCount) + "," + egzemplarze;
-            found = true;
-        }
-        lines.push_back(line);
-    }
-
-    plik.close();
-
-    if (!found) {
-        cerr << "Nie znaleziono czytelnika o PESEL " << czytelnik.getPesel() << endl;
-        return -1;
-    }
-    //zapisz zaktualizowanych danych do pliku
-    ofstream outPlik("readers_database.txt");
-    if (!outPlik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
-        return -1;
-    }
-
-    for (const auto& l : lines) {
-        outPlik << l << endl;
-    }
-
-    outPlik.close();
-
-    cout << "Ksiazka o ID " << egzemplarzID << " zostala przypisana do czytelnika." << endl;
+    zapiszBaze(baza);
     return egzemplarzID;
 }
 
-
-//funkcja usuwaj�ca wypo�yczenie ksi��ki przypisanej do danego czytelnika
 int ReaderDatabase::usunWypozyczenie(const ReaderAccount& czytelnik, int egzemplarzID) {
-    ifstream plik("readers_database.txt");
-    vector<string> lines;
-    string line;
-    bool found = false;
-    bool bookReturned = false;
+    json baza = wczytajBaze();
+    string pesel = czytelnik.getPesel();
+    if (!baza.contains(pesel)) return -1;
 
-    if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku!" << endl;
-        return -1;
-    }
-    //przeszukiwanie pliku w celu znalezienia czytelnika i aktualizacji danych
-    while (getline(plik, line)) {
-        stringstream ss(line);
-        string pesel, imie, nazwisko, kaucja, iloscKsiazek, egzemplarze;
-        getline(ss, pesel, ',');
-        getline(ss, imie, ',');
-        getline(ss, nazwisko, ',');
-        getline(ss, kaucja, ',');
-        getline(ss, iloscKsiazek, ',');
-        getline(ss, egzemplarze); 
+    auto& dane = baza[pesel];
+    auto& wyp = dane["wypozyczone"];
 
-        if (pesel == czytelnik.getPesel()) {
-            
-            int currentCount;
-            try {
-                currentCount = stoi(iloscKsiazek); //konwersja string na int
-            }
-            catch (const invalid_argument& e) {
-                cerr << "Blad konwersji liczby ksiazek: " << iloscKsiazek << endl;
-                return -1;
-            }
-
-            // Sprawdzenie, czy egzemplarzID znajduje si� w li�cie egzemplarzy
-            size_t pos = egzemplarze.find(to_string(egzemplarzID));
-            if (pos != string::npos) {
-                size_t nextPos = egzemplarze.find(",", pos);
-                if (nextPos != string::npos) {
-                    // Je�li to nie ostatni element, usuwamy go razem z przecinkiem
-                    egzemplarze.erase(pos, nextPos - pos + 1);
-                }
-                else {
-                    // Je�li to ostatni element w li�cie, usuwamy tylko numer
-                    egzemplarze.erase(pos);
-                }
-
-                currentCount -= 1;
-                //aktualizacja linii z danymi czytelnika
-                line = pesel + "," + imie + "," + nazwisko + "," + kaucja + "," + to_string(currentCount) + "," + egzemplarze;
-                found = true;
-                bookReturned = true;
-            }
-            else {
-                cerr << "Nie znaleziono egzemplarza o ID " << egzemplarzID << " w wypozyczeniach." << endl;
-            }
-        }
-
-        lines.push_back(line);
-    }
-
-    plik.close();
-
-    if (!found) {
-        cerr << "Nie znaleziono czytelnika o PESEL " << czytelnik.getPesel() << endl;
-        return -1;
-    }
-    //zapis zaktualizowanych danych, je�li ksi��ka zosta�a zwr�cona
-    if (bookReturned) {
-        ofstream outPlik("readers_database.txt");
-        if (!outPlik.is_open()) {
-            cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
-            return -1;
-        }
-
-        for (const auto& l : lines) {
-            outPlik << l << endl;
-        }
-
-        outPlik.close();
-
-        cout << "Ksiazka o ID " << egzemplarzID << " zostala zwrocona." << endl;
+    auto it = std::find(wyp.begin(), wyp.end(), egzemplarzID);
+    if (it != wyp.end()) {
+        wyp.erase(it);
+        dane["iloscKsiazek"] = int(dane["iloscKsiazek"]) - 1;
+        zapiszBaze(baza);
         return egzemplarzID;
     }
 
-    return -1;  // Je�li nie uda�o si� zwr�ci� ksi��ki
+    return -1;
 }
 
-//funkcja sprawdzaj�ca, czy czytelnik mo�e wypo�yczy� kolejn� ksi��k�
 bool ReaderDatabase::czyMoznaWypozyczyc(const ReaderAccount& czytelnik) {
-    ifstream plik("readers_database.txt");
-    string linia;
+    json baza = wczytajBaze();
+    string pesel = czytelnik.getPesel();
+    if (!baza.contains(pesel)) return false;
 
-    while (getline(plik, linia)) {
-        stringstream ss(linia);
-        string pesel, imie, nazwisko, kaucja, iloscKsiazek;
-
-        getline(ss, pesel, ',');
-        getline(ss, imie, ',');
-        getline(ss, nazwisko, ',');
-        getline(ss, kaucja, ',');
-        getline(ss, iloscKsiazek, ',');
-
-
-        if (pesel == czytelnik.getPesel()) {
-            
-            int currentCount = stoi(iloscKsiazek);
-
-            if (currentCount >= 5) { //sprawdzenie limitu wypo�ycze�
-                cerr << "Czytelnik o PESEL " << pesel << " nie moze wypozyczyc wiecej ksiazek (limit 5)." << endl;
-                return false;
-            }
-
-            return true;
-        }
-    }
-
-    cerr << "Nie znaleziono czytelnika o PESEL " << czytelnik.getPesel() << endl;
-    return false;
+    return int(baza[pesel]["iloscKsiazek"]) < 5;
 }
 
-//funkcja wy�wietlaj�ca dane konta
 void ReaderDatabase::sprawdzenieKonta(const ReaderAccount& czytelnik) {
-    ifstream plik("readers_database.txt");
-    if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku readers_database.txt" << endl;
+    json baza = wczytajBaze();
+    string pesel = czytelnik.getPesel();
+
+    if (!baza.contains(pesel)) {
+        cerr << "Nie znaleziono czytelnika." << endl;
         return;
     }
 
-    string linia;
-    bool found = false;
-
-    while (getline(plik, linia)) {
-        stringstream ss(linia);
-        string pesel, imie, nazwisko, kaucja, iloscKsiazek, wypozyczoneKsiazki;
-        getline(ss, pesel, ',');
-        getline(ss, imie, ',');
-        getline(ss, nazwisko, ',');
-        getline(ss, kaucja, ',');
-        getline(ss, iloscKsiazek, ',');
-
-        if (pesel == czytelnik.getPesel()) {
-            
-            found = true;
-            cout << "\n--- Dane czytelnika ---" << endl;
-            cout << "Pesel: " << pesel << endl;
-            cout << "Imie: " << imie << endl;
-            cout << "Nazwisko: " << nazwisko << endl;
-            cout << "Kaucja: " << kaucja << " zl" << endl;
-            cout << "Liczba wypozyczonych ksiazek: " << iloscKsiazek << endl;
-
-            if (getline(ss, wypozyczoneKsiazki)) {
-                cout << "Wypozyczone ksiazki (ID): " << wypozyczoneKsiazki << endl;
-            }
-            else {
-                cout << "Brak wypozyczonych ksiazek." << endl;
-            }
-            break;
-        }
-    }
-
-    plik.close();
-
-    if (!found) {
-        cerr << "Nie znaleziono czytelnika o PESEL " << czytelnik.getPesel() << endl;
-    }
+    auto& d = baza[pesel];
+    cout << "\n--- Dane czytelnika ---" << endl;
+    cout << "Pesel: " << pesel << endl;
+    cout << "Imie: " << d["imie"] << endl;
+    cout << "Nazwisko: " << d["nazwisko"] << endl;
+    cout << "Kaucja: " << d["kaucja"] << endl;
+    cout << "Liczba ksiazek: " << d["iloscKsiazek"] << endl;
+    cout << "Wypozyczone: ";
+    for (const auto& id : d["wypozyczone"]) cout << id << ", ";
+    cout << endl;
 }
 
-//funkcja naliczaj�ca kaucje czytelnikowi
 int ReaderDatabase::naliczKaucje(ReaderAccount& czytelnik, float kaucja) {
-    ifstream plik("readers_database.txt");
-    vector<string> lines;
-    string line;
-    bool found = false;
+    json baza = wczytajBaze();
+    string pesel = czytelnik.getPesel();
+    if (!baza.contains(pesel)) return -1;
 
-    if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku!" << endl;
-        return -1;
-    }
-
-    while (getline(plik, line)) {
-        stringstream ss(line);
-        string pesel, imie, nazwisko, kaucjaStr, iloscKsiazek, egzemplarze;
-        getline(ss, pesel, ',');
-        getline(ss, imie, ',');
-        getline(ss, nazwisko, ',');
-        getline(ss, kaucjaStr, ',');
-        getline(ss, iloscKsiazek, ',');
-        getline(ss, egzemplarze);
-
-        
-        if (pesel == czytelnik.getPesel()) {
-
-            kaucjaStr = to_string(kaucja);
-
-            line = pesel + "," + imie + "," + nazwisko + "," + kaucjaStr + "," + iloscKsiazek + "," + egzemplarze;
-            found = true;
-        }
-        lines.push_back(line);
-    }
-
-    plik.close();
-
-    if (!found) {
-        cerr << "Nie znaleziono czytelnika o PESEL " << czytelnik.getPesel() << endl;
-        return -1;
-    }
-
-    ofstream outPlik("readers_database.txt");
-    if (!outPlik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
-        return -1;
-    }
-
-    for (const auto& l : lines) {
-        outPlik << l << endl;
-    }
-
-    outPlik.close();
-
-    cout << "Naliczono kaucje w wysokosci " << kaucja << " zl dla czytelnika o PESEL " << czytelnik.getPesel() << "." << endl;
-
+    baza[pesel]["kaucja"] = kaucja;
+    zapiszBaze(baza);
     return 1;
 }
 
-
-//funkcja usuwaj�ca naliczon� kaucj� czytelnikowi
 int ReaderDatabase::usunKaucje(ReaderAccount& czytelnik) {
-    ifstream plik("readers_database.txt");
-    vector<string> lines;
-    string line;
-    bool found = false;
-
-    if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku!" << endl;
-        return -1;
-    }
-
-    while (getline(plik, line)) {
-        stringstream ss(line);
-        string pesel, imie, nazwisko, kaucja, iloscKsiazek, egzemplarze;
-        getline(ss, pesel, ',');
-        getline(ss, imie, ',');
-        getline(ss, nazwisko, ',');
-        getline(ss, kaucja, ',');
-        getline(ss, iloscKsiazek, ',');
-        getline(ss, egzemplarze);
-
-        if (pesel == czytelnik.getPesel()) {
-            kaucja = "0.0"; //resetowanie kaucji
-
-            line = pesel + "," + imie + "," + nazwisko + "," + kaucja + "," + iloscKsiazek + "," + egzemplarze;
-            found = true;
-        }
-        lines.push_back(line);
-    }
-
-    plik.close();
-
-    if (!found) {
-        cerr << "Nie znaleziono czytelnika o PESEL " << czytelnik.getPesel() << endl;
-        return -1;
-    }
-
-    ofstream outPlik("readers_database.txt");
-    if (!outPlik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
-        return -1;
-    }
-
-    for (const auto& l : lines) {
-        outPlik << l << endl;
-    }
-
-    outPlik.close();
-
-    cout << "Kaucja dla czytelnika o PESEL " << czytelnik.getPesel() << " zostala usunieta." << endl;
-
-    return 1;
+    return naliczKaucje(czytelnik, 0);
 }
-
-
-

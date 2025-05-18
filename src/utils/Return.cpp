@@ -1,37 +1,39 @@
 #include "../../include/utils/Return.h"
 
-string Return::fileName = "../../data/books_database.txt";
-// Zaktualizowana funkcja zwracaj�ca ksi��k�
+
+string Return::fileName = "../../data/books_database.json";
+
 float Return::zwrocKsiazke(const Book& ksiazka) {
-    float kaucja = 0.0f;  // Zmienna do przechowywania kaucji
-    string dataZwrotuFile;
-    time_t now = time(0); //pobranie aktualnej daty
+    float kaucja = 0.0f;
+    time_t now = time(0);
     tm localTime = {};
     localtime_s(&localTime, &now);
-    string currentDate = to_string(1900 + localTime.tm_year) + "-" + to_string(1 + localTime.tm_mon) + "-" + to_string(localTime.tm_mday);
+    ostringstream oss;
+    oss << put_time(&localTime, "%Y-%m-%d");
+    string currentDate = oss.str();
 
-    ifstream plik(fileName);
-    vector<string> lines;
-    string line;
+    ifstream inFile(fileName);
+    if (!inFile.is_open()) {
+        cerr << "Nie mozna otworzyc pliku JSON!" << endl;
+        return -1.0f;
+    }
+
+    json books;
+    inFile >> books;
+    inFile.close();
+
     bool found = false;
 
-    while (getline(plik, line)) {
-        stringstream ss(line);
-        string id, tytul, autor, rok, stan, dataZwrotuFile;
-        getline(ss, id, ',');
-        getline(ss, tytul, ',');
-        getline(ss, autor, ',');
-        getline(ss, rok, ',');
-        getline(ss, stan, ',');
-        getline(ss, dataZwrotuFile, ',');
-
-        if (stoi(id) == ksiazka.getID() && stan == "niedostepna") {
+    for (auto& book : books) {
+        if (book["id"] == ksiazka.getID() && book["status"] == "niedostepna") {
             found = true;
 
-            //obliczenie op�aty za zw�ok�, je�li ksi��ka jest zwracana po terminie
-            if (dataZwrotuFile < currentDate) {
+            // Sprawdź, czy istnieje data zwrotu
+            if (book.contains("data_zwrotu")) {
+                string dataZwrotuStr = book["data_zwrotu"];
+
                 tm dataZwrotu = {};
-                istringstream ss(dataZwrotuFile);
+                istringstream ss(dataZwrotuStr);
                 ss >> get_time(&dataZwrotu, "%Y-%m-%d");
                 if (ss.fail()) {
                     cerr << "Blad konwersji daty!" << endl;
@@ -42,35 +44,37 @@ float Return::zwrocKsiazke(const Book& ksiazka) {
                 double secondsLate = difftime(now, tDataZwrotu);
                 int lateDays = secondsLate / (60 * 60 * 24);
                 if (lateDays > 0) {
-                    kaucja = lateDays * 2.0f;  // Kaucja = late days * 2zl
+                    kaucja = lateDays * 2.0f;
                 }
             }
-            //aktualizacja statusu ksi��ki na "dost�pna"
-            line = id + "," + tytul + "," + autor + "," + rok + ",dostepna,";
+
+            // Aktualizuj status i usuń datę zwrotu
+            book["status"] = "dostepna";
+            book.erase("data_zwrotu");
+            break;
         }
-        lines.push_back(line);
     }
-    plik.close();
 
     if (!found) {
         cerr << "Blad zwrotu! Egzemplarz o ID " << ksiazka.getID() << " nie byl wypozyczony." << endl;
         return -1.0f;
     }
 
-    //zapis zaktualizowanych danych do pliku
-    ofstream outPlik(fileName);
-    for (const auto& l : lines) {
-        outPlik << l << endl;
+    ofstream outFile(fileName);
+    if (!outFile.is_open()) {
+        cerr << "Nie mozna zapisac pliku JSON!" << endl;
+        return -1.0f;
     }
-    outPlik.close();
 
-    //informowanie o wyniku zwrotu
+    outFile << setw(4) << books << endl;
+    outFile.close();
+
+    // Informacja końcowa
     if (kaucja > 0.0f) {
         cout << "Book zwrocona po terminie. Naliczenie kaucji: " << kaucja << " zl." << endl;
-    }
-    else {
+    } else {
         cout << "Book o ID " << ksiazka.getID() << " zostala zwrocona w terminie." << endl;
     }
 
-    return kaucja;  // Zwracamy warto�� kaucji
+    return kaucja;
 }

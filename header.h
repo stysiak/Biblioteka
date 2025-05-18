@@ -12,6 +12,12 @@
 #include <iomanip>
 #include <algorithm>
 
+// Zewnętrzna biblioteka JSON (jeśli jej używasz)
+#include <nlohmann/json.hpp>
+
+// Używamy aliasu, by nie pisać nlohmann::json wszędzie
+using json = nlohmann::json;
+
 using namespace std;
 //wszystkie nazwy klas
 class Book;

@@ -1,7 +1,6 @@
 #include "../../include/database/EmployeeDatabase.h"
 
-string EmployeeDatabase::fileName = "../../data/employees_database.txt";
-
+string EmployeeDatabase::fileName = "../../data/employees_database.json";
 
 bool EmployeeDatabase::walidujPesel(const string& pesel) {
     if (pesel.length() != 11) {
@@ -17,37 +16,41 @@ bool EmployeeDatabase::walidujPesel(const string& pesel) {
     return true;
 }
 
-// Konstruktor domy�lny; wczytuje dane pracownik�w z pliku i inicjalizuje list� pracownik�w
+// Konstruktor domyślny; wczytuje dane pracowników z pliku JSON i inicjalizuje listę pracowników
 EmployeeDatabase::EmployeeDatabase() {
     ifstream plik(fileName);
     if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku employees_database.txt :(" << endl;
+        cerr << "Nie mozna otworzyc pliku employees_database.json :(" << endl;
         return;
     }
 
-    string linia;
-    while (getline(plik, linia)) {
-        stringstream ss(linia);
-        string imie, nazwisko, login, haslo, funkcja, pesel;
+    try {
+        json j;
+        plik >> j;
 
-        // Odczytujemy dane z pliku
-        getline(ss, pesel, ',');
-        getline(ss, imie, ',');
-        getline(ss, nazwisko, ',');
-        getline(ss, login, ',');
-        getline(ss, haslo, ',');
-        getline(ss, funkcja, ',');
+        for (const auto& pracownik : j) {
+            string pesel = pracownik["pesel"];
+            string imie = pracownik["imie"];
+            string nazwisko = pracownik["nazwisko"];
+            string login = pracownik["login"];
+            string haslo = pracownik["haslo"];
+            string funkcja = pracownik["rola"];
 
-        // Sprawdzamy funkcj� pracownika
-        if (funkcja != "admin" && funkcja != "pracownik") {
-            cerr << "Niepoprawna funkcja: " << funkcja << ". Pomijanie wpisu." << endl;
-            continue;
+            // Sprawdzamy funkcję pracownika
+            if (funkcja != "admin" && funkcja != "pracownik") {
+                cerr << "Niepoprawna funkcja: " << funkcja << ". Pomijanie wpisu." << endl;
+                continue;
+            }
+
+            // Dodanie pracownika do listy
+            Employee p(imie, nazwisko, login, haslo, pesel, funkcja);
+            listaPracownikow.push_back(p);
         }
-
-        // Dodanie pracownika do listy
-        Employee p(imie, nazwisko, login, haslo, pesel, funkcja);
-        listaPracownikow.push_back(p);
     }
+    catch (json::exception& e) {
+        cerr << "Blad parsowania pliku JSON: " << e.what() << endl;
+    }
+
     plik.close();
 }
 
@@ -60,35 +63,37 @@ pair<string, string> EmployeeDatabase::logowanie() {
 
     ifstream plik(fileName);
     if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku employees_database.txt :-" << endl;
+        cerr << "Nie mozna otworzyc pliku employees_database.json :-" << endl;
         return { "", "" };
     }
 
-    string linia;
-    while (getline(plik, linia)) {
-        stringstream ss(linia);
-        string imie, nazwisko, login, haslo, funkcja, pesel;
+    try {
+        json j;
+        plik >> j;
 
-        getline(ss, pesel, ',');
-        getline(ss, imie, ',');
-        getline(ss, nazwisko, ',');
-        getline(ss, login, ',');
-        getline(ss, haslo, ',');
-        getline(ss, funkcja, ',');
+        for (const auto& pracownik : j) {
+            string login = pracownik["login"];
+            string haslo = pracownik["haslo"];
+            string funkcja = pracownik["rola"];
 
-        // Sprawdzenie poprawno�ci loginu i has�a
-        if (login == wpisanyLogin && haslo == wpisaneHaslo) {
-            cout << "Logowanie pomyslne. Witaj " << login << " (" << funkcja << ")!" << endl;
-            return { login, funkcja };
+            // Sprawdzenie poprawności loginu i hasła
+            if (login == wpisanyLogin && haslo == wpisaneHaslo) {
+                cout << "Logowanie pomyslne. Witaj " << login << " (" << funkcja << ")!" << endl;
+                return { login, funkcja };
+            }
         }
     }
+    catch (json::exception& e) {
+        cerr << "Blad parsowania pliku JSON: " << e.what() << endl;
+    }
 
-    // Je�li nie znaleziono dopasowania
+    plik.close();
+
+    // Jeśli nie znaleziono dopasowania
     return { "", "" };
 }
 
-
-// Funkcja dodaj�ca nowego pracownika do bazy i zapisuj�ca jego dane w pliku
+// Funkcja dodająca nowego pracownika do bazy i zapisująca jego dane w pliku JSON
 int EmployeeDatabase::dodajPracownika(const Employee& pracownik) {
     string peselStr = pracownik.getPesel();
 
@@ -96,56 +101,65 @@ int EmployeeDatabase::dodajPracownika(const Employee& pracownik) {
         return -1;
     }
 
-    // Sprawdzamy, czy pracownik o tym samym PESEL ju� istnieje w bazie
-    ifstream plik(fileName);
-    if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku employees_database.txt ;O" << endl;
+    ifstream plikOdczyt(fileName);
+    if (!plikOdczyt.is_open()) {
+        cerr << "Nie mozna otworzyc pliku employees_database.json ;O" << endl;
         return -1;
     }
 
-    string linia;
-    while (getline(plik, linia)) {
-        stringstream ss(linia);
-        string istniej�cyPesel;
+    json pracownicy;
+    try {
+        plikOdczyt >> pracownicy;
+        plikOdczyt.close();
 
-        // Odczytujemy PESEL pracownika z pliku
-        getline(ss, istniej�cyPesel, ',');
+        // Sprawdzamy, czy pracownik o tym samym PESEL już istnieje w bazie
+        for (const auto& p : pracownicy) {
+            if (p["pesel"] == peselStr) {
+                cerr << "Employee o takim PESEL juz istnieje!" << endl;
+                return -1;
+            }
+        }
 
-        // Sprawdzamy, czy PESEL ju� istnieje
-        if (istniej�cyPesel == peselStr) {
-            cerr << "Employee o takim PESEL juz istnieje!" << endl;
-            plik.close();
+        // Sprawdzenie funkcji pracownika
+        if (pracownik.getFunkcja() != "admin" && pracownik.getFunkcja() != "pracownik") {
+            cerr << "Niepoprawna funkcja: " << pracownik.getFunkcja() << ". Employee nie zostal dodany." << endl;
+            return -1;
+        }
+
+        // Dodanie pracownika do listy
+        listaPracownikow.push_back(pracownik);
+
+        // Tworzymy nowy obiekt JSON dla pracownika
+        json nowyPracownik;
+        nowyPracownik["pesel"] = pracownik.getPesel();
+        nowyPracownik["imie"] = pracownik.getImie();
+        nowyPracownik["nazwisko"] = pracownik.getNazwisko();
+        nowyPracownik["login"] = pracownik.getLogin();
+        nowyPracownik["haslo"] = pracownik.getHaslo();
+        nowyPracownik["rola"] = pracownik.getFunkcja();
+
+        // Dodajemy nowego pracownika do tablicy JSON
+        pracownicy.push_back(nowyPracownik);
+
+        // Zapisujemy zaktualizowaną tablicę do pliku
+        ofstream plikZapis(fileName);
+        if (plikZapis.is_open()) {
+            plikZapis << setw(2) << pracownicy << endl;
+            plikZapis.close();
+            return 1;
+        }
+        else {
+            cerr << "Nie mozna otworzyc pliku do zapisu!\n";
             return -1;
         }
     }
-
-    plik.close();
-
-    // Sprawdzenie funkcji pracownika
-    if (pracownik.getFunkcja() != "admin" && pracownik.getFunkcja() != "pracownik") {
-        cerr << "Niepoprawna funkcja: " << pracownik.getFunkcja() << ". Employee nie zostal dodany." << endl;
+    catch (json::exception& e) {
+        cerr << "Blad parsowania pliku JSON: " << e.what() << endl;
         return -1;
     }
-
-    // Dodanie pracownika
-    listaPracownikow.push_back(pracownik);
-
-    ofstream plikDoZapisu(fileName, ios::app);
-    if (plikDoZapisu.is_open()) {
-        plikDoZapisu << pracownik.getPesel() << "," << pracownik.getImie() << "," << pracownik.getNazwisko() << ","
-            << pracownik.getLogin() << "," << pracownik.getHaslo() << "," << pracownik.getFunkcja() << "\n";
-        plikDoZapisu.close();
-        return 1;
-    }
-    else {
-        cerr << "Nie mozna otworzyc pliku do zapisu!\n";
-    }
-
-    return -1;
 }
 
-
-//funkcja usuwaj�ca pracownika z bazy na podstawie jego numeru PESEL
+// Funkcja usuwająca pracownika z bazy na podstawie jego numeru PESEL
 int EmployeeDatabase::usunPracownika(const Employee& pracownik) {
     string pesel = pracownik.getPesel();
 
@@ -153,82 +167,79 @@ int EmployeeDatabase::usunPracownika(const Employee& pracownik) {
         return -1;
     }
 
-    ifstream input_file(fileName);
-
-    if (!input_file.is_open()) {
+    ifstream plikOdczyt(fileName);
+    if (!plikOdczyt.is_open()) {
         cerr << "Blad otwarcia pliku do odczytu!" << endl;
         return -1;
     }
 
-    vector<string> lines;
-    string line;
+    json pracownicy;
     bool found = false;
 
-    while (getline(input_file, line)) {
-        stringstream ss(line);
-        string id;
-        getline(ss, id, ',');
+    try {
+        plikOdczyt >> pracownicy;
+        plikOdczyt.close();
 
-        if (id != pesel) {
-            lines.push_back(line);
+        // Tworzymy nową tablicę bez pracownika o podanym PESEL
+        json nowaPracownicy = json::array();
+
+        for (const auto& p : pracownicy) {
+            if (p["pesel"] != pesel) {
+                nowaPracownicy.push_back(p);
+            } else {
+                found = true;
+            }
+        }
+
+        if (!found) {
+            cout << "Nie znaleziono pracownika o PESEL " << pesel << endl;
+            return -1;
+        }
+
+        // Zapisujemy zaktualizowaną tablicę do pliku
+        ofstream plikZapis(fileName);
+        if (plikZapis.is_open()) {
+            plikZapis << setw(2) << nowaPracownicy << endl;
+            plikZapis.close();
+            return 1;
         }
         else {
-            found = true;
+            cerr << "Blad otwarcia pliku do zapisu!" << endl;
+            return -1;
         }
     }
-
-    input_file.close();
-
-    if (!found) {
-        cout << "Nie znaleziono pracownika o PESEL " << pesel << endl;
+    catch (json::exception& e) {
+        cerr << "Blad parsowania pliku JSON: " << e.what() << endl;
         return -1;
     }
-
-    ofstream output_file(fileName);
-    if (!output_file.is_open()) {
-        cerr << "Blad otwarcia pliku do zapisu!" << endl;
-        return -1;
-    }
-
-    for (const auto& l : lines) {
-        output_file << l << endl;
-    }
-
-    output_file.close();
-
-    return 1;
 }
 
-// Funkcja wy�wietlaj�ca list� wszystkich pracownik�w w bazie
+// Funkcja wyświetlająca listę wszystkich pracowników w bazie
 void EmployeeDatabase::wyswietlListePracownikow() const {
     ifstream plik(fileName);
 
     if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku employees_database.txt ;E" << endl;
+        cerr << "Nie mozna otworzyc pliku employees_database.json ;E" << endl;
         return;
     }
 
-    string linia;
-    cout << "\n--- Lista pracownikow ---" << endl;
+    try {
+        json j;
+        plik >> j;
 
-    while (getline(plik, linia)) {
-        stringstream ss(linia);
-        string pesel, imie, nazwisko, login, haslo, funkcja;
+        cout << "\n--- Lista pracownikow ---" << endl;
 
-        // Odczytujemy dane z pliku
-        getline(ss, pesel, ',');
-        getline(ss, imie, ',');
-        getline(ss, nazwisko, ',');
-        getline(ss, login, ',');
-        getline(ss, haslo, ',');
-        getline(ss, funkcja, ',');
-
-        cout << "Pesel: " << pesel
-            << ", Imie: " << imie
-            << ", Nazwiwsko: " << nazwisko
-            << ", Login: " << login
-            << ", Haslo: " << haslo
-            << ", Funkcja: " << funkcja << endl;
+        for (const auto& pracownik : j) {
+            cout << "Pesel: " << pracownik["pesel"]
+                 << ", Imie: " << pracownik["imie"]
+                 << ", Nazwiwsko: " << pracownik["nazwisko"]
+                 << ", Login: " << pracownik["login"]
+                 << ", Haslo: " << pracownik["haslo"]
+                 << ", Funkcja: " << pracownik["rola"] << endl;
+        }
+    }
+    catch (json::exception& e) {
+        cerr << "Blad parsowania pliku JSON: " << e.what() << endl;
     }
 
     plik.close();

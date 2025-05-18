@@ -1,0 +1,142 @@
+[
+  {
+    "pesel": "11111111111",
+    "imie": "anna",
+    "nazwisko": "nowak",
+    "ocena": "0.0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "12345678910",
+    "imie": "helena",
+    "nazwisko": "nowak",
+    "ocena": "0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "12312312312",
+    "imie": "anna",
+    "nazwisko": "nowak",
+    "ocena": "0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "12121212121",
+    "imie": "anna",
+    "nazwisko": "pierwsza",
+    "ocena": "0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "98765432101",
+    "imie": "piotr",
+    "nazwisko": "kowalski",
+    "ocena": "0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "55555555555",
+    "imie": "marcin",
+    "nazwisko": "zielinski",
+    "ocena": "0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "67890123456",
+    "imie": "agnieszka",
+    "nazwisko": "piotrowska",
+    "ocena": "0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "13579246800",
+    "imie": "ewa",
+    "nazwisko": "wisniewska",
+    "ocena": "0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "24681357902",
+    "imie": "adam",
+    "nazwisko": "kowalczyk",
+    "ocena": "0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "10293847564",
+    "imie": "karolina",
+    "nazwisko": "lewandowska",
+    "ocena": "0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "31415926535",
+    "imie": "tomek",
+    "nazwisko": "mazur",
+    "ocena": "0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "98765432100",
+    "imie": "pawel",
+    "nazwisko": "baran",
+    "ocena": "0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "55566677788",
+    "imie": "aneta",
+    "nazwisko": "jasinski",
+    "ocena": "0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "66677788899",
+    "imie": "zofia",
+    "nazwisko": "koziol",
+    "ocena": "0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "11122334455",
+    "imie": "wojciech",
+    "nazwisko": "wozniak",
+    "ocena": "0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "22334455667",
+    "imie": "krzysztof",
+    "nazwisko": "strzyż",
+    "ocena": "0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "33445566778",
+    "imie": "karol",
+    "nazwisko": "nowakowski",
+    "ocena": "0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "44556677889",
+    "imie": "magdalena",
+    "nazwisko": "chmiel",
+    "ocena": "0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "55667788990",
+    "imie": "zbigniew",
+    "nazwisko": "dabrowski",
+    "ocena": "0",
+    "punkty": "0"
+  },
+  {
+    "pesel": "67676767676",
+    "imie": "ewa",
+    "nazwisko": "kowalska",
+    "ocena": "0",
+    "punkty": "0"
+  }
+]
