@@ -4,18 +4,18 @@ string ReaderDatabase::fileName = "../../data/readers_database.json";
 
 ReaderDatabase::ReaderDatabase() {}
 
-bool ReaderDatabase::walidujPesel(const string& pesel) {
+bool ReaderDatabase::validatePesel(const string& pesel) {
     if (pesel.length() != 11 || !std::all_of(pesel.begin(), pesel.end(), ::isdigit)) {
-        cerr << "Nieprawidlowy PESEL: " << pesel << endl;
+        cerr << "Invalid PESEL: " << pesel << endl;
         return false;
     }
     return true;
 }
 
-json ReaderDatabase::wczytajBaze() const {
+json ReaderDatabase::loadDatabase() const {
     ifstream file(fileName);
     if (!file.is_open()) {
-        cerr << "Blad otwarcia pliku JSON!" << endl;
+        cerr << "Error opening JSON file!" << endl;
         return {};
     }
     json j;
@@ -23,143 +23,143 @@ json ReaderDatabase::wczytajBaze() const {
     return j;
 }
 
-void ReaderDatabase::zapiszBaze(const json& j) {
+void ReaderDatabase::saveDatabase(const json& j) {
     ofstream file(fileName);
     if (!file.is_open()) {
-        cerr << "Blad zapisu pliku JSON!" << endl;
+        cerr << "Error saving JSON file!" << endl;
         return;
     }
     file << j.dump(4);
 }
 
-int ReaderDatabase::tworzenieKonta(const ReaderAccount& czytelnik) {
-    string pesel = czytelnik.getPesel();
-    if (!walidujPesel(pesel)) return -1;
+int ReaderDatabase::createAccount(const ReaderAccount& reader) {
+    string pesel = reader.getPesel();
+    if (!validatePesel(pesel)) return -1;
 
-    json baza = wczytajBaze();
-    if (baza.contains(pesel)) {
-        cerr << "Czytelnik o Peselu " << pesel << " juz istnieje." << endl;
+    json db = loadDatabase();
+    if (db.contains(pesel)) {
+        cerr << "Reader with PESEL " << pesel << " already exists." << endl;
         return -1;
     }
 
-    baza[pesel] = {
-        {"imie", czytelnik.getImie()},
-        {"nazwisko", czytelnik.getNazwisko()},
-        {"kaucja", czytelnik.getKaucja()},
-        {"iloscKsiazek", czytelnik.getIloscKsiazek()},
-        {"wypozyczone", json::array()}
+    db[pesel] = {
+        {"firstName", reader.getImie()},
+        {"lastName", reader.getNazwisko()},
+        {"deposit", reader.getKaucja()},
+        {"bookCount", reader.getIloscKsiazek()},
+        {"borrowed", json::array()}
     };
 
-    zapiszBaze(baza);
-    cout << "Konto czytelnika o PESEL " << pesel << " zostalo utworzone." << endl;
+    saveDatabase(db);
+    cout << "Reader account with PESEL " << pesel << " has been created." << endl;
     return 1;
 }
 
-int ReaderDatabase::usuniecieKonta(const ReaderAccount& czytelnik) {
-    string pesel = czytelnik.getPesel();
-    if (!walidujPesel(pesel)) return -1;
+int ReaderDatabase::deleteAccount(const ReaderAccount& reader) {
+    string pesel = reader.getPesel();
+    if (!validatePesel(pesel)) return -1;
 
-    json baza = wczytajBaze();
-    if (!baza.contains(pesel)) {
-        cerr << "Nie znaleziono czytelnika." << endl;
+    json db = loadDatabase();
+    if (!db.contains(pesel)) {
+        cerr << "Reader not found." << endl;
         return -1;
     }
 
-    baza.erase(pesel);
-    zapiszBaze(baza);
-    cout << "Konto usuniete." << endl;
+    db.erase(pesel);
+    saveDatabase(db);
+    cout << "Account deleted." << endl;
     return 1;
 }
 
-void ReaderDatabase::wyswietlListeCzytelnikow() const {
-    json baza = wczytajBaze();
-    for (auto& [pesel, dane] : baza.items()) {
+void ReaderDatabase::showReaderList() const {
+    json db = loadDatabase();
+    for (auto& [pesel, data] : db.items()) {
         cout << "PESEL: " << pesel
-             << ", Imie: " << dane["imie"]
-             << ", Nazwisko: " << dane["nazwisko"]
-             << ", Kaucja: " << dane["kaucja"]
-             << ", Ilosc ksiazek: " << dane["iloscKsiazek"];
+             << ", First name: " << data["firstName"]
+             << ", Last name: " << data["lastName"]
+             << ", Deposit: " << data["deposit"]
+             << ", Book count: " << data["bookCount"];
 
-        if (!dane["wypozyczone"].empty()) {
-            cout << ", Wypozyczone: ";
-            for (const auto& id : dane["wypozyczone"]) cout << id << ", ";
+        if (!data["borrowed"].empty()) {
+            cout << ", Borrowed: ";
+            for (const auto& id : data["borrowed"]) cout << id << ", ";
         }
         cout << endl;
     }
 }
 
-int ReaderDatabase::podepnijWypozyczenie(const ReaderAccount& czytelnik, int egzemplarzID) {
-    json baza = wczytajBaze();
-    string pesel = czytelnik.getPesel();
+int ReaderDatabase::addBorrow(const ReaderAccount& reader, int bookID) {
+    json db = loadDatabase();
+    string pesel = reader.getPesel();
 
-    if (!baza.contains(pesel)) return -1;
+    if (!db.contains(pesel)) return -1;
 
-    auto& dane = baza[pesel];
-    dane["iloscKsiazek"] = int(dane["iloscKsiazek"]) + 1;
-    dane["wypozyczone"].push_back(egzemplarzID);
+    auto& data = db[pesel];
+    data["bookCount"] = int(data["bookCount"]) + 1;
+    data["borrowed"].push_back(bookID);
 
-    zapiszBaze(baza);
-    return egzemplarzID;
+    saveDatabase(db);
+    return bookID;
 }
 
-int ReaderDatabase::usunWypozyczenie(const ReaderAccount& czytelnik, int egzemplarzID) {
-    json baza = wczytajBaze();
-    string pesel = czytelnik.getPesel();
-    if (!baza.contains(pesel)) return -1;
+int ReaderDatabase::removeBorrow(const ReaderAccount& reader, int bookID) {
+    json db = loadDatabase();
+    string pesel = reader.getPesel();
+    if (!db.contains(pesel)) return -1;
 
-    auto& dane = baza[pesel];
-    auto& wyp = dane["wypozyczone"];
+    auto& data = db[pesel];
+    auto& borrowed = data["borrowed"];
 
-    auto it = std::find(wyp.begin(), wyp.end(), egzemplarzID);
-    if (it != wyp.end()) {
-        wyp.erase(it);
-        dane["iloscKsiazek"] = int(dane["iloscKsiazek"]) - 1;
-        zapiszBaze(baza);
-        return egzemplarzID;
+    auto it = std::find(borrowed.begin(), borrowed.end(), bookID);
+    if (it != borrowed.end()) {
+        borrowed.erase(it);
+        data["bookCount"] = int(data["bookCount"]) - 1;
+        saveDatabase(db);
+        return bookID;
     }
 
     return -1;
 }
 
-bool ReaderDatabase::czyMoznaWypozyczyc(const ReaderAccount& czytelnik) {
-    json baza = wczytajBaze();
-    string pesel = czytelnik.getPesel();
-    if (!baza.contains(pesel)) return false;
+bool ReaderDatabase::canBorrow(const ReaderAccount& reader) {
+    json db = loadDatabase();
+    string pesel = reader.getPesel();
+    if (!db.contains(pesel)) return false;
 
-    return int(baza[pesel]["iloscKsiazek"]) < 5;
+    return int(db[pesel]["bookCount"]) < 5;
 }
 
-void ReaderDatabase::sprawdzenieKonta(const ReaderAccount& czytelnik) {
-    json baza = wczytajBaze();
-    string pesel = czytelnik.getPesel();
+void ReaderDatabase::checkAccount(const ReaderAccount& reader) {
+    json db = loadDatabase();
+    string pesel = reader.getPesel();
 
-    if (!baza.contains(pesel)) {
-        cerr << "Nie znaleziono czytelnika." << endl;
+    if (!db.contains(pesel)) {
+        cerr << "Reader not found." << endl;
         return;
     }
 
-    auto& d = baza[pesel];
-    cout << "\n--- Dane czytelnika ---" << endl;
-    cout << "Pesel: " << pesel << endl;
-    cout << "Imie: " << d["imie"] << endl;
-    cout << "Nazwisko: " << d["nazwisko"] << endl;
-    cout << "Kaucja: " << d["kaucja"] << endl;
-    cout << "Liczba ksiazek: " << d["iloscKsiazek"] << endl;
-    cout << "Wypozyczone: ";
-    for (const auto& id : d["wypozyczone"]) cout << id << ", ";
+    auto& d = db[pesel];
+    cout << "\n--- Reader data ---" << endl;
+    cout << "PESEL: " << pesel << endl;
+    cout << "First name: " << d["firstName"] << endl;
+    cout << "Last name: " << d["lastName"] << endl;
+    cout << "Deposit: " << d["deposit"] << endl;
+    cout << "Book count: " << d["bookCount"] << endl;
+    cout << "Borrowed: ";
+    for (const auto& id : d["borrowed"]) cout << id << ", ";
     cout << endl;
 }
 
-int ReaderDatabase::naliczKaucje(ReaderAccount& czytelnik, float kaucja) {
-    json baza = wczytajBaze();
-    string pesel = czytelnik.getPesel();
-    if (!baza.contains(pesel)) return -1;
+int ReaderDatabase::setDeposit(ReaderAccount& reader, float deposit) {
+    json db = loadDatabase();
+    string pesel = reader.getPesel();
+    if (!db.contains(pesel)) return -1;
 
-    baza[pesel]["kaucja"] = kaucja;
-    zapiszBaze(baza);
+    db[pesel]["deposit"] = deposit;
+    saveDatabase(db);
     return 1;
 }
 
-int ReaderDatabase::usunKaucje(ReaderAccount& czytelnik) {
-    return naliczKaucje(czytelnik, 0);
+int ReaderDatabase::removeDeposit(ReaderAccount& reader) {
+    return setDeposit(reader, 0);
 }

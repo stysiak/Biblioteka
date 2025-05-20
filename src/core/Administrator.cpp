@@ -7,35 +7,34 @@ Administrator::Administrator(const string& pesel, const string& imie, const stri
     : Employee(pesel, imie, nazwisko, login, haslo, funkcja) {
 }
 
-void Administrator::dodajKsiazke(BookDatabase& baza, const Book& ksiazka) noexcept {
-    int id = baza.aktualizujStanDodaj(ksiazka);
+void Administrator::addBook(BookDatabase& database, const Book& book) noexcept {
+    int id = database.updateStateAdd(book);
     if (id != -1) {
-        cout << "Book '" << ksiazka.getTytul() << "' zostala dodana z ID: " << ksiazka.getID() << endl;
+        cout << "Book '" << book.getTytul() << "' was added with ID: " << book.getID() << endl;
     }
 }
 
-void Administrator::usunKsiazke(BookDatabase& baza, const Book& ksiazka) noexcept {
-    int id = baza.aktualizujStanUsun(ksiazka);
+void Administrator::removeBook(BookDatabase& database, const Book& book) noexcept {
+    int id = database.updateStateRemove(book);
     if (id != -1) {
-        cout << "Book o ID " << ksiazka.getID() << " zostala usunieta." << endl;
+        cout << "Book with ID " << book.getID() << " was removed." << endl;
     }
 }
 
-void Administrator::dodajPracownika(EmployeeDatabase& baza, const Employee& pracownik) noexcept {
-    int id = baza.dodajPracownika(pracownik);
+void Administrator::addEmployee(EmployeeDatabase& database, const Employee& employee) noexcept {
+    int id = database.addEmployee(employee);
     if (id != -1) {
-        cout << "Employee o Peselu " << pracownik.getPesel() << " zostal dodany do bazy." << endl;
+        cout << "Employee with PESEL " << employee.getPesel() << " was added to the database." << endl;
     }
 }
 
-void Administrator::usunPracownika(EmployeeDatabase& baza, const Employee& pracownik) noexcept {
-    int id = baza.usunPracownika(pracownik);
+void Administrator::removeEmployee(EmployeeDatabase& database, const Employee& employee) noexcept {
+    int id = database.removeEmployee(employee);
     if (id != -1) {
-        cout << "Employee o Peselu " << pracownik.getPesel() << " zostal usuniety z bazy." << endl;
+        cout << "Employee with PESEL " << employee.getPesel() << " was removed from the database." << endl;
     }
 }
 
-void Administrator::wyswietlListePracownikow(const EmployeeDatabase& baza) const noexcept {
-    baza.wyswietlListePracownikow();
+void Administrator::showEmployeeList(const EmployeeDatabase& database) const noexcept {
+    database.showEmployeeList();
 }
-

@@ -45,7 +45,7 @@ BookDatabase::BookDatabase() {
 }
 
 // Funkcja dodająca nową książkę do bazy danych
-int BookDatabase::aktualizujStanDodaj(const Book& ksiazka) {
+int BookDatabase::updateStateAdd(const Book& ksiazka) {
     int kID = ksiazka.getID();
 
     // Otwieramy plik JSON
@@ -104,7 +104,7 @@ int BookDatabase::aktualizujStanDodaj(const Book& ksiazka) {
 }
 
 // Funkcja usuwająca książkę z bazy na podstawie ID
-int BookDatabase::aktualizujStanUsun(const Book& ksiazka) {
+int BookDatabase::updateStateRemove(const Book& ksiazka) {
     int kID = ksiazka.getID();
 
     // Otwieramy plik JSON

@@ -36,11 +36,11 @@ string Employee::getFunkcja() const {
 }
 
 void Employee::dodajCzytelnika(ReaderDatabase& baza, const ReaderAccount& czytelnik) {
-    baza.tworzenieKonta(czytelnik);
+    baza.createAccount(czytelnik);
 }
 
 void Employee::usunCzytelnika(ReaderDatabase& baza, const ReaderAccount& czytelnik) {
-    baza.usuniecieKonta(czytelnik);
+    baza.deleteAccount(czytelnik);
 }
 
 void Employee::wyswietlListeKsiazek(BookDatabase& baza) {
@@ -48,22 +48,22 @@ void Employee::wyswietlListeKsiazek(BookDatabase& baza) {
 }
 
 void Employee::wyswietlListeCzytelnikow(ReaderDatabase& baza) {
-    baza.wyswietlListeCzytelnikow();
+    baza.showReaderList();
 }
 
 void Employee::sprawdzenieKonta(ReaderDatabase& baza, const ReaderAccount& czytelnik) {
-    baza.sprawdzenieKonta(czytelnik);
+    baza.checkAccount(czytelnik);
 }
 
 // Funkcja sprawdzaj�ca, czytelnik mo�e wypo�yczy� ksi��k�
 void Employee::wypozyczKsiazke(BookDatabase&, ReaderDatabase& bazaCzytelnikow,
     int egzemplarzID, const ReaderAccount& czytelnik) {
 
-    if (!bazaCzytelnikow.czyMoznaWypozyczyc(czytelnik)) {
+    if (!bazaCzytelnikow.canBorrow(czytelnik)) {
         return; // wyj�cie z funkcji, je�li wypo�yczenie jest niemo�liwe
     }
     if (wypozyczenie.wypozyczKsiazke(egzemplarzID) != -1) { // pr�ba wypo�yczenia; je�li si� powiedzie, dodaj do wypo�ycze� czytelnika
-        bazaCzytelnikow.podepnijWypozyczenie(czytelnik, egzemplarzID);
+        bazaCzytelnikow.addBorrow(czytelnik, egzemplarzID);
     }
 }
 
@@ -72,10 +72,10 @@ void Employee::zwrocKsiazke(BookDatabase&, ReaderDatabase& bazaCzytelnikow, int 
     float kaucja = zwrot.zwrocKsiazke(egzemplarzID); // obliczenie warto�ci kaucji
 
     if (kaucja != -1) {
-        bazaCzytelnikow.usunWypozyczenie(czytelnik, egzemplarzID); // usuni�cie informacji o wypo�yczeniu z bazy czytelnika
+        bazaCzytelnikow.removeBorrow(czytelnik, egzemplarzID); // usuni�cie informacji o wypo�yczeniu z bazy czytelnika
 
         if (kaucja > 0) { // je�li warto�� kaucji jest dodatnia, nalicz j� czytelnikowi
-            bazaCzytelnikow.naliczKaucje(const_cast<ReaderAccount&>(czytelnik), kaucja);
+            bazaCzytelnikow.setDeposit(const_cast<ReaderAccount&>(czytelnik), kaucja);
         }
     }
     else {
@@ -85,5 +85,5 @@ void Employee::zwrocKsiazke(BookDatabase&, ReaderDatabase& bazaCzytelnikow, int 
 
 // Funkcja aktualizuj�ca stan konta czytelnika
 void Employee::przyjmijKaucje(ReaderDatabase& bazaCzytelnikow, ReaderAccount& czytelnik) {
-    bazaCzytelnikow.usunKaucje(czytelnik);
+    bazaCzytelnikow.removeDeposit(czytelnik);
 }

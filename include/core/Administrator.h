@@ -9,11 +9,15 @@ public:
     Administrator(const string& pesel, const string& imie, const string& nazwisko,
                  const string& login, const string& haslo, const string& funkcja);
 
-    virtual ~Administrator() = default;
+    void addBook(BookDatabase &database, const Book &book) noexcept;
 
-    void dodajKsiazke(BookDatabase& baza, const Book& ksiazka) noexcept;
-    void usunKsiazke(BookDatabase& baza, const Book& ksiazka) noexcept;
-    void dodajPracownika(EmployeeDatabase& baza, const Employee& pracownik) noexcept;
-    void usunPracownika(EmployeeDatabase& baza, const Employee& pracownik) noexcept;
-    void wyswietlListePracownikow(const EmployeeDatabase& baza) const noexcept;
+    void removeBook(BookDatabase &database, const Book &book) noexcept;
+
+    void addEmployee(EmployeeDatabase &database, const Employee &employee) noexcept;
+
+    void removeEmployee(EmployeeDatabase &database, const Employee &employee) noexcept;
+
+    void showEmployeeList(const EmployeeDatabase &database) const noexcept;
+
+    virtual ~Administrator() = default;
 };

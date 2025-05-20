@@ -12,12 +12,15 @@ public:
     EmployeeDatabase();
     pair<string, string> logowanie();
 
+    int addEmployee(const Employee & employee);
+
+    int removeEmployee(const Employee & employee);
+
+    void showEmployeeList() const;
+
     static string nazwaPliku;
 
     static string fileName;
 
     bool walidujPesel(const string& pesel);
-    int dodajPracownika(const Employee& pracownik);
-    int usunPracownika(const Employee& pracownik);
-    void wyswietlListePracownikow() const;
 };

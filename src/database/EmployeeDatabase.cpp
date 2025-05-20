@@ -94,7 +94,7 @@ pair<string, string> EmployeeDatabase::logowanie() {
 }
 
 // Funkcja dodająca nowego pracownika do bazy i zapisująca jego dane w pliku JSON
-int EmployeeDatabase::dodajPracownika(const Employee& pracownik) {
+int EmployeeDatabase::addEmployee(const Employee& pracownik) {
     string peselStr = pracownik.getPesel();
 
     if (!walidujPesel(peselStr)) {
@@ -160,7 +160,7 @@ int EmployeeDatabase::dodajPracownika(const Employee& pracownik) {
 }
 
 // Funkcja usuwająca pracownika z bazy na podstawie jego numeru PESEL
-int EmployeeDatabase::usunPracownika(const Employee& pracownik) {
+int EmployeeDatabase::removeEmployee(const Employee& pracownik) {
     string pesel = pracownik.getPesel();
 
     if (!walidujPesel(pesel)) {
@@ -215,7 +215,7 @@ int EmployeeDatabase::usunPracownika(const Employee& pracownik) {
 }
 
 // Funkcja wyświetlająca listę wszystkich pracowników w bazie
-void EmployeeDatabase::wyswietlListePracownikow() const {
+void EmployeeDatabase::showEmployeeList() const {
     ifstream plik(fileName);
 
     if (!plik.is_open()) {

@@ -10,11 +10,13 @@ public:
     static string fileName;
 
     BookDatabase();
-    int aktualizujStanDodaj(const Book& ksiazka);
-    int aktualizujStanUsun(const Book& ksiazka);
     void wyswietlListeKsiazek() const;
 
     bool wypozyczKsiazke(int id, const string &dataZwrotu);
 
     bool zwrocKsiazke(int id);
+
+    int updateStateAdd(const Book & book);
+
+    int updateStateRemove(const Book & book);
 };

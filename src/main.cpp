@@ -64,7 +64,7 @@ int main() {
                         cout << "Nadaj ID ksiazki: ";
                         cin >> ID;
                         Book nowaKsiazka(ID, tytul, autor, rok, stan);
-                        admin.dodajKsiazke(bazaKsiazek, nowaKsiazka);
+                        admin.addBook(bazaKsiazek, nowaKsiazka);
                         break;
                     }
                     case 2: {
@@ -73,7 +73,7 @@ int main() {
                         cout << "Podaj ID ksiazki do usuniecia: ";
                         cin >> kID;
                         Book ksiazkaDoUsuniecia(kID);
-                        admin.usunKsiazke(bazaKsiazek, ksiazkaDoUsuniecia);
+                        admin.removeBook(bazaKsiazek, ksiazkaDoUsuniecia);
                         break;
                     }
                     case 3: {
@@ -92,7 +92,7 @@ int main() {
                         cout << "Podaj funkcje (admin/pracownik): ";
                         cin >> funkcja;
                         Employee nowyPracownik(pesel, imie, nazwisko, login, haslo, funkcja);
-                        admin.dodajPracownika(bazaPracownikow,nowyPracownik);
+                        admin.addEmployee(bazaPracownikow,nowyPracownik);
                         break;
                     }
                     case 4: {
@@ -101,7 +101,7 @@ int main() {
                         cout << "Podaj pesel: ";
                         cin >> pesel;
                         Employee pracownikDoUsuniecia(pesel);
-                        admin.usunPracownika(bazaPracownikow,pracownikDoUsuniecia);
+                        admin.removeEmployee(bazaPracownikow,pracownikDoUsuniecia);
                         break;
                     }
                     case 5: {
@@ -140,7 +140,7 @@ int main() {
                     }
                     case 9: {
                         // Wywietlanie pracownikow
-                        admin.wyswietlListePracownikow(bazaPracownikow);
+                        admin.showEmployeeList(bazaPracownikow);
                         break;
                     }
 

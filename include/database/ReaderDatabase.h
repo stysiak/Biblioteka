@@ -12,26 +12,28 @@ public:
 
     ReaderDatabase();
 
-    bool walidujPesel(const std::string& pesel);
+    bool validatePesel(const string &pesel);
 
-    nlohmann::json wczytajBaze() const;
+    json loadDatabase() const;
 
+    void saveDatabase(const json &j);
 
-    void zapiszBaze(const nlohmann::json &j);
+    int createAccount(const ReaderAccount &reader);
 
-    int tworzenieKonta(const ReaderAccount& kontoCzytelnika);
-    int usuniecieKonta(const ReaderAccount& kontoCzytelnika);
+    int deleteAccount(const ReaderAccount &reader);
 
-    void wyswietlListeCzytelnikow() const;
-    void sprawdzenieKonta(const ReaderAccount& czytelnik);
+    void showReaderList() const;
 
-    int podepnijWypozyczenie(const ReaderAccount& czytelnik, int egzemplarzID);
-    int usunWypozyczenie(const ReaderAccount& czytelnik, int egzemplarzID);
+    int addBorrow(const ReaderAccount &reader, int bookID);
 
-    bool czyMoznaWypozyczyc(const ReaderAccount& czytelnik);
+    int removeBorrow(const ReaderAccount &reader, int bookID);
 
-    int naliczKaucje(ReaderAccount& czytelnik, float kaucja);
-    int usunKaucje(ReaderAccount& czytelnik);
-    void zapiszBaze(const std::string& sciezkaPliku) const;
+    bool canBorrow(const ReaderAccount &reader);
+
+    void checkAccount(const ReaderAccount &reader);
+
+    int setDeposit(ReaderAccount &reader, float deposit);
+
+    int removeDeposit(ReaderAccount &reader);
 
 };
