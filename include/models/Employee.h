@@ -9,30 +9,30 @@
 class Employee {
 private:
     string pesel;
-    string imie;
-    string nazwisko;
+    string firstName;
+    string lastName;
     string login;
-    string haslo;
-    string funkcja;
-    Borrowing wypozyczenie;
-    Return zwrot;
+    string password;
+    string role;
+    Borrowing borrow;
+    Return ret;
 
 public:
     Employee();
-    Employee(const string& pesel, const string& imie, const string& nazwisko, const string& login, const string& haslo, const string& funkcja);
+    Employee(const string& pesel, const string& firstName, const string& lastName, const string& login, const string& password, const string& role);
     Employee(const string& pesel);
     string getPesel() const;
     string getLogin() const;
-    string getHaslo() const;
-    string getImie() const;
-    string getNazwisko() const;
-    string getFunkcja() const;
-    void dodajCzytelnika(ReaderDatabase& baza, const ReaderAccount& czytelnik);
-    void usunCzytelnika(ReaderDatabase& baza, const ReaderAccount& czytelnik);
-    void sprawdzenieKonta(ReaderDatabase& baza, const ReaderAccount& czytelnik);
-    void przyjmijKaucje(ReaderDatabase& bazaCzytelnikow, ReaderAccount& czytelnik);
-    void wyswietlListeKsiazek(BookDatabase& baza);
-    void wyswietlListeCzytelnikow(ReaderDatabase& baza);
-    void wypozyczKsiazke(BookDatabase& bazaKsiazek, ReaderDatabase& bazaCzytelnikow, int egzemplarzID, const ReaderAccount& czytelnik);
-    void zwrocKsiazke(BookDatabase& bazaKsiazek, ReaderDatabase& bazaCzytelnikow, int egzemplarzID, const ReaderAccount& czytelnik);
+    string getPassword() const;
+    string getFirstName() const;
+    string getLastName() const;
+    string getRole() const;
+    void addReader(ReaderDatabase& database, const ReaderAccount& reader);
+    void removeReader(ReaderDatabase& database, const ReaderAccount& reader);
+    void checkAccount(ReaderDatabase& database, const ReaderAccount& reader);
+    void acceptDeposit(ReaderDatabase& readerDatabase, ReaderAccount& reader);
+    void showBookList(BookDatabase& database);
+    void showReaderList(ReaderDatabase& database);
+    void borrowBook(BookDatabase& bookDatabase, ReaderDatabase& readerDatabase, int bookID, const ReaderAccount& reader);
+    void returnBook(BookDatabase& bookDatabase, ReaderDatabase& readerDatabase, int bookID, const ReaderAccount& reader);
 };

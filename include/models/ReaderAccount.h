@@ -4,17 +4,17 @@
 class ReaderAccount {
 private:
 	string pesel;
-	string imie;
-	string nazwisko;
-	float kaucja = 0.0;
-	int iloscKsiazek = 0;
+	string firstName;
+	string lastName;
+	float deposit = 0.0;
+	int booksCount = 0;
 public:
-	ReaderAccount(const string& pesel, const string& imie, const string& nazwisko, const float& kaucja, const int& iloscKsiazek);
-	ReaderAccount(const string& pesel, const string& imie, const string& nazwisko);
+	ReaderAccount(const string& pesel, const string& firstName, const string& lastName, const float& deposit, const int& booksCount);
+	ReaderAccount(const string& pesel, const string& firstName, const string& lastName);
 	ReaderAccount(const string& pesel);
 	string getPesel() const;
-	string getImie() const;
-	string getNazwisko() const;
-	float getKaucja() const;
-	int getIloscKsiazek() const;
+	string getFirstName() const;
+	string getLastName() const;
+	float getDeposit() const;
+	int getBooksCount() const;
 };

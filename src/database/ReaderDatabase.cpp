@@ -43,10 +43,10 @@ int ReaderDatabase::createAccount(const ReaderAccount& reader) {
     }
 
     db[pesel] = {
-        {"firstName", reader.getImie()},
-        {"lastName", reader.getNazwisko()},
-        {"deposit", reader.getKaucja()},
-        {"bookCount", reader.getIloscKsiazek()},
+        {"firstName", reader.getFirstName()},
+        {"lastName", reader.getLastName()},
+        {"deposit", reader.getDeposit()},
+        {"bookCount", reader.getBooksCount()},
         {"borrowed", json::array()}
     };
 

@@ -4,19 +4,19 @@
 
 class BookDatabase {
 private:
-    unordered_map<int, shared_ptr<Book>> ksiazki;
+    unordered_map<int, shared_ptr<Book>> books;
 
 public:
     static string fileName;
 
     BookDatabase();
-    void wyswietlListeKsiazek() const;
+    void showBookList() const;
 
-    bool wypozyczKsiazke(int id, const string &dataZwrotu);
+    bool borrowBook(int id, const string& returnDate);
 
-    bool zwrocKsiazke(int id);
+    bool returnBook(int id);
 
-    int updateStateAdd(const Book & book);
+    int updateStateAdd(const Book& book);
 
-    int updateStateRemove(const Book & book);
+    int updateStateRemove(const Book& book);
 };

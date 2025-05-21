@@ -1,142 +1,142 @@
 [
   {
     "id": 1,
-    "tytul": "Lalka",
-    "autor": "Boleslaw Prus",
-    "rok": 2020,
-    "status": "dostepna"
+    "title": "Lalka",
+    "author": "Boleslaw Prus",
+    "year": 2020,
+    "status": "available"
   },
   {
     "id": 2,
-    "tytul": "Zbrodnia i kara",
-    "autor": "Fiodor Dostojewski",
-    "rok": 2021,
-    "status": "dostepna"
+    "title": "Crime and Punishment",
+    "author": "Fyodor Dostoevsky",
+    "year": 2021,
+    "status": "available"
   },
   {
     "id": 3,
-    "tytul": "Mistrz i Malgorzata",
-    "autor": "Michail Bulhakow",
-    "rok": 2019,
-    "status": "dostepna"
+    "title": "The Master and Margarita",
+    "author": "Mikhail Bulgakov",
+    "year": 2019,
+    "status": "available"
   },
   {
     "id": 4,
-    "tytul": "Wojna i pokoj",
-    "autor": "Lew Tolstoj",
-    "rok": 2020,
-    "status": "dostepna"
+    "title": "War and Peace",
+    "author": "Leo Tolstoy",
+    "year": 2020,
+    "status": "available"
   },
   {
     "id": 5,
-    "tytul": "Opowiesci z Narnii: Lew czarownica i stara szafa",
-    "autor": "C.S. Lewis",
-    "rok": 2021,
-    "status": "dostepna"
+    "title": "The Chronicles of Narnia: The Lion, the Witch and the Wardrobe",
+    "author": "C.S. Lewis",
+    "year": 2021,
+    "status": "available"
   },
   {
     "id": 6,
-    "tytul": "Czlowiek w poszukiwaniu sensu",
-    "autor": "Viktor E. Frankl",
-    "rok": 2020,
-    "status": "dostepna"
+    "title": "Man's Search for Meaning",
+    "author": "Viktor E. Frankl",
+    "year": 2020,
+    "status": "available"
   },
   {
     "id": 7,
-    "tytul": "Proces",
-    "autor": "Franz Kafka",
-    "rok": 2018,
-    "status": "dostepna"
+    "title": "The Trial",
+    "author": "Franz Kafka",
+    "year": 2018,
+    "status": "available"
   },
   {
     "id": 8,
-    "tytul": "Don Kichot",
-    "autor": "Miguel de Cervantes",
-    "rok": 2017,
-    "status": "dostepna"
+    "title": "Don Quixote",
+    "author": "Miguel de Cervantes",
+    "year": 2017,
+    "status": "available"
   },
   {
     "id": 9,
-    "tytul": "Maly ksiaze",
-    "autor": "Antoine de Saint-Exupery",
-    "rok": 2022,
-    "status": "dostepna"
+    "title": "The Little Prince",
+    "author": "Antoine de Saint-Exupery",
+    "year": 2022,
+    "status": "available"
   },
   {
     "id": 10,
-    "tytul": "Pani Bovary",
-    "autor": "Gustave Flaubert",
-    "rok": 2021,
-    "status": "dostepna"
+    "title": "Madame Bovary",
+    "author": "Gustave Flaubert",
+    "year": 2021,
+    "status": "available"
   },
   {
     "id": 11,
-    "tytul": "Anna Karenina",
-    "autor": "Lew Tolstoj",
-    "rok": 2020,
-    "status": "dostepna"
+    "title": "Anna Karenina",
+    "author": "Leo Tolstoy",
+    "year": 2020,
+    "status": "available"
   },
   {
     "id": 12,
-    "tytul": "Wielki Gatsby",
-    "autor": "F. Scott Fitzgerald",
-    "rok": 2019,
-    "status": "dostepna"
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "year": 2019,
+    "status": "available"
   },
   {
     "id": 13,
-    "tytul": "W poszukiwaniu straconego czasu",
-    "autor": "Marcel Proust",
-    "rok": 2021,
-    "status": "dostepna"
+    "title": "In Search of Lost Time",
+    "author": "Marcel Proust",
+    "year": 2021,
+    "status": "available"
   },
   {
     "id": 14,
-    "tytul": "Duma i uprzedzenie",
-    "autor": "Jane Austen",
-    "rok": 2018,
-    "status": "dostepna"
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "year": 2018,
+    "status": "available"
   },
   {
     "id": 15,
-    "tytul": "1984",
-    "autor": "George Orwell",
-    "rok": 2020,
-    "status": "dostepna"
+    "title": "1984",
+    "author": "George Orwell",
+    "year": 2020,
+    "status": "available"
   },
   {
     "id": 16,
-    "tytul": "Sto lat samotnosci",
-    "autor": "Gabriel Garcia Marquez",
-    "rok": 2021,
-    "status": "dostepna"
+    "title": "One Hundred Years of Solitude",
+    "author": "Gabriel Garcia Marquez",
+    "year": 2021,
+    "status": "available"
   },
   {
     "id": 17,
-    "tytul": "Wichrowe wzgorza",
-    "autor": "Emily Bronte",
-    "rok": 2019,
-    "status": "dostepna"
+    "title": "Wuthering Heights",
+    "author": "Emily Bronte",
+    "year": 2019,
+    "status": "available"
   },
   {
     "id": 18,
-    "tytul": "Zly",
-    "autor": "Joseph Roth",
-    "rok": 2020,
-    "status": "dostepna"
+    "title": "Zly",
+    "author": "Joseph Roth",
+    "year": 2020,
+    "status": "available"
   },
   {
     "id": 19,
-    "tytul": "Katedra Marii Panny w Paryzu",
-    "autor": "Victor Hugo",
-    "rok": 2022,
-    "status": "dostepna"
+    "title": "The Hunchback of Notre-Dame",
+    "author": "Victor Hugo",
+    "year": 2022,
+    "status": "available"
   },
   {
     "id": 20,
-    "tytul": "O jeden most za daleko",
-    "autor": "Cornelius Ryan",
-    "rok": 2021,
-    "status": "dostepna"
+    "title": "A Bridge Too Far",
+    "author": "Cornelius Ryan",
+    "year": 2021,
+    "status": "available"
   }
 ]

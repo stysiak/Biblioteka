@@ -6,10 +6,15 @@
 
 class EmployeeDatabase {
 private:
-    vector<Employee> listaPracownikow;
+    vector<Employee> employeeList;
 
 public:
+    static bool validatePesel(const string &pesel);
+
     EmployeeDatabase();
+
+    pair<string, string> login();
+
     pair<string, string> logowanie();
 
     int addEmployee(const Employee & employee);
@@ -21,6 +26,4 @@ public:
     static string nazwaPliku;
 
     static string fileName;
-
-    bool walidujPesel(const string& pesel);
 };

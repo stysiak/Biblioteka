@@ -1,10 +1,18 @@
 #include "../../include/utils/Return.h"
+#include <fstream>
+#include <iostream>
+#include <iomanip>
+#include <ctime>
+#include <sstream>
+#include <nlohmann/json.hpp>
 
+using json = nlohmann::json;
+using namespace std;
 
 string Return::fileName = "../../data/books_database.json";
 
-float Return::zwrocKsiazke(const Book& ksiazka) {
-    float kaucja = 0.0f;
+float Return::returnBook(const Book& book) {
+    float deposit = 0.0f;
     time_t now = time(0);
     tm localTime = {};
     localtime_s(&localTime, &now);
@@ -14,7 +22,7 @@ float Return::zwrocKsiazke(const Book& ksiazka) {
 
     ifstream inFile(fileName);
     if (!inFile.is_open()) {
-        cerr << "Nie mozna otworzyc pliku JSON!" << endl;
+        cerr << "Cannot open JSON file!" << endl;
         return -1.0f;
     }
 
@@ -24,57 +32,57 @@ float Return::zwrocKsiazke(const Book& ksiazka) {
 
     bool found = false;
 
-    for (auto& book : books) {
-        if (book["id"] == ksiazka.getID() && book["status"] == "niedostepna") {
+    for (auto& b : books) {
+        if (b["id"] == book.getID() && b["status"] == "unavailable") {
             found = true;
 
-            // Sprawdź, czy istnieje data zwrotu
-            if (book.contains("data_zwrotu")) {
-                string dataZwrotuStr = book["data_zwrotu"];
+            // Check if return date exists
+            if (b.contains("returnDate")) {
+                string returnDateStr = b["returnDate"];
 
-                tm dataZwrotu = {};
-                istringstream ss(dataZwrotuStr);
-                ss >> get_time(&dataZwrotu, "%Y-%m-%d");
+                tm returnDate = {};
+                istringstream ss(returnDateStr);
+                ss >> get_time(&returnDate, "%Y-%m-%d");
                 if (ss.fail()) {
-                    cerr << "Blad konwersji daty!" << endl;
+                    cerr << "Date conversion error!" << endl;
                     return -1.0f;
                 }
 
-                time_t tDataZwrotu = mktime(&dataZwrotu);
-                double secondsLate = difftime(now, tDataZwrotu);
+                time_t tReturnDate = mktime(&returnDate);
+                double secondsLate = difftime(now, tReturnDate);
                 int lateDays = secondsLate / (60 * 60 * 24);
                 if (lateDays > 0) {
-                    kaucja = lateDays * 2.0f;
+                    deposit = lateDays * 2.0f;
                 }
             }
 
-            // Aktualizuj status i usuń datę zwrotu
-            book["status"] = "dostepna";
-            book.erase("data_zwrotu");
+            // Update status and remove return date
+            b["status"] = "available";
+            b.erase("returnDate");
             break;
         }
     }
 
     if (!found) {
-        cerr << "Blad zwrotu! Egzemplarz o ID " << ksiazka.getID() << " nie byl wypozyczony." << endl;
+        cerr << "Return error! Book with ID " << book.getID() << " was not borrowed." << endl;
         return -1.0f;
     }
 
     ofstream outFile(fileName);
     if (!outFile.is_open()) {
-        cerr << "Nie mozna zapisac pliku JSON!" << endl;
+        cerr << "Cannot save JSON file!" << endl;
         return -1.0f;
     }
 
     outFile << setw(4) << books << endl;
     outFile.close();
 
-    // Informacja końcowa
-    if (kaucja > 0.0f) {
-        cout << "Book zwrocona po terminie. Naliczenie kaucji: " << kaucja << " zl." << endl;
+    // Final info
+    if (deposit > 0.0f) {
+        cout << "Book returned late. Deposit charged: " << deposit << " PLN." << endl;
     } else {
-        cout << "Book o ID " << ksiazka.getID() << " zostala zwrocona w terminie." << endl;
+        cout << "Book with ID " << book.getID() << " was returned on time." << endl;
     }
 
-    return kaucja;
+    return deposit;
 }

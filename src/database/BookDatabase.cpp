@@ -11,220 +11,198 @@ using namespace std;
 string BookDatabase::fileName = "../../data/books_database.json";
 
 BookDatabase::BookDatabase() {
-    cout << "Proba otwarcia pliku: " << fileName << endl;
-    ifstream plik(fileName);
-    if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku books_database.json :(" << endl;
+    cout << "Trying to open file: " << fileName << endl;
+    ifstream file(fileName);
+    if (!file.is_open()) {
+        cerr << "Cannot open books_database.json file :(" << endl;
         return;
     }
     json j;
-    plik >> j;
-    plik.close();
+    file >> j;
+    file.close();
 
-    cout << "Wczytano dane JSON. Liczba ksiazek: " << j.size() << endl;
+    cout << "Loaded JSON data. Number of books: " << j.size() << endl;
 
-    for (const auto& ksiazka : j) {
-        int id = ksiazka["id"];
-        string tytul = ksiazka["tytul"];
-        string autor = ksiazka["autor"];
-        int rok = ksiazka["rok"];
-        string status = ksiazka["status"];
-        string dataZwrotu = "";
+    for (const auto& book : j) {
+        int id = book["id"];
+        string title = book["title"];
+        string author = book["author"];
+        int year = book["year"];
+        string status = book["status"];
+        string returnDate = "";
 
-        // Jeśli książka ma datę zwrotu (jest wypożyczona)
-        if (ksiazka.contains("dataZwrotu") && !ksiazka["dataZwrotu"].is_null()) {
-            dataZwrotu = ksiazka["dataZwrotu"];
+        if (book.contains("returnDate") && !book["returnDate"].is_null()) {
+            returnDate = book["returnDate"];
         }
 
-        cout << "Wczytano ksiazke: " << id << " - " << tytul << " (" << status << ")" << endl;
+        cout << "Loaded book: " << id << " - " << title << " (" << status << ")" << endl;
 
-        // Dodanie książki do mapy
-        Book nowaKsiazka(id, tytul, autor, rok, status);
-        ksiazki[id] = make_shared<Book>(nowaKsiazka);
+        Book newBook(id, title, author, year, status);
+        books[id] = make_shared<Book>(newBook);
     }
 }
 
-// Funkcja dodająca nową książkę do bazy danych
-int BookDatabase::updateStateAdd(const Book& ksiazka) {
-    int kID = ksiazka.getID();
+int BookDatabase::updateStateAdd(const Book& book) {
+    int bID = book.getID();
 
-    // Otwieramy plik JSON
-    ifstream plikOdczyt(fileName);
-    if (!plikOdczyt.is_open()) {
-        cerr << "Nie mozna otworzyc pliku books_database.json do odczytu!" << endl;
+    ifstream readFile(fileName);
+    if (!readFile.is_open()) {
+        cerr << "Cannot open books_database.json file for reading!" << endl;
         return -2;
     }
 
     try {
-        json ksiazkiJson;
-        plikOdczyt >> ksiazkiJson;
-        plikOdczyt.close();
+        json booksJson;
+        readFile >> booksJson;
+        readFile.close();
 
-        // Sprawdzamy, czy książka o podanym ID już istnieje
-        for (const auto& k : ksiazkiJson) {
-            if (k["id"] == kID) {
-                cerr << "Book o ID " << kID << " juz istnieje." << endl;
+        for (const auto& b : booksJson) {
+            if (b["id"] == bID) {
+                cerr << "Book with ID " << bID << " already exists." << endl;
                 return -1;
             }
         }
 
-        // Tworzenie lokalnej kopii książki z automatycznie ustawionym stanem "dostępna"
-        Book nowaKsiazka(kID, ksiazka.getTytul(), ksiazka.getNazwiskoAutora(), ksiazka.getRokWydania(), "dostepna");
+        Book newBook(bID, book.getTitle(), book.getAuthorSurname(), book.getYearOfPublication(), "available");
+        books[bID] = make_shared<Book>(newBook);
 
-        // Dodanie książki do mapy
-        ksiazki[kID] = make_shared<Book>(nowaKsiazka);
+        json newBookJson;
+        newBookJson["id"] = newBook.getID();
+        newBookJson["title"] = newBook.getTitle();
+        newBookJson["author"] = newBook.getAuthorSurname();
+        newBookJson["year"] = newBook.getYearOfPublication();
+        newBookJson["status"] = newBook.getStatus();
 
-        // Tworzymy nowy obiekt JSON dla książki
-        json nowaKsiazkaJson;
-        nowaKsiazkaJson["id"] = nowaKsiazka.getID();
-        nowaKsiazkaJson["tytul"] = nowaKsiazka.getTytul();
-        nowaKsiazkaJson["autor"] = nowaKsiazka.getNazwiskoAutora();
-        nowaKsiazkaJson["rok"] = nowaKsiazka.getRokWydania();
-        nowaKsiazkaJson["status"] = nowaKsiazka.getStan();
+        booksJson.push_back(newBookJson);
 
-        // Dodajemy nową książkę do tablicy JSON
-        ksiazkiJson.push_back(nowaKsiazkaJson);
-
-        // Zapisujemy zaktualizowaną tablicę do pliku
-        ofstream plikZapis(fileName);
-        if (plikZapis.is_open()) {
-            plikZapis << setw(2) << ksiazkiJson << endl;
-            plikZapis.close();
-            return kID;
+        ofstream writeFile(fileName);
+        if (writeFile.is_open()) {
+            writeFile << setw(2) << booksJson << endl;
+            writeFile.close();
+            return bID;
         }
         else {
-            cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
+            cerr << "Cannot open file for writing!" << endl;
             return -3;
         }
     }
     catch (json::exception& e) {
-        cerr << "Blad parsowania pliku JSON: " << e.what() << endl;
+        cerr << "JSON parsing error: " << e.what() << endl;
         return -4;
     }
 }
 
-// Funkcja usuwająca książkę z bazy na podstawie ID
-int BookDatabase::updateStateRemove(const Book& ksiazka) {
-    int kID = ksiazka.getID();
+int BookDatabase::updateStateRemove(const Book& book) {
+    int bID = book.getID();
 
-    // Otwieramy plik JSON
-    ifstream plikOdczyt(fileName);
-    if (!plikOdczyt.is_open()) {
-        cerr << "Blad otwarcia pliku do odczytu!" << endl;
+    ifstream readFile(fileName);
+    if (!readFile.is_open()) {
+        cerr << "Error opening file for reading!" << endl;
         return -1;
     }
 
     try {
-        json ksiazkiJson;
-        plikOdczyt >> ksiazkiJson;
-        plikOdczyt.close();
+        json booksJson;
+        readFile >> booksJson;
+        readFile.close();
 
         bool found = false;
-        json noweKsiazkiJson = json::array();
+        json newBooksJson = json::array();
 
-        // Tworzymy nową tablicę bez książki o podanym ID
-        for (const auto& k : ksiazkiJson) {
-            if (k["id"] != kID) {
-                noweKsiazkiJson.push_back(k);
+        for (const auto& b : booksJson) {
+            if (b["id"] != bID) {
+                newBooksJson.push_back(b);
             } else {
                 found = true;
             }
         }
 
         if (!found) {
-            cout << "Nie znaleziono ksiazki o ID " << kID << endl;
+            cout << "Book with ID " << bID << " not found" << endl;
             return -1;
         }
 
-        // Zapisujemy zaktualizowaną tablicę do pliku
-        ofstream plikZapis(fileName);
-        if (plikZapis.is_open()) {
-            plikZapis << setw(2) << noweKsiazkiJson << endl;
-            plikZapis.close();
+        ofstream writeFile(fileName);
+        if (writeFile.is_open()) {
+            writeFile << setw(2) << newBooksJson << endl;
+            writeFile.close();
 
-            // Usunięcie książki z mapy
-            ksiazki.erase(kID);
-            return kID;
+            books.erase(bID);
+            return bID;
         }
         else {
-            cerr << "Blad otwarcia pliku do zapisu!" << endl;
+            cerr << "Error opening file for writing!" << endl;
             return -1;
         }
     }
     catch (json::exception& e) {
-        cerr << "Blad parsowania pliku JSON: " << e.what() << endl;
+        cerr << "JSON parsing error: " << e.what() << endl;
         return -1;
     }
 }
 
-// Funkcja wyświetlająca listę wszystkich książek w bazie
-void BookDatabase::wyswietlListeKsiazek() const {
-    ifstream plik(fileName);
+void BookDatabase::showBookList() const {
+    ifstream file(fileName);
 
-    if (!plik.is_open()) {
-        cerr << "Nie mozna otworzyc pliku books_database.json" << endl;
+    if (!file.is_open()) {
+        cerr << "Cannot open books_database.json file" << endl;
         return;
     }
 
     try {
-        json ksiazkiJson;
-        plik >> ksiazkiJson;
-        plik.close();
+        json booksJson;
+        file >> booksJson;
+        file.close();
 
-        cout << "\n--- Lista ksiazek ---" << endl;
+        cout << "\n--- Book list ---" << endl;
 
-        for (const auto& ksiazka : ksiazkiJson) {
-            cout << "ID: " << ksiazka["id"]
-                 << ", Tytul: " << ksiazka["tytul"]
-                 << ", Autor: " << ksiazka["autor"]
-                 << ", Rok: " << ksiazka["rok"]
-                 << ", Stan: " << ksiazka["status"];
+        for (const auto& book : booksJson) {
+            cout << "ID: " << book["id"]
+                 << ", Title: " << book["title"]
+                 << ", Author: " << book["author"]
+                 << ", Year: " << book["year"]
+                 << ", Status: " << book["status"];
 
-            // Jeśli książka ma datę zwrotu (jest wypożyczona)
-            if (ksiazka.contains("dataZwrotu") && !ksiazka["dataZwrotu"].is_null()) {
-                cout << ", Data zwrotu: " << ksiazka["dataZwrotu"];
+            if (book.contains("returnDate") && !book["returnDate"].is_null()) {
+                cout << ", Return date: " << book["returnDate"];
             }
 
             cout << endl;
         }
     }
     catch (json::exception& e) {
-        cerr << "Blad parsowania pliku JSON: " << e.what() << endl;
+        cerr << "JSON parsing error: " << e.what() << endl;
     }
 }
 
-// Funkcja aktualizująca stan książki na "wypożyczona" i ustawiająca datę zwrotu
-bool BookDatabase::wypozyczKsiazke(int id, const string& dataZwrotu) {
-    // Otwieramy plik JSON
-    ifstream plikOdczyt(fileName);
-    if (!plikOdczyt.is_open()) {
-        cerr << "Nie mozna otworzyc pliku books_database.json do odczytu!" << endl;
+bool BookDatabase::borrowBook(int id, const string& returnDate) {
+    ifstream readFile(fileName);
+    if (!readFile.is_open()) {
+        cerr << "Cannot open books_database.json file for reading!" << endl;
         return false;
     }
 
     try {
-        json ksiazkiJson;
-        plikOdczyt >> ksiazkiJson;
-        plikOdczyt.close();
+        json booksJson;
+        readFile >> booksJson;
+        readFile.close();
 
         bool found = false;
 
-        // Aktualizujemy stan książki o podanym ID
-        for (auto& ksiazka : ksiazkiJson) {
-            if (ksiazka["id"] == id) {
-                if (ksiazka["status"] == "niedostepna") {
-                    cerr << "Ksiazka o ID " << id << " jest juz wypozyczona!" << endl;
+        for (auto& book : booksJson) {
+            if (book["id"] == id) {
+                if (book["status"] == "unavailable") {
+                    cerr << "Book with ID " << id << " is already borrowed!" << endl;
                     return false;
                 }
 
-                ksiazka["status"] = "niedostepna";
-                ksiazka["dataZwrotu"] = dataZwrotu;
+                book["status"] = "unavailable";
+                book["returnDate"] = returnDate;
                 found = true;
 
-                // Aktualizujemy również książkę w mapie
-                if (ksiazki.find(id) != ksiazki.end()) {
-                    ksiazki[id]->setStan("niedostepna");
-                    ksiazki[id]->setDataZwrotu(dataZwrotu);
+                if (books.find(id) != books.end()) {
+                    books[id]->setStatus("unavailable");
+                    books[id]->setReturnDate(returnDate);
                 }
 
                 break;
@@ -232,62 +210,57 @@ bool BookDatabase::wypozyczKsiazke(int id, const string& dataZwrotu) {
         }
 
         if (!found) {
-            cerr << "Nie znaleziono ksiazki o ID " << id << endl;
+            cerr << "Book with ID " << id << " not found" << endl;
             return false;
         }
 
-        // Zapisujemy zaktualizowaną tablicę do pliku
-        ofstream plikZapis(fileName);
-        if (plikZapis.is_open()) {
-            plikZapis << setw(2) << ksiazkiJson << endl;
-            plikZapis.close();
+        ofstream writeFile(fileName);
+        if (writeFile.is_open()) {
+            writeFile << setw(2) << booksJson << endl;
+            writeFile.close();
             return true;
         }
         else {
-            cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
+            cerr << "Cannot open file for writing!" << endl;
             return false;
         }
     }
     catch (json::exception& e) {
-        cerr << "Blad parsowania pliku JSON: " << e.what() << endl;
+        cerr << "JSON parsing error: " << e.what() << endl;
         return false;
     }
 }
 
-// Funkcja aktualizująca stan książki na "dostępna" i usuwająca datę zwrotu
-bool BookDatabase::zwrocKsiazke(int id) {
-    // Otwieramy plik JSON
-    ifstream plikOdczyt(fileName);
-    if (!plikOdczyt.is_open()) {
-        cerr << "Nie mozna otworzyc pliku books_database.json do odczytu!" << endl;
+bool BookDatabase::returnBook(int id) {
+    ifstream readFile(fileName);
+    if (!readFile.is_open()) {
+        cerr << "Cannot open books_database.json file for reading!" << endl;
         return false;
     }
 
     try {
-        json ksiazkiJson;
-        plikOdczyt >> ksiazkiJson;
-        plikOdczyt.close();
+        json booksJson;
+        readFile >> booksJson;
+        readFile.close();
 
         bool found = false;
 
-        // Aktualizujemy stan książki o podanym ID
-        for (auto& ksiazka : ksiazkiJson) {
-            if (ksiazka["id"] == id) {
-                if (ksiazka["status"] == "dostepna") {
-                    cerr << "Ksiazka o ID " << id << " jest juz dostepna!" << endl;
+        for (auto& book : booksJson) {
+            if (book["id"] == id) {
+                if (book["status"] == "available") {
+                    cerr << "Book with ID " << id << " is already available!" << endl;
                     return false;
                 }
 
-                ksiazka["status"] = "dostepna";
-                if (ksiazka.contains("dataZwrotu")) {
-                    ksiazka.erase("dataZwrotu");
+                book["status"] = "available";
+                if (book.contains("returnDate")) {
+                    book.erase("returnDate");
                 }
                 found = true;
 
-                // Aktualizujemy również książkę w mapie
-                if (ksiazki.find(id) != ksiazki.end()) {
-                    ksiazki[id]->setStan("dostepna");
-                    ksiazki[id]->setDataZwrotu("");
+                if (books.find(id) != books.end()) {
+                    books[id]->setStatus("available");
+                    books[id]->setReturnDate("");
                 }
 
                 break;
@@ -295,24 +268,23 @@ bool BookDatabase::zwrocKsiazke(int id) {
         }
 
         if (!found) {
-            cerr << "Nie znaleziono ksiazki o ID " << id << endl;
+            cerr << "Book with ID " << id << " not found" << endl;
             return false;
         }
 
-        // Zapisujemy zaktualizowaną tablicę do pliku
-        ofstream plikZapis(fileName);
-        if (plikZapis.is_open()) {
-            plikZapis << setw(2) << ksiazkiJson << endl;
-            plikZapis.close();
+        ofstream writeFile(fileName);
+        if (writeFile.is_open()) {
+            writeFile << setw(2) << booksJson << endl;
+            writeFile.close();
             return true;
         }
         else {
-            cerr << "Nie mozna otworzyc pliku do zapisu!" << endl;
+            cerr << "Cannot open file for writing!" << endl;
             return false;
         }
     }
     catch (json::exception& e) {
-        cerr << "Blad parsowania pliku JSON: " << e.what() << endl;
+        cerr << "JSON parsing error: " << e.what() << endl;
         return false;
     }
 }

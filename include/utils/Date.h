@@ -3,13 +3,11 @@
 
 class Date {
 private:
-    int dzien;
-    int miesiac;
-    int rok;
+    int day;
+    int month;
+    int year;
 
 public:
-    Date(int d, int m, int r);
-
+    Date(int day, int month, int year);
     Date();
-   
 };

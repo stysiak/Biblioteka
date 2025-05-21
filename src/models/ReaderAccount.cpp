@@ -1,11 +1,11 @@
 #include "../../include/models/ReaderAccount.h"
 
-ReaderAccount::ReaderAccount(const string& pesel, const string& imie, const string& nazwisko, const float& kaucja, const int& iloscKsiazek = 0)
-    : pesel(pesel), imie(imie), nazwisko(nazwisko), kaucja(kaucja), iloscKsiazek(iloscKsiazek) {
+ReaderAccount::ReaderAccount(const string& pesel, const string& firstName, const string& lastName, const float& deposit, const int& booksCount)
+    : pesel(pesel), firstName(firstName), lastName(lastName), deposit(deposit), booksCount(booksCount) {
 }
 
-ReaderAccount::ReaderAccount(const string& pesel, const string& imie, const string& nazwisko)
-    : pesel(pesel), imie(imie), nazwisko(nazwisko) {
+ReaderAccount::ReaderAccount(const string& pesel, const string& firstName, const string& lastName)
+    : pesel(pesel), firstName(firstName), lastName(lastName) {
 }
 
 ReaderAccount::ReaderAccount(const string& pesel)
@@ -16,20 +16,18 @@ string ReaderAccount::getPesel() const {
     return pesel;
 }
 
-string ReaderAccount::getImie() const {
-    return imie;
+string ReaderAccount::getFirstName() const {
+    return firstName;
 }
 
-string ReaderAccount::getNazwisko() const {
-    return nazwisko;
+string ReaderAccount::getLastName() const {
+    return lastName;
 }
 
-float ReaderAccount::getKaucja() const {
-    return kaucja;
+float ReaderAccount::getDeposit() const {
+    return deposit;
 }
 
-int ReaderAccount::getIloscKsiazek() const {
-    return iloscKsiazek;
+int ReaderAccount::getBooksCount() const {
+    return booksCount;
 }
-
-

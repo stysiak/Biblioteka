@@ -1,43 +1,43 @@
 #include "../../include/models/Book.h"
 
-Book::Book() : ID(0), tytul(""), nazwiskoAutora(""), rokWydania(0), stan("") {} //konstruktor z warto�ciami domy�lnymi
+Book::Book() : ID(0), title(""), authorSurname(""), yearOfPublication(0), status("") {}
 
 Book::Book(int ID)
-	: ID(ID) {
+ : ID(ID) {
 }
 
-Book::Book(int ID, const string& tytul, const string& nazwiskoAutora, int rokWydania, string stan)
-	: ID(ID), tytul(tytul), nazwiskoAutora(nazwiskoAutora), rokWydania(rokWydania), stan(stan) {
+Book::Book(int ID, const string& title, const string& authorSurname, int yearOfPublication, string status)
+ : ID(ID), title(title), authorSurname(authorSurname), yearOfPublication(yearOfPublication), status(status) {
 }
 
-int Book::getID() const { 
-	return ID; 
+int Book::getID() const {
+	return ID;
 }
 
-string Book::getTytul() const { 
-	return tytul; 
+string Book::getTitle() const {
+	return title;
 }
 
-string Book::getNazwiskoAutora() const { 
-	return nazwiskoAutora; 
+string Book::getAuthorSurname() const {
+	return authorSurname;
 }
 
-int Book::getRokWydania() const { 
-	return rokWydania; 
+int Book::getYearOfPublication() const {
+	return yearOfPublication;
 }
 
-void Book::setStan(const std::string& nowyStan) {
-	if (nowyStan == "dostepna" || nowyStan == "niedostepna") {
-		stan = nowyStan;
+void Book::setStatus(const string& newStatus) {
+	if (newStatus == "available" || newStatus == "unavailable") {
+		status = newStatus;
 	} else {
-		std::cerr << "Nieprawidlowy stan ksiazki: " << nowyStan << std::endl;
+		cerr << "Invalid book status: " << newStatus << endl;
 	}
 }
 
-std::string Book::getStan() const {
-	return stan;
+string Book::getStatus() const {
+	return status;
 }
 
-void Book::setDataZwrotu(const std::string& data) {
-	dataZwrotu = data;
+void Book::setReturnDate(const string& date) {
+	returnDate = date;
 }

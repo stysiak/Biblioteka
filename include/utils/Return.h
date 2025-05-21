@@ -6,5 +6,5 @@ class Return {
 public:
 	static string fileName;
 
-	float zwrocKsiazke(const Book& ksiazka);
+	float returnBook(const Book& book);
 };

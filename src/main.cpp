@@ -11,261 +11,258 @@
 using namespace std;
 
 int main() {
-    EmployeeDatabase bazaPracownikow;
-    ReaderDatabase bazaCzytelnikow;
-    BookDatabase bazaKsiazek;
-    string login, funkcja;
-    int wybor;
+    EmployeeDatabase employeeDatabase;
+    ReaderDatabase readerDatabase;
+    BookDatabase bookDatabase;
+    string login, role;
+    int choice;
 
-    system("cls"); //czyszczenie ekranu
+    system("cls"); // clear screen
     cout << "=====================================" << endl;
-    cout << "  WITAMY W SYSTEMIE BIBLIOTECZNYM    " << endl;
+    cout << "      WELCOME TO THE LIBRARY SYSTEM  " << endl;
     cout << "=====================================" << endl;
-    cout << "1. Logowanie" << endl;
-    cout << "2. Wyjscie" << endl;
+    cout << "1. Login" << endl;
+    cout << "2. Exit" << endl;
     cout << "=====================================" << endl;
-    cout << "Wybierz opcje: ";
-    cin >> wybor;
+    cout << "Choose an option: ";
+    cin >> choice;
 
-    switch (wybor) {
+    switch (choice) {
     case 1:
-        tie(login, funkcja) = bazaPracownikow.logowanie();
-        if (!login.empty() && !funkcja.empty()) {
-            if (funkcja == "admin") {
+        tie(login, role) = employeeDatabase.login();
+        if (!login.empty() && !role.empty()) {
+            if (role == "admin") {
                 Administrator admin;
                 do {
-                    cout << "\n--- Menu Administratora ---\n";
-                    cout << "1. Dodaj ksiazke\n";
-                    cout << "2. Usun ksiazke\n";
-                    cout << "3. Dodaj pracownika\n";
-                    cout << "4. Usun pracownika\n";
-                    cout << "5. Dodaj czytelnika\n";
-                    cout << "6. Usun czytelnika\n";
-                    cout << "7. Wyswietl ksiazki z bazy\n";
-                    cout << "8. Wyswietl czytelnikow z bazy\n";
-                    cout << "9. Wyswietl pracownikow z bazy\n";
-                    cout << "10. Zamknij program\n";
-                    cout << "Wybor: ";
-                    cin >> wybor;
+                    cout << "\n--- Administrator Menu ---\n";
+                    cout << "1. Add book\n";
+                    cout << "2. Remove book\n";
+                    cout << "3. Add employee\n";
+                    cout << "4. Remove employee\n";
+                    cout << "5. Add reader\n";
+                    cout << "6. Remove reader\n";
+                    cout << "7. Show books from database\n";
+                    cout << "8. Show readers from database\n";
+                    cout << "9. Show employees from database\n";
+                    cout << "10. Exit program\n";
+                    cout << "Choice: ";
+                    cin >> choice;
 
-                    switch (wybor) {
+                    switch (choice) {
                     case 1: {
-                        //dodaj ksiazke
-                        string tytul, autor, stan;
-                        int rok, ID;
+                        // add book
+                        string title, author, status;
+                        int year, ID;
 
-                        cout << "Podaj tytul ksiazki: ";
+                        cout << "Enter book title: ";
                         cin.ignore();
-                        getline(cin, tytul);
-                        cout << "Podaj autora ksiazki: ";
-                        getline(cin, autor);
-                        cout << "Podaj rok wydania: ";
-                        cin >> rok;
-                        cout << "Nadaj ID ksiazki: ";
+                        getline(cin, title);
+                        cout << "Enter book author: ";
+                        getline(cin, author);
+                        cout << "Enter year of publication: ";
+                        cin >> year;
+                        cout << "Assign book ID: ";
                         cin >> ID;
-                        Book nowaKsiazka(ID, tytul, autor, rok, stan);
-                        admin.addBook(bazaKsiazek, nowaKsiazka);
+                        Book newBook(ID, title, author, year, status);
+                        admin.addBook(bookDatabase, newBook);
                         break;
                     }
                     case 2: {
-                        //usun ksiazke
-                        int kID;
-                        cout << "Podaj ID ksiazki do usuniecia: ";
-                        cin >> kID;
-                        Book ksiazkaDoUsuniecia(kID);
-                        admin.removeBook(bazaKsiazek, ksiazkaDoUsuniecia);
+                        // remove book
+                        int bookID;
+                        cout << "Enter book ID to remove: ";
+                        cin >> bookID;
+                        Book bookToRemove(bookID);
+                        admin.removeBook(bookDatabase, bookToRemove);
                         break;
                     }
                     case 3: {
-                        //dodaj pracownika
-                        string pesel, imie, nazwisko, login, haslo, funkcja;
-                        cout << "Podaj imie: ";
-                        cin >> imie;
-                        cout << "Podaj nazwisko: ";
-                        cin >> nazwisko;
-                        cout << "Podaj login: ";
+                        // add employee
+                        string pesel, firstName, lastName, login, password, role;
+                        cout << "Enter first name: ";
+                        cin >> firstName;
+                        cout << "Enter last name: ";
+                        cin >> lastName;
+                        cout << "Enter login: ";
                         cin >> login;
-                        cout << "Podaj haslo: ";
-                        cin >> haslo;
-                        cout << "Podaj pesel: ";
+                        cout << "Enter password: ";
+                        cin >> password;
+                        cout << "Enter pesel: ";
                         cin >> pesel;
-                        cout << "Podaj funkcje (admin/pracownik): ";
-                        cin >> funkcja;
-                        Employee nowyPracownik(pesel, imie, nazwisko, login, haslo, funkcja);
-                        admin.addEmployee(bazaPracownikow,nowyPracownik);
+                        cout << "Enter role (admin/employee): ";
+                        cin >> role;
+                        Employee newEmployee(pesel, firstName, lastName, login, password, role);
+                        admin.addEmployee(employeeDatabase, newEmployee);
                         break;
                     }
                     case 4: {
-                        // Usuwanie pracownika
+                        // remove employee
                         string pesel;
-                        cout << "Podaj pesel: ";
+                        cout << "Enter pesel: ";
                         cin >> pesel;
-                        Employee pracownikDoUsuniecia(pesel);
-                        admin.removeEmployee(bazaPracownikow,pracownikDoUsuniecia);
+                        Employee employeeToRemove(pesel);
+                        admin.removeEmployee(employeeDatabase, employeeToRemove);
                         break;
                     }
                     case 5: {
-                        //Dodaj czytelnika
-                        string pesel, imie, nazwisko;
+                        // add reader
+                        string pesel, firstName, lastName;
 
-                        cout << "Podaj imie: ";
-                        cin >> imie;
-                        cout << "Podaj nazwisko: ";
-                        cin >> nazwisko;
-                        cout << "Podaj Pesel: ";
+                        cout << "Enter first name: ";
+                        cin >> firstName;
+                        cout << "Enter last name: ";
+                        cin >> lastName;
+                        cout << "Enter pesel: ";
                         cin >> pesel;
 
-                        ReaderAccount nowyCzytelnik(pesel, imie, nazwisko);
-                        admin.dodajCzytelnika(bazaCzytelnikow, nowyCzytelnik);
+                        ReaderAccount newReader(pesel, firstName, lastName);
+                        admin.addReader(readerDatabase, newReader);
                         break;
                     }
                     case 6: {
-                        //Usun czytelnika
+                        // remove reader
                         string pesel;
-                        cout << "Podaj Pesel czytelnika do usuniecia: ";
+                        cout << "Enter pesel of reader to remove: ";
                         cin >> pesel;
-                        ReaderAccount czytelnikDoUsuniecia(pesel);
-                        admin.usunCzytelnika(bazaCzytelnikow, czytelnikDoUsuniecia);
+                        ReaderAccount readerToRemove(pesel);
+                        admin.removeReader(readerDatabase, readerToRemove);
                         break;
                     }
                     case 7: {
-                        // Wyświetlanie książek
-                        admin.wyswietlListeKsiazek(bazaKsiazek);
+                        // show books
+                        admin.showBookList(bookDatabase);
                         break;
                     }
                     case 8: {
-                        // Wyswietlanie czytelnikow
-                        admin.wyswietlListeCzytelnikow(bazaCzytelnikow);
+                        // show readers
+                        admin.showReaderList(readerDatabase);
                         break;
                     }
                     case 9: {
-                        // Wywietlanie pracownikow
-                        admin.showEmployeeList(bazaPracownikow);
+                        // show employees
+                        admin.showEmployeeList(employeeDatabase);
                         break;
                     }
-
                     case 10: {
-                        cout << "Zamykanie programu..." << endl;
+                        cout << "Closing program..." << endl;
                         exit(0);
                         break;
                     }
                     default:
-                        cout << "Niepoprawny wybor!" << endl;
+                        cout << "Invalid choice!" << endl;
                     }
                 } while (true);
             }
-            else if (funkcja == "pracownik") {
-                // Tworzymy obiekt Pracownika
-                Employee pracownik;
+            else if (role == "employee") {
+                Employee employee;
                 do {
-                    cout << "\n--- Menu Pracownika ---\n";
-                    cout << "1. Sprawdz konto czytelnika\n";
-                    cout << "2. Utworz konto czytelnika\n";
-                    cout << "3. Usun konto czytelnika\n";
-                    cout << "4. Zwrot ksiazki\n";
-                    cout << "5. Wypozyczenie ksiazki\n";
-                    cout << "6. Przyjmij kaucje\n";
-                    cout << "7. Wyswietl ksiazki z bazy\n";
-                    cout << "8. Wyswietl liste czytelnikow\n";
-                    cout << "9. Zamknij program\n";
-                    cout << "Wybor: ";
-                    cin >> wybor;
+                    cout << "\n--- Employee Menu ---\n";
+                    cout << "1. Check reader account\n";
+                    cout << "2. Create reader account\n";
+                    cout << "3. Remove reader account\n";
+                    cout << "4. Return book\n";
+                    cout << "5. Borrow book\n";
+                    cout << "6. Accept deposit\n";
+                    cout << "7. Show books from database\n";
+                    cout << "8. Show reader list\n";
+                    cout << "9. Exit program\n";
+                    cout << "Choice: ";
+                    cin >> choice;
 
-                    switch (wybor) {
+                    switch (choice) {
                     case 1: {
-                        // Sprawdzenie konta czytelnika
+                        // check reader account
                         string pesel;
-                        cout << "Podaj Pesel: ";
+                        cout << "Enter pesel: ";
                         cin >> pesel;
-                        ReaderAccount nowyCzytelnik(pesel);
-                        pracownik.sprawdzenieKonta(bazaCzytelnikow, nowyCzytelnik);
+                        ReaderAccount reader(pesel);
+                        employee.checkAccount(readerDatabase, reader);
                         break;
                     }
                     case 2: {
-                        // Utwórz konto czytelnika
-                        string pesel, imie, nazwisko;
+                        // create reader account
+                        string pesel, firstName, lastName;
 
-                        cout << "Podaj imie: ";
-                        cin >> imie;
-                        cout << "Podaj nazwisko: ";
-                        cin >> nazwisko;
-                        cout << "Podaj Pesel: ";
+                        cout << "Enter first name: ";
+                        cin >> firstName;
+                        cout << "Enter last name: ";
+                        cin >> lastName;
+                        cout << "Enter pesel: ";
                         cin >> pesel;
 
-                        ReaderAccount nowyCzytelnik(pesel, imie, nazwisko);
-                        pracownik.dodajCzytelnika(bazaCzytelnikow, nowyCzytelnik);
+                        ReaderAccount newReader(pesel, firstName, lastName);
+                        employee.addReader(readerDatabase, newReader);
                         break;
                     }
                     case 3: {
-                        //usuniecie konta czytelnika
+                        // remove reader account
                         string pesel;
-                        cout << "Podaj Pesel czytelnika do usuniecia: ";
+                        cout << "Enter pesel of reader to remove: ";
                         cin >> pesel;
-                        ReaderAccount czytelnikDoUsuniecia(pesel);
-                        pracownik.usunCzytelnika(bazaCzytelnikow, czytelnikDoUsuniecia);
+                        ReaderAccount readerToRemove(pesel);
+                        employee.removeReader(readerDatabase, readerToRemove);
                         break;
-
                     }
                     case 4: {
-                        int egzemplarzID;
+                        int bookID;
                         string pesel;
-                        cout << "Podaj ID egzemplarza: ";
-                        cin >> egzemplarzID;
-                        cout << "Podaj pesel czytelnika: ";
+                        cout << "Enter book ID: ";
+                        cin >> bookID;
+                        cout << "Enter reader pesel: ";
                         cin >> pesel;
-                        ReaderAccount czytelnik(pesel);
-                        pracownik.zwrocKsiazke(bazaKsiazek, bazaCzytelnikow, egzemplarzID, czytelnik);
+                        ReaderAccount reader(pesel);
+                        employee.returnBook(bookDatabase, readerDatabase, bookID, reader);
                         break;
                     }
                     case 5: {
-                        int egzemplarzID;
+                        int bookID;
                         string pesel;
-                        cout << "Podaj ID egzemplarza: ";
-                        cin >> egzemplarzID;
-                        cout << "Podaj pesel czytelnika: ";
+                        cout << "Enter book ID: ";
+                        cin >> bookID;
+                        cout << "Enter reader pesel: ";
                         cin >> pesel;
-                        ReaderAccount czytelnik(pesel);
-                        pracownik.wypozyczKsiazke(bazaKsiazek, bazaCzytelnikow, egzemplarzID, czytelnik);
+                        ReaderAccount reader(pesel);
+                        employee.borrowBook(bookDatabase, readerDatabase, bookID, reader);
                         break;
                     }
                     case 6: {
-                        // Przyjęcie kaucji
+                        // accept deposit
                         string pesel;
-                        cout << "Podaj PESEL czytelnika: ";
+                        cout << "Enter reader pesel: ";
                         cin >> pesel;
-                        ReaderAccount czytelnik(pesel);
-                        pracownik.przyjmijKaucje(bazaCzytelnikow, czytelnik);
+                        ReaderAccount reader(pesel);
+                        employee.acceptDeposit(readerDatabase, reader);
                         break;
                     }
                     case 7: {
-                        // Wyświetlanie książek
-                        pracownik.wyswietlListeKsiazek(bazaKsiazek);
+                        // show books
+                        employee.showBookList(bookDatabase);
                         break;
                     }
                     case 8: {
-                        pracownik.wyswietlListeCzytelnikow(bazaCzytelnikow);
+                        employee.showReaderList(readerDatabase);
                         break;
                     }
                     case 9: {
-                        cout << "Zamykanie programu..." << endl;
+                        cout << "Closing program..." << endl;
                         exit(0);
                         break;
                     }
                     default:
-                        cout << "Niepoprawny wybor!" << endl;
+                        cout << "Invalid choice!" << endl;
                     }
                 } while (true);
             }
         }
         else {
-            cout << "Bledne dane logowania!" << endl;
+            cout << "Incorrect login data!" << endl;
         }
         break;
     case 2:
-        cout << "Wyjscie z programu" << endl;
+        cout << "Exiting program" << endl;
         break;
     default:
-        cout << "Nieprawidlowa opcja. Sprobuj ponownie." << endl;
+        cout << "Invalid option. Try again." << endl;
         system("pause");
         break;
     }

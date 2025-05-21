@@ -6,5 +6,5 @@ class Borrowing {
 public:
 	static string fileName;
 
-	int wypozyczKsiazke(const Book& ksiazka);
+	int borrowBook(const Book& book);
 };

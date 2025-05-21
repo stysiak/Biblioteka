@@ -4,25 +4,24 @@
 class Book {
 private:
     int ID;
-    string tytul;
-    string nazwiskoAutora;
-    int rokWydania;
-    string stan;
-    string dataZwrotu;
+    string title;
+    string authorSurname;
+    int yearOfPublication;
+    string status;
+    string returnDate;
 
 public:
     Book();
-    Book(int ID, const string& tytul, const string& nazwiskoAutora, int rokWydania, string stan);
+    Book(int ID, const string& title, const string& authorSurname, int yearOfPublication, string status);
     Book(int ID);
     int getID() const;
-    string getTytul() const;
-    string getNazwiskoAutora() const;
-    int getRokWydania() const;
+    string getTitle() const;
+    string getAuthorSurname() const;
+    int getYearOfPublication() const;
 
-    void setStan(const string &nowyStan);
+    void setStatus(const string& newStatus);
 
-    string getStan() const;
+    string getStatus() const;
 
-    void setDataZwrotu(const string& string);
+    void setReturnDate(const string& date);
 };
-

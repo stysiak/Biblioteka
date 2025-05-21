@@ -10,7 +10,7 @@ Administrator::Administrator(const string& pesel, const string& imie, const stri
 void Administrator::addBook(BookDatabase& database, const Book& book) noexcept {
     int id = database.updateStateAdd(book);
     if (id != -1) {
-        cout << "Book '" << book.getTytul() << "' was added with ID: " << book.getID() << endl;
+        cout << "Book '" << book.getTitle() << "' was added with ID: " << book.getID() << endl;
     }
 }
 
