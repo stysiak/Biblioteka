@@ -32,6 +32,8 @@ set(SOURCES
         src/utils/Borrowing.cpp
         src/utils/Return.cpp
         src/main.cpp
+        src/utils/Logger.cpp
+        include/utils/Logger.h
 )
 
 # Wszystkie pliki nagłówkowe

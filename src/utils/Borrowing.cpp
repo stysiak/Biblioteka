@@ -1,6 +1,7 @@
+// Borrowing.cpp
 #include "../../include/utils/Borrowing.h"
+#include "../../include/utils/Logger.h"
 #include <fstream>
-#include <iostream>
 #include <iomanip>
 #include <ctime>
 #include <sstream>
@@ -14,7 +15,7 @@ string Borrowing::fileName = "../../data/books_database.json";
 int Borrowing::borrowBook(const Book& book) {
     ifstream inFile(fileName);
     if (!inFile.is_open()) {
-        cerr << "Cannot open JSON file!" << endl;
+        Logger::error("Cannot open file: " + fileName);
         return -1;
     }
 
@@ -32,28 +33,35 @@ int Borrowing::borrowBook(const Book& book) {
     oss << put_time(&ltm, "%Y-%m-%d");
     string returnDate = oss.str();
 
+    Logger::debug("Searching for book with ID: " + std::to_string(book.getID()));
+
     for (auto& b : books) {
         if (b["id"] == book.getID() && b["status"] == "available") {
             b["status"] = "unavailable";
             b["returnDate"] = returnDate;
             found = true;
+            Logger::info("Found book with ID: " + std::to_string(book.getID()) +
+                        ". Status changed to unavailable");
             break;
         }
     }
 
     if (!found) {
-        cerr << "Book with ID " << book.getID() << " is unavailable or does not exist!" << endl;
+        Logger::warning("Book with ID " + std::to_string(book.getID()) +
+                       " is unavailable or does not exist");
         return -1;
     }
 
     ofstream outFile(fileName);
     if (!outFile.is_open()) {
-        cerr << "Cannot save JSON file!" << endl;
+        Logger::error("Cannot save to file: " + fileName);
         return -1;
     }
+
     outFile << setw(4) << books << endl;
     outFile.close();
 
-    cout << "Book with ID " << book.getID() << " has been borrowed. Return date: " << returnDate << endl;
+    Logger::info("Book with ID " + std::to_string(book.getID()) +
+                " has been borrowed. Return date: " + returnDate);
     return book.getID();
 }
